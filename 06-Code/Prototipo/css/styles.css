@@ -5,6 +5,90 @@ body {
     box-sizing: border-box;
 }
 
+/* Estilo general para la sección banner */
+.banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(to bottom right, #f8d7da, #fff);
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+}
+
+/* Título principal del banner */
+.title-banner {
+    font-size: 2.5rem;
+    color: #3b0e0e;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+/* Texto secundario del banner */
+.title-text {
+    font-size: 1.2rem;
+    color: #555;
+    line-height: 1.6;
+    max-width: 800px;
+    margin-bottom: 30px;
+    font-family: 'Georgia', serif;
+}
+
+/* Botón de contacto */
+.btm-banner {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    background: #007BFF;
+    border-radius: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btm-banner:hover {
+    background: #0056b3;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .title-banner {
+        font-size: 2rem;
+    }
+
+    .title-text {
+        font-size: 1rem;
+    }
+
+    .btm-banner {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .title-banner {
+        font-size: 1.8rem;
+    }
+
+    .title-text {
+        font-size: 0.9rem;
+    }
+
+    .btm-banner {
+        padding: 8px 20px;
+        font-size: 0.8rem;
+    }
+}
 /* ESTILO PARA CARRUSEL (sin modificaciones) */
 /* Estilos para el carrusel */
 .imagenes {
@@ -196,72 +280,7 @@ section {
         margin-bottom: 20px;
     }
 }
-/* ESTILO PARA PIE DE PAGINA */
-.footer-credits {
-    text-align: center;
-    color: #fff;
-    font-size: 14px;
-}
 
-.footer-credits p {
-    margin: 5px 0;
-}
-
-.footer-credits a {
-    color: #00bcd4;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.footer-credits a:hover {
-    text-decoration: underline;
-    color: #ffffff;
-}
-
-footer {
-    background-color: #3e4a56;
-    color: white;
-    padding: 20px 0;
-    width: 100%;
-    position: relative;
-    left: 0;
-}
-
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap; /* Permitir que las secciones se envuelvan en pantallas pequeñas */
-    text-align: center; /* Centrar contenido en dispositivos pequeños */
-}
-
-.footer-section h4 {
-    font-size: 16px;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-}
-
-.footer-section p {
-    margin: 5px 0;
-    font-size: 14px;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.footer-section p:hover {
-    color: #a8c6df;
-}
-
-.social-icons i {
-    font-size: 18px;
-    margin-right: 10px;
-    transition: color 0.3s ease;
-}
-
-.social-icons i:hover {
-    color: #a8c6df;
-}
 
 /* Estilos para Informacion de Cursos */
 .course-details {

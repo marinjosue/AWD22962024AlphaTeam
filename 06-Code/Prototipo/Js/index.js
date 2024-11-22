@@ -7,8 +7,5 @@ function toggleInfo(id) {
     }
 }
 
-function toggleMenu() {
-    var nav = document.getElementById('navbar');
-    nav.classList.toggle('show');
-}
+
 

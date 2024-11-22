@@ -1,0 +1,141 @@
+/* Reseteo básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo general del header */
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-bottom: 2px solid #ccc;
+}
+
+.header .logo {
+    background-color: #f9f9f9;
+}
+
+/* Logo y frase de bienvenida */
+.logo {
+    text-align: center;
+    width: 100%;
+}
+
+.logo img {
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+.logo h1 {
+    font-size: 2rem;
+    font-family: Arial, sans-serif;
+    color: #3b0e0e;
+    margin: 5px 0;
+}
+
+.welcome {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Estilo del menú de navegación */
+.nav {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+
+.barnav {
+    display: flex;
+    list-style: none;
+    gap: 40px;
+    /* Espaciado entre los elementos */
+}
+
+.barnav li {
+    position: relative;
+}
+
+.barnav a {
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    padding: 5px 15px;
+    transition: color 0.3s ease;
+}
+
+.barnav a:hover {
+    color: #d2c4c4;
+    background: #007BFF; /* Cambia el fondo al hacer hover */
+    border-radius: 25px; /* Bordes redondeados para efecto de píldora */
+    padding: 5px 20px;
+    transition: all 0.3s ease; /* Suaviza el cambio */
+}
+
+barnav a::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(0, 123, 255, 0.2); /* Color del círculo */
+    border-radius: 50%; /* Hace que sea un círculo */
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease; /* Suaviza el crecimiento */
+    z-index: -1; /* Coloca el círculo detrás del texto */
+}
+
+.barnav a:hover::before {
+    width: 40px; /* Tamaño del círculo al hacer hover */
+    height: 40px;
+}
+/* Botón hamburguesa (oculto en pantallas grandes) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.hamburger .bar {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+}
+
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .barnav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: static;
+    }
+
+    .barnav.show {
+        display: flex;
+    }
+
+    .hamburger {
+        display: block;
+    }
+    .barnav a:first-child {
+        color: #111111; /* Cambia este color si es blanco */
+    }
+    
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 10px;
+    }
+}
