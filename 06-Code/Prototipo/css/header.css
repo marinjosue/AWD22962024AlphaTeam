@@ -157,5 +157,14 @@
         height: 50px;
         width: 100px;
     }
+    .search-bar input {
+        padding: 3px 5px; /* Reduce el espacio interno */
+        border: none;
+        border-radius: 3px;
+        font-size: 12px; /* Reduce el tamaño de la fuente */
+        width: 120px; /* Define un ancho más pequeño */
+        height: 25px; /* Define una altura específica */
+    }
+    
    
 }
