@@ -1,141 +1,159 @@
-/* Reseteo básico */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Estilo general del header */
+/* Estilos básicos */
 .header {
     display: flex;
+    justify-content: space-between;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-bottom: 2px solid #ccc;
+    padding: 10px 20px;
+    background-color: #d59292;
+    color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: top 0.3s ease;
+    height: 80px;
 }
 
-.header .logo {
-    background-color: #f9f9f9;
-}
-
-/* Logo y frase de bienvenida */
-.logo {
-    text-align: center;
+.navbar {
+    display: flex;
+    align-items: center;
     width: 100%;
 }
 
 .logo img {
-    height: 80px;
-    margin-bottom: 10px;
+    height: 50px;
+    width: 200px;
 }
 
-.logo h1 {
-    font-size: 2rem;
-    font-family: Arial, sans-serif;
-    color: #3b0e0e;
-    margin: 5px 0;
-}
-
-.welcome {
-    font-size: 1.2rem;
-    color: #555;
-    margin-bottom: 20px;
-}
-
-/* Estilo del menú de navegación */
-.nav {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
-
-.barnav {
+.main-menu ul {
     display: flex;
     list-style: none;
-    gap: 40px;
-    /* Espaciado entre los elementos */
+    margin: 0;
+    padding: 0;
 }
 
-.barnav li {
-    position: relative;
+.main-menu ul li {
+    margin: 0 10px;
 }
 
-.barnav a {
+.main-menu ul li a {
+    color: white;
     text-decoration: none;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #333;
-    padding: 5px 15px;
-    transition: color 0.3s ease;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.barnav a:hover {
-    color: #d2c4c4;
-    background: #007BFF; /* Cambia el fondo al hacer hover */
-    border-radius: 25px; /* Bordes redondeados para efecto de píldora */
-    padding: 5px 20px;
-    transition: all 0.3s ease; /* Suaviza el cambio */
+/* Efecto hover */
+.main-menu ul li a:hover {
+    background-color: white;
+    color: black;
+    padding: 29px 15px; /* Aumentar el tamaño del recuadro */
+}
+.user-options a:hover{
+    background-color: white;
+    color: black;
+    padding: 29px 15px; /* Aumentar el tamaño del recuadro */
 }
 
-barnav a::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(0, 123, 255, 0.2); /* Color del círculo */
-    border-radius: 50%; /* Hace que sea un círculo */
-    transform: translate(-50%, -50%);
-    transition: all 0.3s ease; /* Suaviza el crecimiento */
-    z-index: -1; /* Coloca el círculo detrás del texto */
+/* Barra de búsqueda */
+.search-bar input {
+    padding: 5px;
+    border: none;
+    border-radius: 3px;
 }
 
-.barnav a:hover::before {
-    width: 40px; /* Tamaño del círculo al hacer hover */
-    height: 40px;
-}
-/* Botón hamburguesa (oculto en pantallas grandes) */
-.hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
+/* Opciones de usuario */
+.user-options {
+    display: flex;
+    align-items: center;
 }
 
-.hamburger .bar {
-    width: 25px;
-    height: 3px;
-    background-color: #333;
+.main-menu.active {
+    display: flex;
 }
 
+.user-options a {
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+}
 
-/* Estilos responsivos */
+/* Estilos para móviles */
 @media (max-width: 768px) {
-    .barnav {
-        display: none;
+    .main-menu {
+        display: flex;
         flex-direction: column;
-        width: 100%;
-        position: static;
+        width: 250px;
+        background-color: #333;
+        position: fixed;
+        top: 0;
+        left: -250px;
+        height: 100%;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: 80px 20px 20px;
+        transition: left 0.5s ease;
+        z-index: 1000;
+    }
+    .main-menu ul li a {
+        display: inline-block; /* Se ajusta al tamaño del contenido */
+        color: white;
+        text-decoration: none;
+        padding: 10px 15px; /* Espaciado interno */
+        border-radius: 5px; /* Para un efecto más moderno */
+        transition: background-color 0.3s, color 0.3s; /* Animación suave */
     }
 
-    .barnav.show {
-        display: flex;
+    /* Estilos para el hover */
+    .main-menu ul li a:hover {
+        background-color: white;
+        color: black;
+        padding: 10px 15px; /* Se mantiene el tamaño del recuadro */
+        width: auto; /* El ancho depende del contenido */
+    }
+    /* Cuando el menú está activo */
+    .main-menu.active {
+        left: 0;
+    }
+
+    /* Empujar la página hacia la derecha */
+    body.menu-active {
+        transform: translateX(250px);
+        transition: transform 0.5s ease;
     }
 
     .hamburger {
-        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 1001;
+        cursor: pointer;
     }
-    .barnav a:first-child {
-        color: #111111; /* Cambia este color si es blanco */
-    }
-    
-}
 
-@media (max-width: 480px) {
-    .header {
-        padding: 10px;
+    .hamburger .bar {
+        display: block;
+        width: 25px;
+        height: 3px;
+        margin: 5px auto;
+        background-color: white;
     }
+
+    .main-menu ul {
+        flex-direction: column;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+
+    .main-menu ul li {
+        margin: 10px 0;
+    }
+
+    .logo img {
+        margin-left: 50px;
+    }
+   
 }

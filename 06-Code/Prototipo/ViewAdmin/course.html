@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- FontAwesome -->
     <script src="https://kit.fontawesome.com/c4033be41c.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/css/courses.css">
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../../css/courses.css">
     <title>Administración de Cursos</title>
 </head>
+
 <body>
     <div id="header"></div>
-    <script src="../Js/dinav.js"></script>
+    <script src="../../Js/dinav.js"></script>
     <script src="../Js/courses.js"></script>
 
     <main>
@@ -47,16 +56,15 @@
                             <a class="btn btn-small btn-warning" href="#">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
-                            
+
                             <a class="btn btn-small btn-danger" href="#">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
-
                             <!-- Botón para ver información -->
-                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#courseModal" 
-                            onclick="showCourseInfo('Masaje Relajante', '/img/relajante.webp', '2024-12-01', '2024-12-05', '20', 'Aprende técnicas de masaje relajante para aliviar tensiones y mejorar el bienestar.')">
-                            <i class="fa-solid fa-circle-info"></i> 
-                        </button>
+                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#courseModal"
+                                onclick="showCourseInfo('Masaje Relajante', '/img/relax2.jpeg', '2024-12-01', '2024-12-05', '20', 'Aprende técnicas de masaje relajante para aliviar tensiones y mejorar el bienestar.')">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </button>
                         </td>
                     </tr>
                     <tr>
@@ -69,15 +77,15 @@
                             <a class="btn btn-small btn-warning" href="#">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
-                            
+
                             <a class="btn btn-small btn-danger" href="#">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
 
                             <!-- Botón para ver información -->
-                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#courseModal" 
+                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#courseModal"
                                 onclick="showCourseInfo('Masaje Relajante', '/img/relax2.jpeg', '2024-12-01', '2024-12-05', '20', 'Aprende técnicas de masaje relajante para aliviar tensiones y mejorar el bienestar.')">
-                                <i class="fa-solid fa-circle-info"></i> 
+                                <i class="fa-solid fa-circle-info"></i>
                             </button>
                         </td>
                     </tr>
@@ -91,16 +99,16 @@
                             <a class="btn btn-small btn-warning" href="#">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
-                            
+
                             <a class="btn btn-small btn-danger" href="#">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
 
                             <!-- Botón para ver información -->
-                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#courseModal" 
-                            onclick="showCourseInfo('Masaje Relajante', '/img/relax2.jpeg', '2024-12-01', '2024-12-05', '20', 'Aprende técnicas de masaje relajante para aliviar tensiones y mejorar el bienestar.')">
-                            <i class="fa-solid fa-circle-info"></i> 
-                        </button>
+                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#courseModal"
+                                onclick="showCourseInfo('Masaje Relajante', '/img/relax2.jpeg', '2024-12-01', '2024-12-05', '20', 'Aprende técnicas de masaje relajante para aliviar tensiones y mejorar el bienestar.')">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -108,7 +116,7 @@
 
             <!-- Botón para agregar nuevo curso -->
             <button class="btn-add btn btn-success">Añadir Nuevo Curso</button>
-            <button class="btn-add btn btn-info" onclick="window.location.href='viewCourses.html'" >Mirar Cursos</button>
+            <button class="btn-add btn btn-info" onclick="window.location.href='../Views/viewCourses.html'">Mirar Cursos</button>
         </section>
     </main>
     <!-- Modal para mostrar información del curso -->
@@ -137,4 +145,5 @@
     </div>
     <div id="footer"></div>
 </body>
+
 </html>

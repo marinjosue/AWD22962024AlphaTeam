@@ -1,4 +1,12 @@
 /* ESTILO PARA PIE DE PAGINA */
+footer {
+    background-color: #d59292;
+    color: white;
+    padding: 20px 0;
+    width: 100%;
+    position: absolute;
+    left: 0;
+}
 .footer-credits {
     text-align: center;
     color: #fff;
@@ -18,15 +26,6 @@
 .footer-credits a:hover {
     text-decoration: underline;
     color: #ffffff;
-}
-
-footer {
-    background-color: #3e4a56;
-    color: white;
-    padding: 20px 0;
-    width: 100%;
-    position: relative;
-    left: 0;
 }
 
 .footer-container {
