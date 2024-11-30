@@ -1,0 +1,32 @@
+#PROBLEM
+-The growing demand for online learning has led many people to seek accessible platforms 
+for a wide range of courses. However, users often find limitations with current options, 
+such as complicated navigation, limited payment methods, or unclear access to study materials. 
+The lack of a streamlined system that allows users to efficiently find, access, 
+and purchase courses negatively impacts customer satisfaction and limits online learning opportunities.
+This project aims to develop a website that allows users to register, securely purchase courses, 
+and access educational materials. The system should facilitate access to materials,
+handle secure payments (including online and transfer options), and allow the administrator to comprehensively
+manage courses and users.
+
+
+##OVERVIEW 
+
+he platform will focus on selling online and hybrid courses, 
+offering users a simplified browsing and purchasing experience. 
+Once registered, users can purchase courses in various subjects, 
+view acquired content in their accounts, and access materials like videos and supporting documents.
+The system will allow the administrator to manage courses, create roles, and monitor payments and sales. 
+This project aims to provide an effective, user-friendly solution that enhances the experience of acquiring
+knowledge online, increasing accessibility and providing a controlled, managed environment.
+
+##BACKGROUND
+With the growth of online education, more and more people seek digital learning options.
+However, many existing websites fail to fully meet user needs, whether in terms of quick access to content,
+easy payments, or adequate support. Implementing a functional course sales platform aims to improve the user 
+experience by offering a straightforward structure adapted to diverse needs.An automated course sales system 
+can improve course management, ensuring users receive what they need quickly and effectively, 
+and that the administrator can efficiently manage content, payments, and user access. 
+It will also include options for generating sales reports and allowing future expansions to the course catalog.
+
+
