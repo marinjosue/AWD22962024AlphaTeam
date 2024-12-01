@@ -5,6 +5,7 @@ const leastSold = [10, 15, 20, 25, 30];
 const abandonedCourses = [20, 25, 10, 15, 5];
 const completedCourses = [100, 110, 90, 85, 80];
 
+
 // Función para crear un gráfico de barras
 function createBarChart(ctx, labels, data, title, bgColor, borderColor) {
     new Chart(ctx, {
