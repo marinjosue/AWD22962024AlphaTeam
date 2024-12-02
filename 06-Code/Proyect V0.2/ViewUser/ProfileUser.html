@@ -19,14 +19,14 @@
 
 <body>
     <div id="header"></div>
-    <script src="../../Js/dinav.js"></script>
+    <script src="../Js/dinav.js"></script>
 
     <main class="container mt-5">
         <h1 class="text-center">Perfil del Usuario</h1>
         <div class="profile-container formaCo d-flex flex-wrap justify-content-center gap-4">
             <!-- Foto del Administrador -->
             <div class="card text-center p-3" style="width: 18rem;">
-                <img id="photo" class="card-img-top rounded-circle" src="../../img/student.jpeg" alt="Foto del Administrador">
+                <img id="photo" class="card-img-top rounded-circle" src="../img/student.jpeg" alt="Foto del Administrador">
                 <div class="card-body">
                     <h5 class="card-title">Juan Pérez</h5>
                     <p class="card-text text-muted">Administrador</p>
@@ -96,7 +96,7 @@
                         showConfirmButton: false
                     }).then(() => {
                         // Redirigir al inicio
-                        window.location.href = '/index.html';
+                        window.location.href = '../index/index.html';
                     });
                 }
             });
