@@ -26,7 +26,7 @@
                         <span class="input-group-text bg-primary text-white">
                             <i class="fas fa-user"></i>
                         </span>
-                        <input type="text" class="form-control" id="username" placeholder="Ingresa tu usuario" required>
+                        <input type="text" class="form-control" id="username" placeholder="Ingresa tu cedula" required>
                     </div>
 
                     <!-- Contraseña -->
@@ -61,48 +61,55 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Simulando base de datos de usuarios
-        const users = [
-            { username: 'admin', password: 'admin12', role: 'admin' },
-            { username: 'user', password: 'user12', role: 'user' }
-        ];
-
-        // Función de login
-        function login(event) {
+        document.getElementById('loginForm').addEventListener('submit', async function (event) {
             event.preventDefault();
+
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            const user = users.find(u => u.username === username && u.password === password);
-
-            if (user) {
-                // Guardar el rol en localStorage
-                localStorage.setItem('userRole', user.role);
-
-                Swal.fire({
-                    title: '¡Bienvenido!',
-                    text: `Has iniciado sesión como ${user.role}`,
-                    icon: 'success',
-                    timer: 1500,
-                    showConfirmButton: false
-                }).then(() => {
-                    // Redirigir según el rol
-                    if (user.role === 'admin') {
-                        window.location.href = '../index/index.html';
-                    } else {
-                        window.location.href = '../index/index.html';
-                    }
+            try {
+                const response = await fetch('../controller/auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({ username, password })
                 });
-            } else {
+
+                const data = await response.json();
+
+                if (data.success) {
+                    Swal.fire({
+                        title: '¡Bienvenido!',
+                        text: `Has iniciado sesión como ${data.role}`,
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        // Redirigir según el rol
+                        if (data.role === 'admin') {
+                            window.location.href = '../ViewAdmin/index.html';
+                        } else {
+                            window.location.href = '../ViewUser/index.html';
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: data.message,
+                        icon: 'error',
+                        confirmButtonText: 'Intentar de nuevo'
+                    });
+                }
+            } catch (error) {
                 Swal.fire({
                     title: 'Error',
-                    text: 'Usuario o contraseña incorrectos',
+                    text: 'Hubo un problema al conectarse con el servidor',
                     icon: 'error',
                     confirmButtonText: 'Intentar de nuevo'
                 });
             }
-        }
-        document.getElementById('loginForm').addEventListener('submit', login);
+        });
     </script>
 </body>
 
