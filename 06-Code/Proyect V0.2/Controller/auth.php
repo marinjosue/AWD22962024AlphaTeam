@@ -12,14 +12,14 @@ if (empty($username) || empty($password)) {
     exit;
 }
 
-// Consulta para verificar el usuario y contraseña
+// Consulta para verificar el usuario
 $sql = "SELECT users.id, users.first_name, users.last_name, users.password, roles.roles 
         FROM users 
         INNER JOIN roles ON users.id_rol = roles.id_rol 
-        WHERE users.email = ?";
+        WHERE users.cedula = ?";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param('s', $username);
+$stmt->bind_param('s', $username); // Asegúrate de que envíes 'cedula'
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -28,18 +28,19 @@ if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
 
     // Verificar contraseña
-    if (password_verify($password, $user['password'])) {
+    if ($password === $user['password']) {
         echo json_encode([
             'success' => true,
             'message' => 'Inicio de sesión exitoso',
             'role' => $user['roles']
-        ]);
+        ]);        
     } else {
         echo json_encode(['success' => false, 'message' => 'Contraseña incorrecta']);
     }
 } else {
     echo json_encode(['success' => false, 'message' => 'Usuario no encontrado']);
 }
+
 
 $conn->close();
 ?>

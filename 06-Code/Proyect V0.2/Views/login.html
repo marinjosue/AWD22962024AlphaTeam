@@ -79,6 +79,7 @@
                 const data = await response.json();
 
                 if (data.success) {
+                    localStorage.setItem('userRole', data.role); // Guardar el rol en localStorage
                     Swal.fire({
                         title: '¡Bienvenido!',
                         text: `Has iniciado sesión como ${data.role}`,
@@ -88,12 +89,13 @@
                     }).then(() => {
                         // Redirigir según el rol
                         if (data.role === 'admin') {
-                            window.location.href = '../ViewAdmin/index.html';
+                            window.location.href = '../index/index.html';
                         } else {
-                            window.location.href = '../ViewUser/index.html';
+                            window.location.href = '../index/index.html';
                         }
                     });
-                } else {
+                }
+                else {
                     Swal.fire({
                         title: 'Error',
                         text: data.message,

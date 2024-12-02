@@ -4,13 +4,18 @@ const userRole = localStorage.getItem('userRole') || 'default';
 // Determinar la ruta del menú según el rol
 function getHeaderPath(role) {
     switch (role) {
-        case 'admin':
+        case 'Admin':
             return '../Partials/headerAdmin.html';
-        case 'user':
+        case 'Student':
             return '../Partials/headerUser.html';
         case 'default':
             return '../Partials/header.html'; // Menú por defecto
     }
+}
+
+if (!['Admin', 'Student', 'default'].includes(userRole)) {
+    console.error('Rol no válido. Redirigiendo...');
+    window.location.href = '../index/index.html'; // Redirige al login o página de error
 }
 
 // Cargar el archivo HTML correspondiente al menú
