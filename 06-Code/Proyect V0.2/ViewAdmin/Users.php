@@ -38,40 +38,107 @@
         <!-- Contenido de las pestañas -->
         <div class="tab-content" id="gestionUsuariosContent">
             <!-- Gestión de Roles -->
-            <div class="tab-pane fade show active mt-4" id="roles" role="tabpanel" aria-labelledby="roles-tab">
-                <h3>Gestionar Roles</h3>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>ID Rol</th>
-                                <th>Nombre del Rol</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Administrador</td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Editar</button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Eliminar</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Estudiante</td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Editar</button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Eliminar</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <button class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Añadir Nuevo Rol</button>
-            </div>
+            <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID Rol</th>
+                        <th>Nombre del Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    require '../Connection/db.php'; // Archivo de conexión
+                    $sql = "SELECT id_rol, roles FROM roles";
+                    $result = $conn->query($sql);
 
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>
+                                    <td>{$row['id_rol']}</td>
+                                    <td>{$row['roles']}</td>
+                                    <td>
+                                        <button class='btn btn-warning btn-sm'><i class='fas fa-edit'></i> Editar</button>
+                                        <button class='btn btn-danger btn-sm'><i class='fas fa-trash'></i> Eliminar</button>
+                                    </td>
+                                  </tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='3'>No hay roles disponibles.</td></tr>";
+                    }
+
+                    $conn->close();
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Rol -->
+    <div class="modal fade" id="editRoleModal" tabindex="-1" aria-labelledby="editRoleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editRoleModalLabel">Editar Rol</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editRoleForm">
+                        <input type="hidden" id="editRoleId" name="id_rol">
+                        <div class="mb-3">
+                            <label for="editRoleName" class="form-label">Nombre del Rol</label>
+                            <input type="text" class="form-control" id="editRoleName" name="roles" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <!-- JavaScript para Manejar Eventos -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const editButtons = document.querySelectorAll('.btn-warning');
+
+            editButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const row = this.closest('tr');
+                    const id = row.cells[0].innerText;
+                    const name = row.cells[1].innerText;
+
+                    document.getElementById('editRoleId').value = id;
+                    document.getElementById('editRoleName').value = name;
+
+                    const editModal = new bootstrap.Modal(document.getElementById('editRoleModal'));
+                    editModal.show();
+                });
+            });
+
+            document.getElementById('editRoleForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const formData = new FormData(this);
+
+                fetch('../Controller/editar_rol.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert('Rol actualizado correctamente');
+                    location.reload();
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
             <!-- Gestión de Usuarios -->
             <div class="tab-pane fade mt-4" id="usuarios" role="tabpanel" aria-labelledby="usuarios-tab">
                 <h3>Gestionar Usuarios</h3>
