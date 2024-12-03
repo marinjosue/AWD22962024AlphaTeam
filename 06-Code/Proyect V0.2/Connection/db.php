@@ -1,9 +1,9 @@
 <?php
     // Conexión a la base de datos
-    $servername = "localhost";
-    $username = "root"; 
-    $password = ""; 
-    $dbname = "courses"; // Nombre de la base de datos
+    $servername = "boydpfeivqsyzxx4wzly-mysql.services.clever-cloud.com";
+    $username = "ulltzlf06xa3hjip"; 
+    $password = "n3BTQanxNlrJAlWCUlSA"; 
+    $dbname = "boydpfeivqsyzxx4wzly"; // Nombre de la base de datos
 
     // Crear la conexión
     $conn = new mysqli($servername, $username, $password, $dbname);
