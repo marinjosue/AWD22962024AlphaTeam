@@ -46,6 +46,7 @@
                                 <th>ID Rol</th>
                                 <th>Nombre del Rol</th>
                                 <th>Acciones</th>
+                                
                             </tr>
                         </thead>
                         <tbody id="rolesBody">
@@ -83,31 +84,27 @@
  
 
 <!-- Modal para agregar roles -->
-<div class="modal fade" id="addRoleModal" tabindex="-1" aria-labelledby="addRoleModalLabel" aria-hidden="true">
-    <div class="
-
-                <!-- Modal para editar rol -->
-                <div class="modal fade" id="editRoleModal" tabindex="-1" aria-labelledby="editRoleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editRoleModalLabel">Editar Rol</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="editRoleForm">
-                                    <input type="hidden" id="editRoleId" name="id_rol">
-                                    <div class="mb-3">
-                                        <label for="editRoleName" class="form-label">Nombre del Rol</label>
-                                        <input type="text" class="form-control" id="editRoleName" name="roles" required>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!-- Modal para editar rol -->
+<div class="modal fade" id="editRoleModal" tabindex="-1" aria-labelledby="editRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editRoleModalLabel">Editar Rol</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
+            <div class="modal-body">
+                <form id="editRoleForm">
+                    <input type="hidden" id="editRoleId" name="id_rol">
+                    <div class="mb-3">
+                        <label for="editRoleName" class="form-label">Nombre del Rol</label>
+                        <input type="text" class="form-control" id="editRoleName" name="roles" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
             <!-- Gestionar Usuarios -->
             <div class="tab-pane fade mt-4" id="usuarios" role="tabpanel" aria-labelledby="usuarios-tab">
@@ -122,6 +119,8 @@
                                 <th>Cursos Inscritos</th>
                                 <th>phone</th>
                                 <th>Rol</th>
+                                <th>Rol</th>
+
 
 
                                 <th>Acciones</th>
@@ -297,6 +296,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
+
+
+
        ////////
 
        // Función para editar usuario
@@ -365,13 +367,6 @@ async function editarUsuario(event) {
     // Redirigir a la página de edición con el ID del usuario
     window.location.href = `../Controller/editar_usuario.php?id=${userId}`;
 }
-
-
-
-
-
-
-
 
 
 
