@@ -79,7 +79,7 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    localStorage.setItem('userRole', data.role); // Guardar el rol en localStorage
+                    localStorage.setItem('userRole', data.role); 
                     Swal.fire({
                         title: '¡Bienvenido!',
                         text: `Has iniciado sesión como ${data.role}`,
