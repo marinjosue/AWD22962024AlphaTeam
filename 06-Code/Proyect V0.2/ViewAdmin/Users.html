@@ -32,9 +32,40 @@
                     role="tab" aria-controls="usuarios" aria-selected="false">Gestionar Usuarios</button>
                     
             </li>
+            
         </ul>
 
         <div class="tab-content" id="gestionUsuariosContent">
+
+                 <!-- Gestionar Usuarios -->
+            <div class="tab-pane fade mt-4" id="usuarios" role="tabpanel" aria-labelledby="usuarios-tab">
+                <h3>Usuarios</h3>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="usersTable">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID Usuario</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Cursos Inscritos</th>
+                                <th>phone</th>
+                                <th>Rol</th>
+                                <th>Rol</th>
+
+
+
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersBody">
+                            <!-- Usuarios se cargarán aquí dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
 
             <!-- Gestionar Roles -->
             <div class="tab-pane fade show active" id="roles" role="tabpanel" aria-labelledby="roles-tab">
@@ -46,6 +77,8 @@
                                 <th>ID Rol</th>
                                 <th>Nombre del Rol</th>
                                 <th>Acciones</th>
+                                <th>Acciones</th>
+
                                 
                             </tr>
                         </thead>
@@ -106,32 +139,7 @@
     </div>
 </div>
 
-            <!-- Gestionar Usuarios -->
-            <div class="tab-pane fade mt-4" id="usuarios" role="tabpanel" aria-labelledby="usuarios-tab">
-                <h3>Usuarios</h3>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover" id="usersTable">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>ID Usuario</th>
-                                <th>Nombre</th>
-                                <th>Email</th>
-                                <th>Cursos Inscritos</th>
-                                <th>phone</th>
-                                <th>Rol</th>
-                                <th>Rol</th>
-
-
-
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersBody">
-                            <!-- Usuarios se cargarán aquí dinámicamente -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        
 
         </div>
     </div>
@@ -185,9 +193,8 @@ async function cargarUsuarios() {
                         <td>${user.id}</td>
                         <td>${user.first_name} ${user.last_name}</td>
                         <td>${user.email}</td>
-
                         <td>${user.courses || 'Ninguno'}</td>
-                                               <td>${user.phone}</td>
+                        <td>${user.phone}</td>
                                                                                               <td>${user.id_rol}</td>
 
 
@@ -358,6 +365,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+
+
+
 // Función para editar usuario
 async function editarUsuario(event) {
     event.preventDefault();
@@ -374,3 +384,11 @@ async function editarUsuario(event) {
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
