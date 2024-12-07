@@ -64,11 +64,163 @@
                         </tbody>
                     </table>
                 </div>
-                   <!-- Botón para agregar roles -->
-                   <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                <!-- Botón para agregar roles -->
+                <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addUserModal">
                     <i class="fas fa-plus"></i> Agregar Usuario
                 </button>
+
+                <!-- Modal para agregar usuarios -->
+                <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addUserModalLabel">Agregar Nuevo Usuario</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="addUserForm">
+                                    <div class="modal-body">
+                                        <!-- Campo Cedula -->
+                                        <div class="mb-3">
+                                            <label for="cedula" class="form-label">Cédula</label>
+                                            <input type="text" name="cedula" id="cedula" class="form-control" required>
+                                        </div>
+
+                                        <!-- Campo Nombre -->
+                                        <div class="mb-3">
+                                            <label for="first_name" class="form-label">Nombre</label>
+                                            <input type="text" name="first_name" id="first_name" class="form-control"
+                                                required>
+                                        </div>
+
+                                        <!-- Campo Apellido -->
+                                        <div class="mb-3">
+                                            <label for="last_name" class="form-label">Apellido</label>
+                                            <input type="text" name="last_name" id="last_name" class="form-control"
+                                                required>
+                                        </div>
+
+                                        <!-- Campo Dirección -->
+                                        <div class="mb-3">
+                                            <label for="address" class="form-label">Dirección</label>
+                                            <input type="text" name="address" id="address" class="form-control"
+                                                required>
+                                        </div>
+
+                                        <!-- Campo Teléfono -->
+                                        <div class="mb-3">
+                                            <label for="phone" class="form-label">Teléfono</label>
+                                            <input type="text" name="phone" id="phone" class="form-control" required>
+                                        </div>
+
+                                        <!-- Campo Correo -->
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Correo Electrónico</label>
+                                            <input type="email" name="email" id="email" class="form-control" required>
+                                        </div>
+
+                                        <!-- Campo Contraseña -->
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label">Contraseña</label>
+                                            <input type="password" name="password" id="password" class="form-control"
+                                                required>
+                                        </div>
+
+                                        <!-- Campo Género -->
+                                        <div class="mb-3">
+                                            <label for="gender" class="form-label">Género</label>
+                                            <select name="gender" id="gender" class="form-select" required>
+                                                <option value="" selected disabled>Seleccione el género</option>
+                                                <option value="Masculino">Masculino</option>
+                                                <option value="Femenino">Femenino</option>
+                                                <option value="Otro">Otro</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Campo Rol -->
+                                        <div class="mb-3">
+                                            <label for="userRole" class="form-label">Rol</label>
+                                            <select class="form-select" id="userRole" name="role" required>
+                                                <!-- Opciones de roles cargadas dinámicamente -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-primary">Guardar Usuario</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
+            <!---->
+
+
+
+
+
+
+
+            <!---->
+            <script>
+
+                // Manejar el envío del formulario de agregar usuario
+                document.getElementById('addUserForm').addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    const formData = new FormData(event.target);
+
+                    try {
+                        const response = await fetch('../Controller/add_users.php', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        const result = await response.json();
+
+                        if (result.success) {
+                            alert('Usuario agregado correctamente');
+                            cargarUsuarios(); // Recargar la tabla de usuarios
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
+                            modal.hide();
+                        } else {
+                            alert('Error al agregar usuario: ' + result.message);
+                        }
+                    } catch (error) {
+                        console.error('Error al agregar usuario:', error);
+                    }
+                });
+
+                // Cargar roles dinámicamente en el formulario de agregar usuario
+                async function cargarRolesEnFormulario() {
+                    try {
+                        const response = await fetch('../Controller/cargar_roles.php');
+                        const roles = await response.json();
+
+                        const roleSelect = document.getElementById('userRole');
+                        roleSelect.innerHTML = '<option value="" disabled selected>Seleccione un rol</option>';
+                        roles.forEach(role => {
+                            roleSelect.innerHTML += `<option value="${role.id_rol}">${role.roles}</option>`;
+                        });
+                    } catch (error) {
+                        console.error('Error cargando roles:', error);
+                    }
+                }
+
+                // Llamar a la función al cargar la página
+                document.addEventListener('DOMContentLoaded', () => {
+                    cargarRolesEnFormulario();
+                });
+
+
+
+
+            </script>
 
 
 
