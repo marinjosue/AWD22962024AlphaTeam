@@ -1,53 +1,53 @@
 <?php
-// Incluir el archivo de conexión
-require '../Connection/db.php';
+// Incluir archivo de conexión a la base de datos
+include('../Connection/db.php');
 
-$response = ['success' => false, 'message' => '']; // Respuesta inicial
+// Verificar si los datos fueron enviados por POST
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Capturar los datos enviados desde el formulario
-    $cedula = $_POST['cedula'] ?? '';
-    $first_name = $_POST['first_name'] ?? '';
-    $last_name = $_POST['last_name'] ?? '';
-    $address = $_POST['address'] ?? '';
-    $phone = $_POST['phone'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $password = !empty($_POST['password']) ? password_hash($_POST['password'], PASSWORD_DEFAULT) : ''; // Encriptar contraseña
-    $gender = $_POST['gender'] ?? '';
-    $role_id = $_POST['role'] ?? '';
+    // Obtener los datos del formulario
+    $cedula = $_POST['cedula'];
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $address = $_POST['address'];
+    $phone = $_POST['phone'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $gender = $_POST['gender'];
+    $id_rol = $_POST['role']; // Asumimos que el rol se pasa con 'role' como el nombre del campo
 
-    // Validar que los campos requeridos no estén vacíos
-    if (!empty($cedula) && !empty($first_name) && !empty($last_name) && !empty($email) && !empty($password) && !empty($role_id)) {
-        // Preparar la consulta SQL
-        $sql = "INSERT INTO users (cedula, first_name, last_name, address, phone, email, password, gender, id_rol) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    // Encriptar la contraseña
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("sssssssss", $cedula, $first_name, $last_name, $address, $phone, $email, $password, $gender, $role);
+    // Crear la consulta SQL para insertar el nuevo usuario
+    $sql = "INSERT INTO users (cedula, first_name, last_name, address, phone, email, password, gender, id_rol)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-if ($stmt->execute()) {
-    $response['success'] = true;
-    $response['message'] = 'Usuario agregado correctamente';
-} else {
-    throw new Exception('Error al agregar el usuario: ' . $stmt->error);
-}
+    // Preparar la declaración SQL
+    if ($stmt = $conn->prepare($sql)) {
+        // Enlazar los parámetros
+        $stmt->bind_param("ssssssssi", $cedula, $first_name, $last_name, $address, $phone, $email, $hashed_password, $gender, $id_rol);
 
-
-            // Cerrar el statement
-            $stmt->close();
+        // Ejecutar la consulta
+        if ($stmt->execute()) {
+            // Si se ejecuta correctamente, devolver un JSON de éxito
+            echo json_encode(['success' => true, 'message' => 'Usuario agregado correctamente.']);
         } else {
-            $response['message'] = "Error al preparar la consulta: " . $conn->error;
+            // Si ocurre un error al ejecutar la consulta, devolver un error
+            echo json_encode(['success' => false, 'message' => 'Error al agregar el usuario.']);
         }
+
+        // Cerrar la declaración
+        $stmt->close();
     } else {
-        $response['message'] = "Todos los campos obligatorios deben ser completados.";
+        echo json_encode(['success' => false, 'message' => 'Error al preparar la consulta.']);
     }
 
-    // Cerrar la conexión
+    // Cerrar la conexión a la base de datos
     $conn->close();
-} else {
-    $response['message'] = "Método no permitido.";
-}
 
-// Devolver la respuesta como JSON
-echo json_encode($response);
+} else {
+    // Si no es una solicitud POST, devolver un error
+    echo json_encode(['success' => false, 'message' => 'Método de solicitud no válido.']);
+}
 ?>
