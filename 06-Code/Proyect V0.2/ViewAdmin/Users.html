@@ -140,12 +140,12 @@
                                             </select>
                                         </div>
 
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-primary">Guardar Usuario</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-primary">Guardar Usuario</button>
 
                                     </div>
-                                   
+
                                 </form>
                             </div>
                         </div>
@@ -202,7 +202,7 @@
             </script>
 
 
-            
+
             <!-- Gestionar Roles -->
             <div class="tab-pane fade show active" id="roles" role="tabpanel" aria-labelledby="roles-tab">
                 <h3>Roles</h3>
@@ -335,9 +335,7 @@
                         <td>${user.email}</td>
                         <td>${user.courses || 'Ninguno'}</td>
                         <td>${user.phone}</td>
-                                                                                              <td>${user.id_rol}</td>
-
-
+                        <td>${user.id_rol}</td>
                         <td>
                             <button class="btn btn-warning btn-sm editUserBtn" data-id="${user.id}">
                                 <i class="fas fa-edit"></i> Editar
@@ -385,7 +383,7 @@
                                     <i class="fas fa-edit"></i> Editar
                                 </button>
                                 <button class="btn btn-danger btn-sm deleteRoleBtn" data-id="${role.id_rol}">
-                                    <i class="fas fa-trash"></i> Eliminar
+                                    <i class="fas fa-trash"></i> Eliminar 
                                 </button>
                             </td>
                         </tr>
@@ -489,6 +487,47 @@
                     }
                 }
             }
+
+            //eliminar rol 
+
+            document.getElementById('rolesBody').addEventListener('click', (event) => {
+                // Verifica si el click proviene de un botón con la clase deleteRoleBtn
+                if (event.target.classList.contains('deleteRoleBtn')) {
+                    eliminarRol(event);
+                }
+            });
+
+            // Función para eliminar roles
+            async function eliminarRol(event) {
+                const roleId = event.target.getAttribute('data-id'); // Obtén el ID del rol
+
+                if (confirm('¿Estás seguro de que deseas eliminar este rol?')) {
+                    try {
+                        const response = await fetch('../Controller/delete_role.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ id: roleId })
+                        });
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            alert('Rol eliminado correctamente');
+                            cargarRoles(); // Recargar la tabla de roles
+                        } else {
+                            alert('Error al eliminar el rol: ' + result.message);
+                        }
+                    } catch (error) {
+                        console.error('Error al eliminar rol:', error);
+                    }
+                }
+            }
+
+
+
+            ///
 
             // Asignar eventos a los botones de editar y eliminar
             document.addEventListener('DOMContentLoaded', () => {
