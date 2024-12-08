@@ -26,7 +26,8 @@
         <div class="profile-container formaCo d-flex flex-wrap justify-content-center gap-4">
             <!-- Foto del Administrador -->
             <div class="card text-center p-3" style="width: 18rem;">
-                <img id="photo" class="card-img-top rounded-circle" src="../img/student.jpeg" alt="Foto del Administrador">
+                <img id="photo" class="card-img-top rounded-circle" src="../img/student.jpeg"
+                    alt="Foto del Administrador">
                 <div class="card-body">
                     <h5 class="card-title">Juan Pérez</h5>
                     <p class="card-text text-muted">Administrador</p>
@@ -83,10 +84,10 @@
                 if (result.isConfirmed) {
                     // Establecer el rol como default
                     localStorage.setItem('userRole', 'default');
-                    
+
                     // Limpiar cualquier otra información de sesión
                     localStorage.removeItem('username');
-                    
+
                     // Mostrar mensaje de éxito
                     Swal.fire({
                         title: '¡Sesión cerrada!',
@@ -102,7 +103,7 @@
             });
         }
     </script>
-     <div id="footer"></div>
+    <div id="footer"></div>
 </body>
 
 </html>

@@ -1,10 +1,10 @@
 <?php
     // Conexión a la base de datos
-    $servername = "autorack.proxy.rlwy.net";
+    $servername = "localhost";
     $username = "root"; 
-    $password = "GdmUDNqCjqbuDPBCYwdipQHNdOgLMRim"; 
-    $dbname = "railway"; 
-    $port = "59374";
+    $password = ""; 
+    $dbname = "courses"; 
+    $port = "3306";
     // Crear la conexión
     $conn = new mysqli($servername, $username, $password, $dbname, $port);
     // Verificar la conexión
