@@ -29,18 +29,22 @@ if ($result->num_rows > 0) {
 
     // Verificar contraseña
     if ($password === $user['password']) {
+        session_start(); // Iniciar la sesión
+        $_SESSION['user_id'] = $user['id']; // Guardar el ID del usuario en la sesión
+        $_SESSION['role'] = $user['roles']; // También puedes guardar el rol si lo necesitas
+        
         echo json_encode([
             'success' => true,
             'message' => 'Inicio de sesión exitoso',
-            'role' => $user['roles']
-        ]);        
+            'role' => $user['roles'],
+            'id' => $user['id'], // También puedes enviarlo al cliente si lo necesitas
+        ]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Contraseña incorrecta']);
     }
 } else {
     echo json_encode(['success' => false, 'message' => 'Usuario no encontrado']);
 }
-
 
 $conn->close();
 ?>

@@ -26,23 +26,20 @@
         <div class="profile-container formaCo d-flex flex-wrap justify-content-center gap-4">
             <!-- Foto del Administrador -->
             <div class="card text-center p-3" style="width: 18rem;">
-                <img id="photo" class="card-img-top rounded-circle" src="../img/student.jpeg"
-                    alt="Foto del Administrador">
+                <img id="photo" class="card-img-top rounded-circle" src="" alt="Foto del Administrador">
                 <div class="card-body">
-                    <h5 class="card-title">Juan Pérez</h5>
-                    <p class="card-text text-muted">Administrador</p>
+                    <h5 class="card-title" id="fullName">Cargando...</h5>
+                    <p class="card-text text-muted" id="role">Cargando...</p>
                 </div>
             </div>
             <!-- Información del Perfil -->
             <div class="card p-4" style="width: 18rem;">
-                <label for="id"><strong>ID:</strong></label>
-                <input type="text" id="id" class="form-control mb-3" value="123456" readonly>
-
+                <label for="id"><strong>Cedula:</strong></label>
+                <input type="text" id="id" class="form-control mb-3" readonly>
                 <label for="email"><strong>Correo Electrónico:</strong></label>
-                <input type="email" id="email" class="form-control mb-3" value="admin@example.com" readonly>
-
+                <input type="email" id="email" class="form-control mb-3" readonly>
                 <label for="phone"><strong>Teléfono:</strong></label>
-                <input type="text" id="phone" class="form-control" value="+593 987654321" readonly>
+                <input type="text" id="phone" class="form-control" readonly>
             </div>
         </div>
 
@@ -53,7 +50,8 @@
                 <a href="CoursesEnrolled.html" class="btn btn-primary d-flex align-items-center gap-2">
                     <i class="fa-solid fa-book"></i> Cursos Inscritos
                 </a>
-                <a href="#" class="btn btn-warning d-flex align-items-center gap-2">
+                <a href="#" class="btn btn-warning d-flex align-items-center gap-2" data-bs-toggle="modal"
+                    data-bs-target="#editProfileModal">
                     <i class="fa-solid fa-user-pen"></i> Editar Perfil
                 </a>
                 <button onclick="handleLogout()" class="btn btn-danger d-flex align-items-center gap-2">
@@ -62,47 +60,80 @@
             </div>
         </section>
     </main>
-    <br>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-
+    <!-- Modal para Editar Perfil -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileModalLabel">Editar Perfil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario de edición del perfil -->
+                    <form id="editProfileForm">
+                        <div class="mb-3">
+                            <label for="editFullName" class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" id="editFullName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editEmail" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="editEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPhone" class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" id="editPhone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editImage" class="form-label">Imagen de Perfil</label>
+                            <input type="file" class="form-control" id="editImage" accept="image/png, image/jpeg">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveChangesBtn">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <script>
-        // Función para manejar el cierre de sesión
-        function handleLogout() {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¿Deseas cerrar la sesión?",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, cerrar sesión',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Establecer el rol como default
-                    localStorage.setItem('userRole', 'default');
+        document.addEventListener("DOMContentLoaded", () => {
+            const modalElement = document.querySelector("#editProfileModal");
+            if (!modalElement) {
+                console.error("El modal no está presente en el DOM.");
+            } else {
+                console.log("El modal se detectó correctamente en el DOM.");
+            }
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+            const editProfileModal = document.getElementById("editProfileModal");
+            if (editProfileModal) {
+                editProfileModal.addEventListener("show.bs.modal", () => {
+                    // Carga de datos
+                    const fullName = document.getElementById("fullName").textContent;
+                    const email = document.getElementById("email").value;
+                    const phone = document.getElementById("phone").value;
+                    const photoSrc = document.getElementById("photo").src;
 
-                    // Limpiar cualquier otra información de sesión
-                    localStorage.removeItem('username');
+                    // Actualizar campos del modal
+                    document.getElementById("editFullName").value = fullName;
+                    document.getElementById("editEmail").value = email;
+                    document.getElementById("editPhone").value = phone;
+                    document.getElementById("previewImage").src = photoSrc;
+                });
+            } else {
+                console.error("Modal no encontrado.");
+            }
+        });
 
-                    // Mostrar mensaje de éxito
-                    Swal.fire({
-                        title: '¡Sesión cerrada!',
-                        text: 'Has cerrado sesión exitosamente',
-                        icon: 'success',
-                        timer: 1500,
-                        showConfirmButton: false
-                    }).then(() => {
-                        // Redirigir al inicio
-                        window.location.href = '../index/index.html';
-                    });
-                }
-            });
-        }
     </script>
+    <!-- Scripts -->
+    <script src="../Js/loadData.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-skDk8zhD9JNG0c/uzXazMb/rC2QYVzkeaqOmX7kzPw5IrDfOeQmUdx9fqRAhQ/RR" crossorigin="anonymous">
+        </script>
     <div id="footer"></div>
 </body>
 
