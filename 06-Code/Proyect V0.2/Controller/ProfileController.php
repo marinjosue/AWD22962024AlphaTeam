@@ -3,6 +3,7 @@
 require_once('../connection/db.php');
 session_start();
 
+
 // Verificar si el usuario está autenticado
 if (!isset($_SESSION['user_id'])) {
     // Si no está autenticado, redirigir al login
