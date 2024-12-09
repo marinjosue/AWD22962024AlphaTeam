@@ -23,7 +23,7 @@
     <div class="container mt-5">
         <h1 class="text-center mb-4">Gestionar Usuarios</h1>
 
-        <!-- Pestañas de navegación -->
+        <!-- Navegation -->
         <ul class="nav nav-tabs" id="gestionUsuariosTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="roles-tab" data-bs-toggle="tab" data-bs-target="#roles"
@@ -40,7 +40,7 @@
 
         <div class="tab-content" id="gestionUsuariosContent">
 
-            <!-- Gestionar Usuarios -->
+            <!-- Managent users -->
             <div class="tab-pane fade mt-4" id="usuarios" role="tabpanel" aria-labelledby="usuarios-tab">
                 <h3>Usuarios</h3>
                 <div class="table-responsive">
@@ -57,16 +57,15 @@
                             </tr>
                         </thead>
                         <tbody id="usersBody">
-                            <!-- Usuarios se cargarán aquí dinámicamente -->
+                            <!-- Users-->
                         </tbody>
                     </table>
                 </div>
-                <!-- Botón para agregar  -->
                 <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addUserModal">
                     <i class="fas fa-plus"></i> Agregar Usuario
                 </button>
 
-                <!-- Modal para agregar usuarios -->
+                <!-- Modal Users -->
                 <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
@@ -79,73 +78,52 @@
                             <div class="modal-body">
                                 <form id="addUserForm">
                                     <div class="modal-body">
-                                        <!-- Campo Cedula -->
                                         <div class="mb-3">
                                             <label for="cedula" class="form-label">Cédula</label>
                                             <input type="text" name="cedula" id="cedula" class="form-control" required>
                                         </div>
-
-                                        <!-- Campo Nombre -->
                                         <div class="mb-3">
                                             <label for="first_name" class="form-label">Nombre</label>
                                             <input type="text" name="first_name" id="first_name" class="form-control"
                                                 required>
                                         </div>
-
-                                        <!-- Campo Apellido -->
                                         <div class="mb-3">
                                             <label for="last_name" class="form-label">Apellido</label>
                                             <input type="text" name="last_name" id="last_name" class="form-control"
                                                 required>
                                         </div>
-
-                                        <!-- Campo Dirección -->
                                         <div class="mb-3">
                                             <label for="address" class="form-label">Dirección</label>
                                             <input type="text" name="address" id="address" class="form-control"
                                                 required>
                                         </div>
-
-                                        <!-- Campo Teléfono -->
                                         <div class="mb-3">
                                             <label for="phone" class="form-label">Teléfono</label>
                                             <input type="text" name="phone" id="phone" class="form-control" required>
                                         </div>
-
-                                        <!-- Campo Correo -->
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Correo Electrónico</label>
                                             <input type="email" name="email" id="email" class="form-control" required>
                                         </div>
-
-                                        <!-- Campo Contraseña -->
                                         <div class="mb-3">
                                             <label for="password" class="form-label">Contraseña</label>
                                             <input type="password" name="password" id="password" class="form-control"
                                                 required>
                                         </div>
-
-                                        <!-- Campo Género -->
                                         <select name="gender" id="gender" class="form-select" required>
                                             <option value="" selected disabled>Seleccione el género</option>
                                             <option value="M">Masculino</option>
                                             <option value="F">Femenino</option>
                                         </select>
-
-                                        <!-- Campo Rol -->
                                         <div class="mb-3">
                                             <label for="userRole" class="form-label">Rol</label>
                                             <select class="form-select" id="userRole" name="role" required>
-                                                <!-- Opciones de roles cargadas dinámicamente -->
                                             </select>
                                         </div>
-
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Cerrar</button>
                                         <button type="submit" class="btn btn-primary">Guardar Usuario</button>
-
                                     </div>
-
                                 </form>
                             </div>
                         </div>
@@ -153,9 +131,9 @@
                 </div>
             </div>
             <script>
-                // Manejar el envío del formulario de agregar usuario
+                // add user
                 document.getElementById('addUserForm').addEventListener('submit', async (event) => {
-                    event.preventDefault(); // Prevenir que se recargue la página
+                    event.preventDefault(); 
                     const formData = new FormData(event.target);
 
                     try {
@@ -167,7 +145,7 @@
 
                         if (result.success) {
                             alert('Usuario agregado correctamente');
-                            cargarUsuarios(); // Recargar la tabla de usuarios
+                            cargarUsuarios(); 
                             const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
                             modal.hide();
                         } else {
@@ -179,7 +157,7 @@
                 });
 
 
-                // Cargar roles dinámicamente en el formulario de agregar usuario
+                // load role
                 async function cargarRolesEnFormulario() {
                     try {
                         const response = await fetch('../Controller/load_role.php');
@@ -195,7 +173,6 @@
                     }
                 }
 
-                // Llamar a la función al cargar la página
                 document.addEventListener('DOMContentLoaded', () => {
                     cargarRolesEnFormulario();
                 });
@@ -203,7 +180,7 @@
 
 
 
-            <!-- Gestionar Roles -->
+            <!-- managent Role -->
             <div class="tab-pane fade show active" id="roles" role="tabpanel" aria-labelledby="roles-tab">
                 <h3>Roles</h3>
                 <div class="table-responsive">
@@ -218,17 +195,16 @@
                             </tr>
                         </thead>
                         <tbody id="rolesBody">
-                            <!-- Roles se cargarán aquí dinámicamente -->
+                            <!-- Role -->
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Botón para agregar roles -->
                 <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addRoleModal">
                     <i class="fas fa-plus"></i> Agregar Rol
                 </button>
 
-                <!-- Modal para agregar roles -->
+                <!-- Modal role -->
                 <div class="modal fade" id="addRoleModal" tabindex="-1" aria-labelledby="addRoleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
@@ -250,10 +226,7 @@
                         </div>
                     </div>
                 </div>
-
-
-
-                <!-- Modal para editar rol -->
+                <!-- edit role -->
                 <div class="modal fade" id="editRoleModal" tabindex="-1" aria-labelledby="editRoleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog">
@@ -276,9 +249,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
 
@@ -288,7 +258,7 @@
 
         <script>
 
-            //AGREGAR ROLES 
+            //ADD ROLE 
             document.getElementById('addRoleForm').addEventListener('submit', async (event) => {
                 event.preventDefault();
                 const formData = new FormData(event.target);
@@ -302,7 +272,7 @@
 
                     if (result.success) {
                         alert('Rol agregado correctamente');
-                        cargarRoles(); // Recargar la tabla de roles
+                        cargarRoles(); 
                         const modal = bootstrap.Modal.getInstance(document.getElementById('addRoleModal'));
                         modal.hide();
                     } else {
@@ -312,14 +282,14 @@
                     console.error('Error al agregar rol:', error);
                 }
             });
-            // Cargar usuarios desde el servidor
+           
             async function cargarUsuarios() {
                 try {
                     const response = await fetch('../Controller/load_user.php');
                     const data = await response.json();
 
                     const usersTableBody = document.getElementById('usersBody');
-                    usersTableBody.innerHTML = '';  // Limpiar tabla antes de cargar
+                    usersTableBody.innerHTML = '';  
 
                     if (data.success) {
                         data.data.forEach(user => {
@@ -351,16 +321,15 @@
             }
 
             document.addEventListener('DOMContentLoaded', () => {
-                cargarUsuarios();  // Cargar usuarios al cargar la página
+                cargarUsuarios();  
             });
-                        // Cargar roles y usuarios desde el servidor
             async function cargarRoles() {
                 try {
                     const response = await fetch('../Controller/load_role.php');
                     const data = await response.json();
 
                     const rolesTableBody = document.getElementById('rolesBody');
-                    rolesTableBody.innerHTML = '';  // Limpiar tabla antes de cargar
+                    rolesTableBody.innerHTML = '';  
 
                     data.forEach(role => {
                         rolesTableBody.innerHTML += `
@@ -383,7 +352,7 @@
                 }
             }
 
-            // Enviar datos para editar un rol
+            // edit  rol date
             async function editarRol(event) {
                 event.preventDefault();
 
@@ -396,14 +365,13 @@
                     });
                     const result = await response.json();
 
-                    // Verificar si la actualización fue exitosa
                     if (result.success) {
-                        alert(result.message);  // Mostrar mensaje de éxito
-                        cargarRoles();  // Recargar roles
+                        alert(result.message);  
+                        cargarRoles();  
                         const modal = new bootstrap.Modal(document.getElementById('editRoleModal'));
                         modal.hide();
                     } else {
-                        alert(result.message);  // Mostrar mensaje de error
+                        alert(result.message);  
                     }
                 } catch (error) {
                     console.error('Error actualizando rol:', error);
@@ -412,9 +380,7 @@
 
 
             document.addEventListener('DOMContentLoaded', () => {
-                cargarRoles();  // Cargar roles al cargar la página
-
-                // Manejar evento para editar rol
+                cargarRoles();  
                 document.getElementById('editRoleForm').addEventListener('submit', editarRol);
 
                 document.getElementById('rolesBody').addEventListener('click', function (event) {
@@ -430,11 +396,7 @@
                     }
                 });
             });
-
-
-
-            ////////
-            // Función para eliminar usuario
+            // delete user
             async function eliminarUsuario(event) {
                 const userId = event.target.getAttribute('data-id');
 
@@ -452,7 +414,7 @@
 
                         if (result.success) {
                             alert('Usuario eliminado correctamente');
-                            cargarUsuarios();  // Recargar la tabla de usuarios
+                            cargarUsuarios();  
                         } else {
                             alert('Error al eliminar el usuario: ' + result.message);
                         }
@@ -462,18 +424,17 @@
                 }
             }
 
-            //eliminar rol 
+            
 
             document.getElementById('rolesBody').addEventListener('click', (event) => {
-                // Verifica si el click proviene de un botón con la clase deleteRoleBtn
+                
                 if (event.target.classList.contains('deleteRoleBtn')) {
                     eliminarRol(event);
                 }
             });
 
-            // Función para eliminar roles
             async function eliminarRol(event) {
-                const roleId = event.target.getAttribute('data-id'); // Obtén el ID del rol
+                const roleId = event.target.getAttribute('data-id'); 
 
                 if (confirm('¿Estás seguro de que deseas eliminar este rol?')) {
                     try {
@@ -489,7 +450,7 @@
 
                         if (result.success) {
                             alert('Rol eliminado correctamente');
-                            cargarRoles(); // Recargar la tabla de roles
+                            cargarRoles(); 
                         } else {
                             alert('Error al eliminar el rol: ' + result.message);
                         }
@@ -499,27 +460,25 @@
                 }
             }
 
-            // Asignar eventos a los botones de editar y eliminar
+            //  event btn edit and deleted
             document.addEventListener('DOMContentLoaded', () => {
-                cargarUsuarios();  // Cargar usuarios al cargar la página
-
+                cargarUsuarios();  
                 document.getElementById('usersBody').addEventListener('click', (event) => {
                     if (event.target.classList.contains('editUserBtn')) {
-                        editarUsuario(event);  // Editar usuario
+                        editarUsuario(event);  // edit user
                     }
 
                     if (event.target.classList.contains('deleteUserBtn')) {
-                        eliminarUsuario(event);  // Eliminar usuario
+                        eliminarUsuario(event);  // delete user
                     }
                 });
             });
-            // Función para editar usuario
+            // edit user
             async function editarUsuario(event) {
                 event.preventDefault();
 
                 const userId = event.target.getAttribute('data-id');
 
-                // Redirigir a la página de edición con el ID del usuario
                 window.location.href = `../Controller/edit_user.php?id=${userId}`;
             }
         </script>
