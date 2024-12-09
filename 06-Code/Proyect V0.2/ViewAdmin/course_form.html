@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/c4033be41c.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <title>Agregar/Editar Curso</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Agregar o Editar Curso</title>
 </head>
 <body>
     <div class="container mt-5">
         <h1 class="text-center">Agregar o Editar Curso</h1>
-        <form action="../Controller/agregar_curso.php" method="post" enctype="multipart/form-data">
+        <form action="../Controller/add_course.php" method="post">
+            <input type="hidden" name="id_course" id="id_course">
             <div class="mb-3">
                 <label for="courseName" class="form-label">Nombre del Curso</label>
                 <input type="text" class="form-control" id="courseName" name="courseName" required>
@@ -23,36 +21,48 @@
                 <textarea class="form-control" id="courseDescription" name="courseDescription" rows="3" required></textarea>
             </div>
             <div class="mb-3">
-                <label for="courseImage" class="form-label">Imagen</label>
-                <input type="file" class="form-control" id="courseImage" name="courseImage" accept="image/*" required>
-            </div>
-            <div class="mb-3">
                 <label for="courseStart" class="form-label">Fecha de Inicio</label>
-                <input type="date" class="form-control" id="courseStart" name="courseStart" required>
+                <input type="date" class="form-control" id="courseStart" name="start_date" required>
             </div>
             <div class="mb-3">
                 <label for="courseEnd" class="form-label">Fecha de Fin</label>
-                <input type="date" class="form-control" id="courseEnd" name="courseEnd" required>
+                <input type="date" class="form-control" id="courseEnd" name="end_date" required>
             </div>
             <div class="mb-3">
-                <label for="courseCapacity" class="form-label">Capacidad</label>
-                <input type="number" class="form-control" id="courseCapacity" name="courseCapacity" required>
+                <label for="coursePrice" class="form-label">Precio</label>
+                <input type="number" class="form-control" id="coursePrice" name="price" required>
+            </div>
+            <div class="mb-3">
+                <label for="cedula" class="form-label">Cédula del Profesor</label>
+                <input type="text" class="form-control" id="cedula" name="cedula" required>
+            </div>
+            <div class="mb-3">
+                <label for="courseCategory" class="form-label">Categoría</label>
+                <input type="number" class="form-control" id="courseCategory" name="id_category" required>
+            </div>
+            <div class="mb-3">
+                <label for="courseStatus" class="form-label">Estado</label>
+                <select class="form-control" id="courseStatus" name="status">
+                    <option value="activo">Activo</option>
+                    <option value="inactivo">Inactivo</option>
+                </select>
             </div>
             <div class="mb-3">
                 <label for="courseYoutube" class="form-label">Enlace de Video de YouTube</label>
-                <input type="url" class="form-control" id="courseYoutube" name="courseYoutube" placeholder="https://youtube.com/..." required>
+                <input type="url" class="form-control" id="courseYoutube" name="course_youtube" required>
             </div>
+
+            <h3>Unidades</h3>
             <div id="unitsContainer" class="mb-4">
-                <h3>Unidades</h3>
                 <div class="unit">
                     <label for="unitTitle1" class="form-label">Título de la Unidad</label>
                     <input type="text" class="form-control" id="unitTitle1" name="unitTitles[]" required>
-                    <label for="unitContent1" class="form-label">Contenido</label>
+                    <label for="unitContent1" class="form-label">Contenido de la Unidad</label>
                     <textarea class="form-control" id="unitContent1" name="unitContents[]" rows="3" required></textarea>
                 </div>
             </div>
-            <button type="button" class="btn btn-secondary" onclick="addUnit()">Agregar Unidad</button>
-            <button type="submit" class="btn btn-success mt-4">Guardar Curso</button>
+            <button type="button" class="btn btn-secondary mb-3" onclick="addUnit()">Agregar Unidad</button>
+            <button type="submit" class="btn btn-success">Guardar Curso</button>
         </form>
     </div>
 
@@ -61,14 +71,14 @@
         function addUnit() {
             unitCount++;
             const container = document.getElementById('unitsContainer');
-            const unitHTML = `
-                <div class="unit mb-3">
+            container.insertAdjacentHTML('beforeend', `
+                <div class="unit">
                     <label for="unitTitle${unitCount}" class="form-label">Título de la Unidad</label>
                     <input type="text" class="form-control" id="unitTitle${unitCount}" name="unitTitles[]" required>
-                    <label for="unitContent${unitCount}" class="form-label">Contenido</label>
+                    <label for="unitContent${unitCount}" class="form-label">Contenido de la Unidad</label>
                     <textarea class="form-control" id="unitContent${unitCount}" name="unitContents[]" rows="3" required></textarea>
-                </div>`;
-            container.insertAdjacentHTML('beforeend', unitHTML);
+                </div>
+            `);
         }
     </script>
 </body>
