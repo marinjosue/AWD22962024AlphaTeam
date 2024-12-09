@@ -10,6 +10,9 @@ $success_message = '';
 // Obtener el ID del usuario desde el parámetro GET o POST
 $id_usuario = $_GET['id'] ?? null;
 
+// Obtener el ID del usuario desde el parámetro GET o POST
+$id_usuario = $_GET['id'] ?? null;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_usuario = $_POST['id'] ?? null;
     $first_name = $_POST['first_name'] ?? '';
@@ -39,9 +42,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param('ssssssi', $first_name, $last_name, $email, $address, $phone, $password, $id_usuario);
 
     if ($stmt->execute()) {
-        $_SESSION['success_message'] = "Cambios realizados correctamente.";
-        header("Location: ../ViewAdmin/Profile.html");
-        exit;
+        // Obtener el rol del usuario actualizado
+        $sql_rol = "SELECT id_rol FROM users WHERE id = ?";
+        $stmt_rol = $conn->prepare($sql_rol);
+        $stmt_rol->bind_param('i', $id_usuario);
+        $stmt_rol->execute();
+        $result_rol = $stmt_rol->get_result();
+
+        if ($result_rol->num_rows > 0) {
+            $user = $result_rol->fetch_assoc();
+            $id_rol = $user['id_rol'];
+
+            // Redirigir según el rol del usuario
+            if ($id_rol == 1) {
+                $_SESSION['success_message'] = "Cambios realizados correctamente.";
+                header("Location: ../ViewAdmin/Profile.html");
+            } else {
+                $_SESSION['success_message'] = "Cambios realizados correctamente.";
+                header("Location: ../ViewUser/ProfileUser.html");
+            }
+            exit;
+        } else {
+            $error_message = "Error al obtener el rol del usuario.";
+        }
+
+        $stmt_rol->close();
     } else {
         $error_message = "Error al actualizar el usuario: " . $conn->error;
     }
@@ -96,7 +121,7 @@ $conn->close();
                     <div class="alert alert-success"><?php echo $success_message; ?></div>
                 <?php endif; ?>
 
-                <form method="POST" action="edit_user.php" enctype="multipart/form-data">
+                <form method="POST" action="editProfiler.php" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="<?= $user['id'] ?>">
                     <input type="hidden" name="cedula" value="<?= $user['cedula'] ?>">
 
