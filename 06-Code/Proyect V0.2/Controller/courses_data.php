@@ -3,15 +3,14 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "courses";
-$port = "3306";
 
-$conn = new mysqli($servername, $username, $password, $dbname, $port);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-$sql = "SELECT id_course, course_name, course_description, start_date, end_date, price FROM courses WHERE status = 'activo'";
+$sql = "SELECT id_course, course_name, start_date, end_date, price FROM courses";
 $result = $conn->query($sql);
 
 $courses = [];

@@ -1,142 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- FontAwesome -->
     <script src="https://kit.fontawesome.com/c4033be41c.js" crossorigin="anonymous"></script>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../css/courses.css">
     <title>Gestión de Cursos</title>
 </head>
+
 <body>
     <div id="header"></div>
     <script src="../Js/dinav.js"></script>
-    <script src="../Js/courses.js"></script>
-    <main>
-        <section class="admin-panel">
-            <h1>Gestión de Cursos</h1>
+    <div class="container mt-5">
+        <h1>Gestión de Cursos</h1>
 
-            <!-- Barra de búsqueda -->
-            <div class="search-bar">
-                <input type="text" id="search" placeholder="Buscar curso por nombre..." />
-                <button class="btn-search btn btn-primary">Buscar</button>
-            </div>
-
-            <!-- Tabla de cursos con desplazamiento horizontal en pantallas pequeñas -->
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped align-middle text-center">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Fecha Inicio</th>
-                            <th>Fecha Fin</th>
-                            <th>Capacidad</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Masaje Relajante</td>
-                            <td>2024-12-01</td>
-                            <td>2024-12-05</td>
-                            <td>20</td>
-                            <td>
-                                <a class="btn btn-small btn-warning" href="#">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-
-                                <a class="btn btn-small btn-danger" href="#">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-                                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#courseModal"
-                                    onclick="showCourseInfo('Masaje Relajante', '../img/relax.jpg', '2024-12-01', '2024-12-05', '20', 'Aprende técnicas de masaje relajante para aliviar tensiones y mejorar el bienestar.')">
-                                    <i class="fa-solid fa-circle-info"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Masaje Deportivo</td>
-                            <td>2025-01-10</td>
-                            <td>2025-01-15</td>
-                            <td>15</td>
-                            <td>
-                                <a class="btn btn-small btn-warning" href="#">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-
-                                <a class="btn btn-small btn-danger" href="#">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-                                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#courseModal"
-                                    onclick="showCourseInfo('Masaje Deportivo', '../img/deporte.jpeg', '2025-01-10', '2025-01-15', '15', 'Aprende técnicas de masaje deportivo para mejorar el rendimiento físico.')">
-                                    <i class="fa-solid fa-circle-info"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Masaje Facial</td>
-                            <td>2025-02-01</td>
-                            <td>2025-02-03</td>
-                            <td>10</td>
-                            <td>
-                                <a class="btn btn-small btn-warning" href="#">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-
-                                <a class="btn btn-small btn-danger" href="#">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-                                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#courseModal"
-                                    onclick="showCourseInfo('Masaje Facial', '../img/relax.jpg', '2025-02-01', '2025-02-03', '10', 'Descubre técnicas de masaje facial para rejuvenecer la piel.')">
-                                    <i class="fa-solid fa-circle-info"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Botón para agregar nuevo curso -->
-            <button class="btn-add btn btn-success">Añadir Nuevo Curso</button>
-            <button class="btn-add btn btn-info" onclick="window.location.href='../Views/viewCourses.html'">Mirar Cursos</button>
-        </section>
-    </main>
-    <!-- Modal para mostrar información del curso -->
-    <div class="modal fade" id="courseModal" tabindex="-1" aria-labelledby="courseModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="courseModalLabel">Información del Curso</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="course-card text-center">
-                        <h3 id="modalCourseName"></h3>
-                        <img id="modalCourseImage" src="" alt="Imagen del Curso" class="img-fluid mb-3">
-                        <p><strong>Fecha Inicio:</strong> <span id="modalCourseStartDate"></span></p>
-                        <p><strong>Fecha Fin:</strong> <span id="modalCourseEndDate"></span></p>
-                        <p><strong>Capacidad:</strong> <span id="modalCourseCapacity"></span> alumnos</p>
-                        <p><strong>Descripción:</strong> <span id="modalCourseDescription"></span></p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Precio</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="coursesTableBody">
+                    <!-- Los cursos se cargarán dinámicamente aquí -->
+                </tbody>
+            </table>
         </div>
+
+        <button class="btn btn-success mt-3" onclick="window.location.href='../ViewAdmin/course_form.html'">Añadir Nuevo Curso</button>
     </div>
     <div id="footer"></div>
+    <script>
+        async function fetchCourses() {
+            const response = await fetch('../Controller/courses_data.php');
+            const courses = await response.json();
+
+            const tableBody = document.getElementById('coursesTableBody');
+            tableBody.innerHTML = '';
+
+            courses.forEach(course => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${course.id_course}</td>
+                    <td>${course.course_name}</td>
+                    <td>${course.start_date}</td>
+                    <td>${course.end_date}</td>
+                    <td>$${course.price}</td>
+                    <td>
+                        <button class="btn btn-info btn-sm" onclick="viewCourse(${course.id_course})">Ver Curso</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteCourse(${course.id_course})">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function viewCourse(courseId) {
+            window.location.href = `course_data.html?id=${courseId}`;
+        }
+
+        async function deleteCourse(courseId) {
+            if (!confirm('¿Estás seguro de que deseas eliminar este curso?')) {
+                return;
+            }
+
+            const response = await fetch('../Controller/delete_course.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: courseId }),
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert(result.success);
+                fetchCourses();
+            } else {
+                alert(result.error);
+            }
+        }
+
+        fetchCourses();
+    </script>
 </body>
+
 </html>

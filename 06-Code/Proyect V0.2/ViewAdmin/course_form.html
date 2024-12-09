@@ -8,6 +8,8 @@
     <title>Agregar o Editar Curso</title>
 </head>
 <body>
+    <div id="header"></div>
+    <script src="../Js/dinav.js"></script>
     <div class="container mt-5">
         <h1 class="text-center">Agregar o Editar Curso</h1>
         <form action="../Controller/add_course.php" method="post">
@@ -63,9 +65,11 @@
             </div>
             <button type="button" class="btn btn-secondary mb-3" onclick="addUnit()">Agregar Unidad</button>
             <button type="submit" class="btn btn-success">Guardar Curso</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='course.html'">Atrás</button>
+
         </form>
     </div>
-
+    <div id="footer"></div>
     <script>
         let unitCount = 1;
         function addUnit() {
