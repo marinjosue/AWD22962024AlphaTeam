@@ -47,8 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $stmt->close();
-} else {
-    $error_message = "ID de usuario no válido.";
 }
 
 // Obtener datos del usuario

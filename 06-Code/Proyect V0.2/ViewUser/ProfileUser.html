@@ -25,7 +25,7 @@
         <h1 class="text-center">Perfil del Usuario</h1>
         <div class="profile-container formaCo d-flex flex-wrap justify-content-center gap-4">
             <!-- Foto del Administrador -->
-            <div class="card text-center p-3" style="width: 18rem;">
+            <div class="card text-center p-3" style="width: 15rem;">
                 <img id="photo" class="card-img-top rounded-circle" src="" alt="Foto del Administrador">
                 <div class="card-body">
                     <h5 class="card-title" id="fullName">Cargando...</h5>
@@ -42,7 +42,6 @@
                 <input type="text" id="phone" class="form-control" readonly>
             </div>
         </div>
-
         <!-- Acciones del Usuario -->
         <section class="mt-5">
             <h2 class="text-center mb-4">Acciones</h2>
@@ -50,8 +49,7 @@
                 <a href="CoursesEnrolled.html" class="btn btn-primary d-flex align-items-center gap-2">
                     <i class="fa-solid fa-book"></i> Cursos Inscritos
                 </a>
-                <a href="#" class="btn btn-warning d-flex align-items-center gap-2" data-bs-toggle="modal"
-                    data-bs-target="#editProfileModal">
+                <a href="#" class="btn btn-warning edit-profile-btn">
                     <i class="fa-solid fa-user-pen"></i> Editar Perfil
                 </a>
                 <button onclick="handleLogout()" class="btn btn-danger d-flex align-items-center gap-2">
@@ -59,81 +57,58 @@
                 </button>
             </div>
         </section>
+
     </main>
-    <!-- Modal para Editar Perfil -->
-    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editProfileModalLabel">Editar Perfil</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Formulario de edición del perfil -->
-                    <form id="editProfileForm">
-                        <div class="mb-3">
-                            <label for="editFullName" class="form-label">Nombre Completo</label>
-                            <input type="text" class="form-control" id="editFullName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editEmail" class="form-label">Correo Electrónico</label>
-                            <input type="email" class="form-control" id="editEmail" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editPhone" class="form-label">Teléfono</label>
-                            <input type="text" class="form-control" id="editPhone" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editImage" class="form-label">Imagen de Perfil</label>
-                            <input type="file" class="form-control" id="editImage" accept="image/png, image/jpeg">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="saveChangesBtn">Guardar Cambios</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
+
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const modalElement = document.querySelector("#editProfileModal");
-            if (!modalElement) {
-                console.error("El modal no está presente en el DOM.");
-            } else {
-                console.log("El modal se detectó correctamente en el DOM.");
-            }
-        });
-        document.addEventListener("DOMContentLoaded", () => {
-            const editProfileModal = document.getElementById("editProfileModal");
-            if (editProfileModal) {
-                editProfileModal.addEventListener("show.bs.modal", () => {
-                    // Carga de datos
-                    const fullName = document.getElementById("fullName").textContent;
-                    const email = document.getElementById("email").value;
-                    const phone = document.getElementById("phone").value;
-                    const photoSrc = document.getElementById("photo").src;
+        async function cargarPerfilUsuario() {
+            try {
+                const response = await fetch('../Controller/load-user.php');
+                const data = await response.json();
 
-                    // Actualizar campos del modal
-                    document.getElementById("editFullName").value = fullName;
-                    document.getElementById("editEmail").value = email;
-                    document.getElementById("editPhone").value = phone;
-                    document.getElementById("previewImage").src = photoSrc;
-                });
-            } else {
-                console.error("Modal no encontrado.");
-            }
-        });
+                if (data.success) {
+                    const user = data.data;
 
+                    // Actualizar información del perfil
+                    document.getElementById('fullName').textContent = `${user.first_name} ${user.last_name}`;
+                    document.getElementById('id').value = user.id;
+                    document.getElementById('email').value = user.email;
+                    document.getElementById('phone').value = user.phone;
+                    document.getElementById('role').textContent = `Rol: ${user.id_rol}`;
+
+                    // Agregar el ID dinámicamente al botón de editar perfil
+                    const editProfileBtn = document.querySelector('.edit-profile-btn');
+                    editProfileBtn.setAttribute('data-id', user.id);
+                    editProfileBtn.addEventListener('click', () => {
+                        window.location.href = `../Controller/UpdateProfileController.php?id=${user.id}`;
+                    });
+                } else {
+                    Swal.fire('Error', data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error cargando el perfil del usuario:', error);
+                Swal.fire('Error', 'No se pudo cargar el perfil del usuario.', 'error');
+            }
+        }
+
+        // Llamar a la función al cargar la página
+        document.addEventListener('DOMContentLoaded', cargarPerfilUsuario);
+
+        // Ejemplo de función de logout
+        function handleLogout() {
+            // Implementa aquí la lógica de cierre de sesión
+            Swal.fire('Cerrando sesión', 'Has cerrado sesión exitosamente.', 'success').then(() => {
+                window.location.href = '../login.html';
+            });
+        }
     </script>
+
     <!-- Scripts -->
     <script src="../Js/loadData.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-skDk8zhD9JNG0c/uzXazMb/rC2QYVzkeaqOmX7kzPw5IrDfOeQmUdx9fqRAhQ/RR" crossorigin="anonymous">
-        </script>
+    </script>
+    <br>
     <div id="footer"></div>
 </body>
 
