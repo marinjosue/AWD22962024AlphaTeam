@@ -140,7 +140,7 @@ $conn->close();
                     </div>
                 <?php endif; ?>
 
-                <form method="POST" action="editar_usuario.php">
+                <form method="POST" action="edit_user.php">
                     <input type="hidden" name="id" value="<?= $user['id'] ?>">
 
                     <div class="mb-3">

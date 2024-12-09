@@ -182,7 +182,7 @@
                 // Cargar roles dinámicamente en el formulario de agregar usuario
                 async function cargarRolesEnFormulario() {
                     try {
-                        const response = await fetch('../Controller/cargar_roles.php');
+                        const response = await fetch('../Controller/load_role.php');
                         const roles = await response.json();
 
                         const roleSelect = document.getElementById('userRole');
@@ -294,7 +294,7 @@
                 const formData = new FormData(event.target);
 
                 try {
-                    const response = await fetch('../Controller/agregar_rol.php', {
+                    const response = await fetch('../Controller/add_role.php', {
                         method: 'POST',
                         body: formData
                     });
@@ -315,7 +315,7 @@
             // Cargar usuarios desde el servidor
             async function cargarUsuarios() {
                 try {
-                    const response = await fetch('../Controller/cargar_usuarios.php');
+                    const response = await fetch('../Controller/load_user.php');
                     const data = await response.json();
 
                     const usersTableBody = document.getElementById('usersBody');
@@ -356,7 +356,7 @@
                         // Cargar roles y usuarios desde el servidor
             async function cargarRoles() {
                 try {
-                    const response = await fetch('../Controller/cargar_roles.php');
+                    const response = await fetch('../Controller/load_role.php');
                     const data = await response.json();
 
                     const rolesTableBody = document.getElementById('rolesBody');
@@ -390,7 +390,7 @@
                 const formData = new FormData(document.getElementById('editRoleForm'));
 
                 try {
-                    const response = await fetch('../Controller/editar_rol.php', {
+                    const response = await fetch('../Controller/edit_rol.php', {
                         method: 'POST',
                         body: formData
                     });
@@ -440,7 +440,7 @@
 
                 if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
                     try {
-                        const response = await fetch('../Controller/eliminar_usuario.php', {
+                        const response = await fetch('../Controller/delete_user.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -520,7 +520,7 @@
                 const userId = event.target.getAttribute('data-id');
 
                 // Redirigir a la página de edición con el ID del usuario
-                window.location.href = `../Controller/editar_usuario.php?id=${userId}`;
+                window.location.href = `../Controller/edit_user.php?id=${userId}`;
             }
         </script>
 </body>

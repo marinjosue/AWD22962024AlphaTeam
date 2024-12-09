@@ -98,7 +98,7 @@ $conn->close();
                     <div class="alert alert-success"><?php echo $success_message; ?></div>
                 <?php endif; ?>
 
-                <form method="POST" action="editar_usuario.php" enctype="multipart/form-data">
+                <form method="POST" action="edit_user.php" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="<?= $user['id'] ?>">
                     <input type="hidden" name="cedula" value="<?= $user['cedula'] ?>">
 
