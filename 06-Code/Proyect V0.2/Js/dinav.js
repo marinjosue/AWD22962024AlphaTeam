@@ -13,10 +13,6 @@ function getHeaderPath(role) {
     }
 }
 
-if (!['Admin', 'Student', 'default'].includes(userRole)) {
-    console.error('Rol no válido. Redirigiendo...');
-    window.location.href = '../index/index.html'; // Redirige al login o página de error
-}
 
 // Cargar el archivo HTML correspondiente al menú
 function loadMenu(role) {
@@ -25,9 +21,6 @@ function loadMenu(role) {
         setupHamburgerMenu(); // Inicializar el menú hamburguesa después de cargar el HTML
     });
 }
-
-
-
 // Función para cargar un archivo HTML en un contenedor
 function loadHTML(elementId, filePath, callback) {
     fetch(filePath)

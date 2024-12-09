@@ -14,7 +14,7 @@ body {
     justify-content: center;
     text-align: center;
     padding: 40px 20px;
-    background: linear-gradient(to bottom right, #f8d7da, #fff);
+    background: linear-gradient(to bottom right, #8bcece, #fff);
     border-radius: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin: 20px;
@@ -211,12 +211,12 @@ section {
     cursor: pointer;
     text-align: left;
     color: #fff;
-    background-color: #f06c9b;
+    background-color: #ced6ce;
     transition: 0.3s;
 }
 
 .dropdown-btn:hover {
-    background-color: #e05587;
+    background-color: #ced6ce;
 }
 
 /* Right Section (Texto y Contenido) */
