@@ -29,6 +29,7 @@ function handleLogout() {
         }
     });
 }
+
 // AJAX para obtener los datos del perfil
 function loadProfile() {
     fetch('../Controller/ProfileController.php')
@@ -51,8 +52,8 @@ function loadProfile() {
                 document.getElementById('id').value = user.cedula;
                 document.getElementById('email').value = user.email;
                 document.getElementById('phone').value = user.phone;
-                // Establecer la ruta de la imagen del perfil
-                const photoUrl = `../imgProfile/${user.cedula}.png`;
+                // Establecer la ruta de la imagen del perfil con un parámetro único
+                const photoUrl = `../imgProfile/${user.cedula}.png?timestamp=${new Date().getTime()}`;
                 document.getElementById('photo').src = photoUrl;
             }
         })
@@ -66,5 +67,6 @@ function loadProfile() {
             });
         });
 }
+
 // Cargar los datos del perfil al cargar la página
 window.onload = loadProfile;

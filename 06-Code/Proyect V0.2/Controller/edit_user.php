@@ -1,12 +1,9 @@
 <?php
 require '../Connection/db.php';
-session_start();  // Iniciar la sesión para usar los mensajes
-
-// Inicializar la variable de error
+session_start(); 
 $error_message = '';
 $success_message = '';
 
-// Si el formulario se envió
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_usuario = $_POST['id'] ?? null;
     $first_name = $_POST['first_name'] ?? '';
@@ -17,18 +14,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     $id_rol = $_POST['id_rol'] ?? '';
 
-
-    // Validar que el ID del usuario existe
     if ($id_usuario) {
-        // Preparar la consulta de actualización
         $sql = "UPDATE users SET first_name = ?, last_name = ?, email = ?, address = ?, phone = ?, password = ? WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('ssssssi', $first_name, $last_name, $email, $address, $phone, $password, $id_usuario);
 
         if ($stmt->execute()) {
-            // Si la actualización fue exitosa
-            $_SESSION['success_message'] = "Cambios realizados correctamente.";  // Mensaje de éxito
-            header("Location: ../ViewAdmin/Users.html");  // Redirige a usuarios.html
+            $_SESSION['success_message'] = "Cambios realizados correctamente.";  
+            header("Location: ../ViewAdmin/Users.html");  
             exit;
         } else {
             $error_message = "Error al actualizar el usuario: " . $conn->error;
