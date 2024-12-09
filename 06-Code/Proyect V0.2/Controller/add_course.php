@@ -12,32 +12,31 @@ if ($conn->connect_error) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id_course = isset($_POST['id_course']) ? $_POST['id_course'] : null;
+    $id_course = $_POST['id_course'];
     $name = $_POST['courseName'];
     $description = $_POST['courseDescription'];
-    $category = $_POST['courseCategory'];
-    $teacher = $_POST['courseTeacher'];
-    $start = $_POST['courseStart'];
-    $end = $_POST['courseEnd'];
-    $price = $_POST['coursePrice'];
-    $youtube = $_POST['courseYoutube'];
+    $start_date = $_POST['start_date'];
+    $end_date = $_POST['end_date'];
+    $price = $_POST['price'];
+    $cedula = $_POST['cedula'];
+    $id_category = $_POST['id_category'];
+    $status = $_POST['status'];
+    $youtube = $_POST['course_youtube'];
+    $user_id = 1; // ID de ejemplo; ajusta según corresponda.
 
     if ($id_course) {
-        // Actualizar curso existente
-        $sql = "UPDATE courses SET course_name=?, course_description=?, id_category=?, user_id=?, start_date=?, end_date=?, price=?, course_youtube=? WHERE id_course=?";
+        $sql = "UPDATE courses SET course_name=?, course_description=?, start_date=?, end_date=?, price=?, cedula=?, id_category=?, status=?, course_youtube=?, user_id=? WHERE id_course=?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssiiisdsi", $name, $description, $category, $teacher, $start, $end, $price, $youtube, $id_course);
+        $stmt->bind_param("ssssissssii", $name, $description, $start_date, $end_date, $price, $cedula, $id_category, $status, $youtube, $user_id, $id_course);
     } else {
-        // Crear curso nuevo
-        $sql = "INSERT INTO courses (course_name, course_description, id_category, user_id, start_date, end_date, price, course_youtube) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO courses (course_name, course_description, start_date, end_date, price, cedula, id_category, status, course_youtube, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssiiisds", $name, $description, $category, $teacher, $start, $end, $price, $youtube);
+        $stmt->bind_param("ssssissssi", $name, $description, $start_date, $end_date, $price, $cedula, $id_category, $status, $youtube, $user_id);
     }
 
     if ($stmt->execute()) {
         $course_id = $id_course ? $id_course : $stmt->insert_id;
 
-        // Manejo de unidades
         if ($id_course) {
             $conn->query("DELETE FROM course_units WHERE id_course = $course_id");
         }
