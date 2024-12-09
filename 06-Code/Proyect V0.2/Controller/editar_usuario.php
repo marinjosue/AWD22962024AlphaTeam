@@ -152,7 +152,6 @@ $conn->close();
                         <label for="last_name" class="form-label">Apellido:</label>
                         <input type="text" name="last_name" class="form-control" value="<?= $user['last_name'] ?>" required>
                     </div>
-
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo:</label>
                         <input type="email" name="email" class="form-control" value="<?= $user['email'] ?>" required>

@@ -1,5 +1,5 @@
-  // Función para manejar el cierre de sesión
-  function handleLogout() {
+// Función para manejar el cierre de sesión
+function handleLogout() {
     Swal.fire({
         title: '¿Estás seguro?',
         text: "¿Deseas cerrar la sesión?",

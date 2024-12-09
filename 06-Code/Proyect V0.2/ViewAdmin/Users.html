@@ -312,11 +312,6 @@
                     console.error('Error al agregar rol:', error);
                 }
             });
-
-
-
-
-
             // Cargar usuarios desde el servidor
             async function cargarUsuarios() {
                 try {
@@ -358,13 +353,7 @@
             document.addEventListener('DOMContentLoaded', () => {
                 cargarUsuarios();  // Cargar usuarios al cargar la página
             });
-
-
-
-
-
-
-            // Cargar roles y usuarios desde el servidor
+                        // Cargar roles y usuarios desde el servidor
             async function cargarRoles() {
                 try {
                     const response = await fetch('../Controller/cargar_roles.php');
@@ -445,21 +434,6 @@
 
 
             ////////
-
-            // Función para editar usuario
-            async function editarUsuario(event) {
-                event.preventDefault();
-
-                const userId = event.target.getAttribute('data-id');
-
-                // Aquí puedes abrir un formulario modal o redirigir a una página para editar el usuario
-                // Por ahora, solo se mostrará una alerta
-                alert(`Editar usuario con ID: ${userId}`);
-
-                // Por ejemplo, puedes redirigir a una página de edición
-                // window.location.href = `editar_usuario.php?id=${userId}`;
-            }
-
             // Función para eliminar usuario
             async function eliminarUsuario(event) {
                 const userId = event.target.getAttribute('data-id');
@@ -524,10 +498,6 @@
                     }
                 }
             }
-
-
-
-            ///
 
             // Asignar eventos a los botones de editar y eliminar
             document.addEventListener('DOMContentLoaded', () => {
