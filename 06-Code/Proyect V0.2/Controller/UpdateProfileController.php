@@ -20,36 +20,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     $cedula = $_POST['cedula'] ?? ''; // Nueva variable para cédula
 
-    if ($id_usuario) {
-        // Procesar la carga de la imagen
-        if (!empty($_FILES['profile_image']['name'])) {
-            $upload_dir = '../imgProfile/';
-            $target_file = $upload_dir . $cedula . '.png';
-            
-            if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $target_file)) {
-                $success_message = "Imagen de perfil actualizada correctamente.";
-            } else {
-                $error_message = "Error al cargar la imagen.";
-            }
-        }
-
-        // Actualizar los datos del usuario
-        $sql = "UPDATE users SET first_name = ?, last_name = ?, email = ?, address = ?, phone = ?, password = ? WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ssssssi', $first_name, $last_name, $email, $address, $phone, $password, $id_usuario);
-
-        if ($stmt->execute()) {
-            $_SESSION['success_message'] = "Cambios realizados correctamente.";
-            header("Location: ../ViewAdmin/Profile.html");
-            exit;
-        } else {
-            $error_message = "Error al actualizar el usuario: " . $conn->error;
-        }
+    // Verifica si se ha subido una imagen
+    if (!empty($_FILES['profile_image']['name'])) {
+        $upload_dir = '../imgProfile/';
+        $target_file = $upload_dir . 'cedula.png'; // Renombra la imagen a "cedula.png"
         
-        $stmt->close();
-    } else {
-        $error_message = "ID de usuario no válido.";
+        // Intenta mover el archivo cargado al directorio especificado
+        if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $target_file)) {
+            $success_message = "Imagen de perfil actualizada correctamente.";
+        } else {
+            $error_message = "Error al cargar la imagen. Por favor, verifica los permisos de escritura en la carpeta.";
+        }
     }
+
+    // Actualizar los datos del usuario
+    $sql = "UPDATE users SET first_name = ?, last_name = ?, email = ?, address = ?, phone = ?, password = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('ssssssi', $first_name, $last_name, $email, $address, $phone, $password, $id_usuario);
+
+    if ($stmt->execute()) {
+        $_SESSION['success_message'] = "Cambios realizados correctamente.";
+        header("Location: ../ViewAdmin/Profile.html");
+        exit;
+    } else {
+        $error_message = "Error al actualizar el usuario: " . $conn->error;
+    }
+
+    $stmt->close();
+} else {
+    $error_message = "ID de usuario no válido.";
 }
 
 // Obtener datos del usuario
