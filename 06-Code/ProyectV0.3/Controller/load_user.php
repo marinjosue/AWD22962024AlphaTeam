@@ -1,16 +1,13 @@
 <?php
-require '../Connection/db.php';  // Asegúrate de incluir la conexión a la base de datos
+require '../connection/db.php';  
 
-// Definir la respuesta inicial
 $response = ['success' => false, 'data' => []];
 
 try {
-    // Preparar la consulta para obtener los usuarios
     $sql = "SELECT id, cedula, first_name, last_name, address, phone, email, password, gender, id_rol FROM users";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        // Almacenar los resultados en un array
         $usuarios = [];
         while ($row = $result->fetch_assoc()) {
             $usuarios[] = [
@@ -27,7 +24,6 @@ try {
             ];
         }
 
-        // Devolver la respuesta con los datos
         $response['success'] = true;
         $response['data'] = $usuarios;
     } else {
@@ -37,7 +33,6 @@ try {
     $response['message'] = 'Error al obtener usuarios: ' . $e->getMessage();
 }
 
-// Devolver la respuesta como JSON
 echo json_encode($response);
 
 $conn->close();

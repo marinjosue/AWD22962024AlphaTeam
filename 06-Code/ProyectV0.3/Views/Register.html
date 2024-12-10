@@ -12,8 +12,8 @@
 </head>
 <body>
     <div id="header"></div>
-    <script src="../Js/dinav.js"></script>
-    <script src="../Js/validateCI.js"></script>
+    <script src="../js/dinav.js"></script>
+    <script src="../js/validateCI.js"></script>
     <div class="register-container">
         <h2>Regístrate</h2>
         <form id="registerForm">
@@ -71,7 +71,7 @@
             const formData = new FormData(this);
 
             try {
-                const response = await fetch('../Controller/register_user.php', {
+                const response = await fetch('../controller/register_user.php', {
                     method: 'POST',
                     body: formData
                 });

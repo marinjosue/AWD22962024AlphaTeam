@@ -1,5 +1,5 @@
 <?php
-require '../Connection/db.php';
+require '../connection/db.php';
 
 $sql = "SELECT id_course, course_name, start_date, end_date, price FROM courses";
 $result = $conn->query($sql);

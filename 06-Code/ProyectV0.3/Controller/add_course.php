@@ -1,5 +1,5 @@
 <?php
-require '../Connection/db.php';
+require '../connection/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_course = $_POST['id_course'];
@@ -12,8 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_category = $_POST['id_category'];
     $status = $_POST['status'];
     $youtube = $_POST['course_youtube'];
-    $user_id = 1; // ID de ejemplo; ajusta según corresponda.
-
+    $user_id = 1; 
     if ($id_course) {
         $sql = "UPDATE courses SET course_name=?, course_description=?, start_date=?, end_date=?, price=?, cedula=?, id_category=?, status=?, course_youtube=?, user_id=? WHERE id_course=?";
         $stmt = $conn->prepare($sql);

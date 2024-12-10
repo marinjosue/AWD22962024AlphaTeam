@@ -18,7 +18,7 @@
 
 <body>
     <div id="header"></div>
-    <script src="../Js/dinav.js"></script>
+    <script src="../js/dinav.js"></script>
 
     <div class="container mt-5">
         <h1 class="text-center mb-4">Gestionar Usuarios</h1>
@@ -137,7 +137,7 @@
                     const formData = new FormData(event.target);
 
                     try {
-                        const response = await fetch('../Controller/add_users.php', {
+                        const response = await fetch('../controller/add_users.php', {
                             method: 'POST',
                             body: formData
                         });
@@ -160,7 +160,7 @@
                 // load role
                 async function cargarRolesEnFormulario() {
                     try {
-                        const response = await fetch('../Controller/load_role.php');
+                        const response = await fetch('../controller/load_role.php');
                         const roles = await response.json();
 
                         const roleSelect = document.getElementById('userRole');
@@ -195,7 +195,6 @@
                             </tr>
                         </thead>
                         <tbody id="rolesBody">
-                            <!-- Role -->
                         </tbody>
                     </table>
                 </div>
@@ -264,7 +263,7 @@
                 const formData = new FormData(event.target);
 
                 try {
-                    const response = await fetch('../Controller/add_role.php', {
+                    const response = await fetch('../controller/add_role.php', {
                         method: 'POST',
                         body: formData
                     });
@@ -285,7 +284,7 @@
            
             async function cargarUsuarios() {
                 try {
-                    const response = await fetch('../Controller/load_user.php');
+                    const response = await fetch('../controller/load_user.php');
                     const data = await response.json();
 
                     const usersTableBody = document.getElementById('usersBody');
@@ -325,7 +324,7 @@
             });
             async function cargarRoles() {
                 try {
-                    const response = await fetch('../Controller/load_role.php');
+                    const response = await fetch('../controller/load_role.php');
                     const data = await response.json();
 
                     const rolesTableBody = document.getElementById('rolesBody');
@@ -359,7 +358,7 @@
                 const formData = new FormData(document.getElementById('editRoleForm'));
 
                 try {
-                    const response = await fetch('../Controller/edit_rol.php', {
+                    const response = await fetch('../controller/edit_rol.php', {
                         method: 'POST',
                         body: formData
                     });
@@ -402,7 +401,7 @@
 
                 if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
                     try {
-                        const response = await fetch('../Controller/delete_user.php', {
+                        const response = await fetch('../controller/delete_user.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -438,7 +437,7 @@
 
                 if (confirm('¿Estás seguro de que deseas eliminar este rol?')) {
                     try {
-                        const response = await fetch('../Controller/delete_role.php', {
+                        const response = await fetch('../controller/delete_role.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -479,7 +478,7 @@
 
                 const userId = event.target.getAttribute('data-id');
 
-                window.location.href = `../Controller/edit_user.php?id=${userId}`;
+                window.location.href = `../controller/edit_user.php?id=${userId}`;
             }
         </script>
 </body>

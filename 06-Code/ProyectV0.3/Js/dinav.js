@@ -1,27 +1,23 @@
-// Obtener el rol del usuario desde localStorage
 const userRole = localStorage.getItem('userRole') || 'default';
 
-// Determinar la ruta del menú según el rol
 function getHeaderPath(role) {
     switch (role) {
         case 'Admin':
-            return '../Partials/headerAdmin.html';
+            return '../partials/headerAdmin.html';
         case 'Student':
-            return '../Partials/headerUser.html';
+            return '../partials/headerUser.html';
         case 'default':
-            return '../Partials/header.html'; // Menú por defecto
+            return '../partials/header.html'; 
     }
 }
 
 
-// Cargar el archivo HTML correspondiente al menú
 function loadMenu(role) {
     const headerPath = getHeaderPath(role);
     loadHTML('header', headerPath, () => {
-        setupHamburgerMenu(); // Inicializar el menú hamburguesa después de cargar el HTML
+        setupHamburgerMenu(); 
     });
 }
-// Función para cargar un archivo HTML en un contenedor
 function loadHTML(elementId, filePath, callback) {
     fetch(filePath)
         .then(response => {
@@ -30,34 +26,30 @@ function loadHTML(elementId, filePath, callback) {
         })
         .then(data => {
             document.getElementById(elementId).innerHTML = data;
-            if (callback) callback(); // Ejecuta el callback si se pasa uno
+            if (callback) callback(); 
         })
         .catch(error => console.error('Error loading HTML:', error));
 }
 
-// Configurar la funcionalidad del menú hamburguesa
 function setupHamburgerMenu() {
     const hamburger = document.getElementById("hamburger");
     const navbar = document.getElementById("navbar");
 
     if (hamburger && navbar) {
         hamburger.addEventListener("click", () => {
-            navbar.classList.toggle("active"); // Alternar clase para abrir/cerrar el menú
+            navbar.classList.toggle("active"); 
         });
     }
 }
 
-// Decidir y cargar el menú cuando la página cargue
 window.addEventListener('load', () => {
-    const role = localStorage.getItem('userRole') || 'default'; // Obtener el rol del usuario
-    loadMenu(role); // Cargar el menú según el rol
-    redirectToIndexIfLoggedIn(role); // Redirigir al index.html si corresponde
+    const role = localStorage.getItem('userRole') || 'default'; 
+    loadMenu(role); 
+    redirectToIndexIfLoggedIn(role); 
 });
 
-// Cargar el footer
-loadHTML('footer', '../Partials/footer.html');
+loadHTML('footer', '../partials/footer.html');
 
-// Ajustar la posición del footer
 window.addEventListener('load', () => {
     const footer = document.getElementById('footer');
     const body = document.body;

@@ -1,18 +1,15 @@
 <?php
-require '../Connection/db.php';
+require '../connection/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Leer el cuerpo JSON enviado
     $input = json_decode(file_get_contents('php://input'), true);
     $id_rol = isset($input['id']) ? intval($input['id']) : 0;
 
     if ($id_rol > 0) {
-        // Preparar la consulta SQL para eliminar el rol
         $sql = "DELETE FROM roles WHERE id_rol = ?";
         $stmt = $conn->prepare($sql);
 
         if ($stmt) {
-            // Vincular parámetros y ejecutar la consulta
             $stmt->bind_param("i", $id_rol);
             if ($stmt->execute()) {
                 echo json_encode([

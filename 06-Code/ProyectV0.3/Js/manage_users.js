@@ -1,13 +1,12 @@
 
 
 
-                // Manejar el envío del formulario de agregar usuario
                 document.getElementById('addUserForm').addEventListener('submit', async (event) => {
                     event.preventDefault();
                     const formData = new FormData(event.target);
 
                     try {
-                        const response = await fetch('../Controller/add_users.php', {
+                        const response = await fetch('../controller/add_users.php', {
                             method: 'POST',
                             body: formData
                         });
@@ -15,7 +14,7 @@
 
                         if (result.success) {
                             alert('Usuario agregado correctamente');
-                            cargarUsuarios(); // Recargar la tabla de usuarios
+                            cargarUsuarios(); 
                             const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
                             modal.hide();
                         } else {
@@ -26,7 +25,6 @@
                     }
                 });
 
-                // Cargar roles dinámicamente en el formulario de agregar usuario
                 async function cargarRolesEnFormulario() {
                     try {
                         const response = await fetch('../Controller/cargar_roles.php');
@@ -42,13 +40,11 @@
                     }
                 }
 
-                // Llamar a la función al cargar la página
                 document.addEventListener('DOMContentLoaded', () => {
                     cargarRolesEnFormulario();
                 });
 
 
-                  //AGREGAR ROLES 
             document.getElementById('addRoleForm').addEventListener('submit', async (event) => {
                 event.preventDefault();
                 const formData = new FormData(event.target);
@@ -62,7 +58,7 @@
 
                     if (result.success) {
                         alert('Rol agregado correctamente');
-                        cargarRoles(); // Recargar la tabla de roles
+                        cargarRoles(); 
                         const modal = bootstrap.Modal.getInstance(document.getElementById('addRoleModal'));
                         modal.hide();
                     } else {
@@ -77,14 +73,13 @@
 
 
 
-            // Cargar usuarios desde el servidor
             async function cargarUsuarios() {
                 try {
                     const response = await fetch('../Controller/cargar_usuarios.php');
                     const data = await response.json();
 
                     const usersTableBody = document.getElementById('usersBody');
-                    usersTableBody.innerHTML = '';  // Limpiar tabla antes de cargar
+                    usersTableBody.innerHTML = '';  
 
                     if (data.success) {
                         data.data.forEach(user => {
@@ -118,7 +113,7 @@
             }
 
             document.addEventListener('DOMContentLoaded', () => {
-                cargarUsuarios();  // Cargar usuarios al cargar la página
+                cargarUsuarios();  
             });
 
 
@@ -126,14 +121,13 @@
 
 
 
-            // Cargar roles y usuarios desde el servidor
             async function cargarRoles() {
                 try {
                     const response = await fetch('../Controller/cargar_roles.php');
                     const data = await response.json();
 
                     const rolesTableBody = document.getElementById('rolesBody');
-                    rolesTableBody.innerHTML = '';  // Limpiar tabla antes de cargar
+                    rolesTableBody.innerHTML = '';  
 
                     data.forEach(role => {
                         rolesTableBody.innerHTML += `
@@ -156,7 +150,6 @@
                 }
             }
 
-            // Enviar datos para editar un rol
             async function editarRol(event) {
                 event.preventDefault();
 
@@ -169,14 +162,13 @@
                     });
                     const result = await response.json();
 
-                    // Verificar si la actualización fue exitosa
                     if (result.success) {
-                        alert(result.message);  // Mostrar mensaje de éxito
-                        cargarRoles();  // Recargar roles
+                        alert(result.message);  
+                        cargarRoles(); 
                         const modal = new bootstrap.Modal(document.getElementById('editRoleModal'));
                         modal.hide();
                     } else {
-                        alert(result.message);  // Mostrar mensaje de error
+                        alert(result.message);  
                     }
                 } catch (error) {
                     console.error('Error actualizando rol:', error);
@@ -185,9 +177,8 @@
 
 
             document.addEventListener('DOMContentLoaded', () => {
-                cargarRoles();  // Cargar roles al cargar la página
+                cargarRoles();  
 
-                // Manejar evento para editar rol
                 document.getElementById('editRoleForm').addEventListener('submit', editarRol);
 
                 document.getElementById('rolesBody').addEventListener('click', function (event) {
@@ -206,23 +197,18 @@
 
 
 
-            ////////
-
-            // Función para editar usuario
+         
             async function editarUsuario(event) {
                 event.preventDefault();
 
                 const userId = event.target.getAttribute('data-id');
 
-                // Aquí puedes abrir un formulario modal o redirigir a una página para editar el usuario
-                // Por ahora, solo se mostrará una alerta
+             
                 alert(`Editar usuario con ID: ${userId}`);
 
-                // Por ejemplo, puedes redirigir a una página de edición
-                // window.location.href = `editar_usuario.php?id=${userId}`;
+                
             }
 
-            // Función para eliminar usuario
             async function eliminarUsuario(event) {
                 const userId = event.target.getAttribute('data-id');
 
@@ -250,7 +236,6 @@
                 }
             }
 
-            // Asignar eventos a los botones de editar y eliminar
             document.addEventListener('DOMContentLoaded', () => {
                 cargarUsuarios();  // Cargar usuarios al cargar la página
 
@@ -265,16 +250,11 @@
                 });
             });
 
-
-
-
-            // Función para editar usuario
             async function editarUsuario(event) {
                 event.preventDefault();
 
                 const userId = event.target.getAttribute('data-id');
 
-                // Redirigir a la página de edición con el ID del usuario
                 window.location.href = `../Controller/editar_usuario.php?id=${userId}`;
             }
 

@@ -1,13 +1,12 @@
 <?php
-require '../Connection/db.php';
+require '../connection/db.php';
 
-$response = ['success' => false, 'message' => ''];  // Respuesta inicial
-
+$response = ['success' => false, 'message' => ''];  
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $roles = $_POST['roles'];
 
     if (!empty($roles)) {
-        // Preparar y ejecutar la consulta para insertar un nuevo rol
+       
         $sql = "INSERT INTO roles (roles) VALUES (?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('s', $roles);
@@ -29,6 +28,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $response['message'] = "Método no permitido.";
 }
 
-// Devolver la respuesta como JSON
 echo json_encode($response);
 ?>

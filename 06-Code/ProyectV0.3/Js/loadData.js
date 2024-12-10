@@ -1,4 +1,3 @@
-// Función para manejar el cierre de sesión
 function handleLogout() {
     Swal.fire({
         title: '¿Estás seguro?',
@@ -11,11 +10,8 @@ function handleLogout() {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Eliminar los datos de sesión
             localStorage.setItem('userRole', 'default');
-            // Limpiar cualquier otra información de sesión
             localStorage.removeItem('username');
-            // Mostrar mensaje de éxito
             Swal.fire({
                 title: '¡Sesión cerrada!',
                 text: 'Has cerrado sesión exitosamente',
@@ -23,16 +19,14 @@ function handleLogout() {
                 timer: 1500,
                 showConfirmButton: false
             }).then(() => {
-                // Redirigir al inicio
                 window.location.href = '../index/index.html';
             });
         }
     });
 }
 
-// AJAX para obtener los datos del perfil
 function loadProfile() {
-    fetch('../Controller/ProfileController.php')
+    fetch('../controller/ProfileController.php')
         .then(response => response.json())
         .then(data => {
             if (data.error) {
@@ -52,8 +46,7 @@ function loadProfile() {
                 document.getElementById('id').value = user.cedula;
                 document.getElementById('email').value = user.email;
                 document.getElementById('phone').value = user.phone;
-                // Establecer la ruta de la imagen del perfil con un parámetro único
-                const photoUrl = `../imgProfile/${user.cedula}.png?timestamp=${new Date().getTime()}`;
+                const photoUrl = `../imgprofile/${user.cedula}.png?timestamp=${new Date().getTime()}`;
                 document.getElementById('photo').src = photoUrl;
             }
         })
@@ -68,5 +61,4 @@ function loadProfile() {
         });
 }
 
-// Cargar los datos del perfil al cargar la página
 window.onload = loadProfile;

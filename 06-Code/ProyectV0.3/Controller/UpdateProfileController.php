@@ -1,13 +1,11 @@
 <?php
-require '../Connection/db.php';
+require '../connection/db.php';
 
 session_start();
 
-// Inicializar las variables de error y éxito
 $error_message = '';
 $success_message = '';
 
-// Obtener el ID del usuario desde el parámetro GET o POST
 $id_usuario = $_GET['id'] ?? null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -18,18 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $address = $_POST['address'] ?? '';
     $phone = $_POST['phone'] ?? '';
     $password = $_POST['password'] ?? '';
-    $cedula = $_POST['cedula'] ?? ''; // Nueva variable para cédula
+    $cedula = $_POST['cedula'] ?? ''; 
 
-    // Verifica si se ha subido una imagen
     if (!empty($_FILES['profile_image']['name'])) {
-        $upload_dir = '../imgProfile/';
+        $upload_dir = '../imgprofile/';
 
-        // Usa la cédula del usuario para nombrar la imagen
         $target_file = $upload_dir . $cedula . '.png';
 
-        // Intenta mover el archivo cargado al directorio especificado
         if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $target_file)) {
-            // Actualiza la columna profile_image en la base de datos
             $profile_image = $cedula . '.png';
             $sql_image = "UPDATE users SET profile_image = ? WHERE id = ?";
             $stmt_image = $conn->prepare($sql_image);
@@ -45,13 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Actualizar los datos del usuario
     $sql = "UPDATE users SET first_name = ?, last_name = ?, email = ?, address = ?, phone = ?, password = ? WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('ssssssi', $first_name, $last_name, $email, $address, $phone, $password, $id_usuario);
 
     if ($stmt->execute()) {
-        // Obtener el rol del usuario actualizado
         $sql_rol = "SELECT id_rol FROM users WHERE id = ?";
         $stmt_rol = $conn->prepare($sql_rol);
         $stmt_rol->bind_param('i', $id_usuario);
@@ -62,13 +54,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user = $result_rol->fetch_assoc();
             $id_rol = $user['id_rol'];
 
-            // Redirigir según el rol del usuario
             if ($id_rol == 1) {
                 $_SESSION['success_message'] = "Cambios realizados correctamente.";
-                header("Location: ../ViewAdmin/Profile.html");
+                header("Location: ../viewadmin/Profile.html");
             } else {
                 $_SESSION['success_message'] = "Cambios realizados correctamente.";
-                header("Location: ../ViewUser/ProfileUser.html");
+                header("Location: ../viewuser/ProfileUser.html");
             }
             exit;
         } else {
@@ -83,7 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 }
 
-// Obtener datos del usuario
 if ($id_usuario) {
     $sql = "SELECT * FROM users WHERE id = ?";
     $stmt = $conn->prepare($sql);
@@ -180,7 +170,6 @@ $conn->close();
                             const cedula = document.querySelector('input[name="cedula"]').value;
 
                             if (file) {
-                                // Create a preview of the selected image
                                 const reader = new FileReader();
                                 reader.onload = function(e) {
                                     const previewContainer = document.getElementById('image-preview');
@@ -188,7 +177,6 @@ $conn->close();
                                 };
                                 reader.readAsDataURL(file);
 
-                                // Rename the file input with the user's cedula
                                 const dataTransfer = new DataTransfer();
                                 const renamedFile = new File([file], `${cedula}.png`, { type: file.type });
                                 dataTransfer.items.add(renamedFile);
@@ -206,7 +194,7 @@ $conn->close();
                         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                     </div><br>
                     <div class="text-center">
-                        <a href="../ViewAdmin/Profile.html" class="btn btn-secondary">Cancelar</a>
+                        <a href="../viewadmin/Profile.html" class="btn btn-secondary">Cancelar</a>
                     </div>
                 </form>
             </div>

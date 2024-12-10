@@ -14,7 +14,7 @@
 
 <body>
     <div id="header"></div>
-    <script src="../Js/dinav.js"></script>
+    <script src="../js/dinav.js"></script>
     <div class="container mt-5">
         <h1>Gestión de Cursos</h1>
 
@@ -31,17 +31,16 @@
                     </tr>
                 </thead>
                 <tbody id="coursesTableBody">
-                    <!-- Los cursos se cargarán dinámicamente aquí -->
                 </tbody>
             </table>
         </div>
 
-        <button class="btn btn-success mt-3" onclick="window.location.href='../ViewAdmin/course_form.html'">Añadir Nuevo Curso</button>
+        <button class="btn btn-success mt-3" onclick="window.location.href='../viewadmin/course_form.html'">Añadir Nuevo Curso</button>
     </div>
     <div id="footer"></div>
     <script>
         async function fetchCourses() {
-            const response = await fetch('../Controller/courses_data.php');
+            const response = await fetch('../controller/courses_data.php');
             const courses = await response.json();
 
             const tableBody = document.getElementById('coursesTableBody');
@@ -75,7 +74,7 @@
                 return;
             }
 
-            const response = await fetch('../Controller/delete_course.php', {
+            const response = await fetch('../controller/delete_course.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id: courseId }),

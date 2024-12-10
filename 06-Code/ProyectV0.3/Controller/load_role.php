@@ -1,5 +1,5 @@
 <?php
-require '../Connection/db.php';
+require '../connection/db.php';
 
 $sql = "SELECT id_rol, roles FROM roles";
 $result = $conn->query($sql);

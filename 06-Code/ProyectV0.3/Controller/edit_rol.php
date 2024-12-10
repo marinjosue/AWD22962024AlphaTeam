@@ -1,13 +1,12 @@
 <?php
-require '../Connection/db.php';
+require '../connection/db.php';
 
-$response = ['success' => false, 'message' => ''];  // Respuesta inicial
+$response = ['success' => false, 'message' => ''];  
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_rol = $_POST['id_rol'];
     $roles = $_POST['roles'];
 
-    // Preparar y ejecutar la consulta
     $sql = "UPDATE roles SET roles = ? WHERE id_rol = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('si', $roles, $id_rol);
@@ -23,6 +22,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conn->close();
 }
 
-// Devolver la respuesta como JSON
 echo json_encode($response);
 ?>

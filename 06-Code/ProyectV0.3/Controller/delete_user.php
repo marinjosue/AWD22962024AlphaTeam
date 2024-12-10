@@ -1,5 +1,5 @@
 <?php
-require '../Connection/db.php';
+require '../connection/db.php';
 
 $response = ['success' => false, 'message' => ''];
 
@@ -7,7 +7,6 @@ $data = json_decode(file_get_contents("php://input"), true);
 $id_usuario = $data['id'] ?? null;
 
 if ($id_usuario) {
-    // Preparar y ejecutar la consulta de eliminación
     $sql = "DELETE FROM users WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $id_usuario);
@@ -24,6 +23,5 @@ if ($id_usuario) {
 
 $conn->close();
 
-// Devolver la respuesta como JSON
 echo json_encode($response);
 ?>

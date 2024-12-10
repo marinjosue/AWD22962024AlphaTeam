@@ -10,10 +10,8 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Conexión a la base de datos
-require '../Connection/db.php';
+require '../connection/db.php';
 
-// Obtener el ID del usuario desde la sesión
 $user_id = $_SESSION['user_id'];
 
 $sql = "SELECT id, first_name, last_name, email, phone, id_rol FROM users WHERE id = ?";
