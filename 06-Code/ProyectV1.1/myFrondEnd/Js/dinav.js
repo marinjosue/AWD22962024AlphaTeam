@@ -48,7 +48,7 @@ window.addEventListener('load', () => {
     redirectToIndexIfLoggedIn(role); 
 });
 
-loadHTML('footer', '../partials/footer.html');
+loadHTML('footer', '../Partials/footer.html');
 
 window.addEventListener('load', () => {
     const footer = document.getElementById('footer');

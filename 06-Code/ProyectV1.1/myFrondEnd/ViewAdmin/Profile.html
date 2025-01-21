@@ -28,14 +28,6 @@
                     <p class="card-text text-muted" id="role">Cargando...</p>
                 </div>
             </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    const photo = document.getElementById('photo');
-                    photo.onerror = () => {
-                        photo.src = '../imgprofile/default.png';
-                    };
-                });
-            </script>
             <!-- Información del Perfil -->
             <div class="card p-4" style="width: 18rem;">
                 <label for="id"><strong>Cedula:</strong></label>
@@ -59,7 +51,7 @@
                 <a href="report.html" class="btn btn-info text-white d-flex align-items-center gap-2">
                     <i class="fa-solid fa-chart-pie"></i> Estadísticas
                 </a>
-                <a href="#" class="btn btn-warning edit-profile-btn">
+                <a href="../Views/updateUser.htm" class="btn btn-warning edit-profile-btn">
                     <i class="fa-solid fa-user-pen"></i> Editar Perfil
                 </a>
                 <button onclick="handleLogout()" class="btn btn-danger d-flex align-items-center gap-2">
@@ -68,51 +60,13 @@
             </div> <br>
         </section>
     </main>
-
-    <script>
-        async function cargarPerfilUsuario() {
-            try {
-                const response = await fetch('../controller/load-user.php');
-                const data = await response.json();
-
-                if (data.success) {
-                    const user = data.data;
-
-                    document.getElementById('fullName').textContent = `${user.first_name} ${user.last_name}`;
-                    document.getElementById('id').value = user.id;
-                    document.getElementById('email').value = user.email;
-                    document.getElementById('phone').value = user.phone;
-                    document.getElementById('role').textContent = `Rol: ${user.id_rol}`;
-
-                    const editProfileBtn = document.querySelector('.edit-profile-btn');
-                    editProfileBtn.setAttribute('data-id', user.id);
-                    editProfileBtn.addEventListener('click', () => {
-                        window.location.href = `../controller/UpdateProfileController.php?id=${user.id}`;
-                    });
-                } else {
-                    Swal.fire('Error', data.message, 'error');
-                }
-            } catch (error) {
-                console.error('Error cargando el perfil del usuario:', error);
-                Swal.fire('Error', 'No se pudo cargar el perfil del usuario.', 'error');
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', cargarPerfilUsuario);
-
-        function handleLogout() {
-            // Implementa aquí la lógica de cierre de sesión
-            Swal.fire('Cerrando sesión', 'Has cerrado sesión exitosamente.', 'success').then(() => {
-                window.location.href = '../login.html';
-            });
-        }
-    </script>
+    <script src="../Js/loadData.js"> </script>
 
     <!-- Scripts -->
-    <script src="../js/loadData.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-skDk8zhD9JNG0c/uzXazMb/rC2QYVzkeaqOmX7kzPw5IrDfOeQmUdx9fqRAhQ/RR" crossorigin="anonymous">
-    </script>
+        </script>
     <div id="footer"></div>
 </body>
 
