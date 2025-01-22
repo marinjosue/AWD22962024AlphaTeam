@@ -142,44 +142,54 @@
 
                 const data = await googleResponse.json();
 
-                if (data.success && data.isNewUser) {
-                    // Si es un nuevo usuario, redirigir a Register.html con los datos
-                    const userParams = new URLSearchParams({
-                        email: data.user.email,
-                        first_name: data.user.first_name || '',
-                        last_name: data.user.last_name || '',
-                        address: data.user.address || '',
-                        phone: data.user.phone || '',
-                    }).toString();
+                if (data.success) {
+                    if (data.isNewUser) {
+                        // Si es un usuario nuevo, guardamos los datos temporalmente
+                        localStorage.setItem('googleData', JSON.stringify({
+                            email: data.user.email,
+                            first_name: data.user.given_name || '',
+                            last_name: data.user.family_name || '',
+                            picture: data.user.picture || '',
+                            google_id: data.user.sub || ''
+                        }));
 
-                    window.location.href = `Register.html?${userParams}`;
-                } else if (data.success) {
-                    // Usuario existente: iniciar sesión
-                    localStorage.setItem('token', data.token);
-                    Swal.fire({
-                        title: '¡Bienvenido!',
-                        text: 'Has iniciado sesión con Google',
-                        icon: 'success',
-                        timer: 1500,
-                        showConfirmButton: false,
-                    }).then(() => {
-                        window.location.href = '../index/index.html';
-                    });
+                        // Redirigimos al registro con los datos prellenados
+                        Swal.fire({
+                            title: 'Usuario Nuevo',
+                            text: 'Por favor, complete su registro para continuar',
+                            icon: 'info',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = 'Register.html?source=google';
+                        });
+                    } else {
+                        // Usuario existente: guardar datos y redirigir
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('userRole', data.user.role);
+                        localStorage.setItem('userId', data.user.id);
+                        localStorage.setItem('userEmail', data.user.email);
+
+                        Swal.fire({
+                            title: '¡Bienvenido de nuevo!',
+                            text: 'Has iniciado sesión con Google',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = '../index/index.html';
+                        });
+                    }
                 } else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: data.message || 'Error al iniciar sesión con Google',
-                        icon: 'error',
-                        confirmButtonText: 'OK',
-                    });
+                    throw new Error(data.message || 'Error en la autenticación con Google');
                 }
             } catch (error) {
                 console.error('Error:', error);
                 Swal.fire({
                     title: 'Error',
-                    text: 'Hubo un problema al iniciar sesión con Google',
+                    text: error.message || 'Hubo un problema al iniciar sesión con Google',
                     icon: 'error',
-                    confirmButtonText: 'OK',
+                    confirmButtonText: 'OK'
                 });
             }
         }
