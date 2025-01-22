@@ -15,13 +15,12 @@
 <body>
     <div id="header"></div>
     <script src="../js/dinav.js"></script>
-    <script src="../js/validateCI.js"></script>
     <div class="register-container">
         <h2>Regístrate</h2>
         <form id="registerForm">
             <div class="mb-3">
                 <label for="cedula" class="form-label">Cédula</label>
-                <input type="text" class="form-control" id="dni" name="cedula" required>
+                <input type="text" class="form-control" id="cedula" name="cedula" required>
             </div>
             <div class="mb-3">
                 <label for="first_name" class="form-label">Nombre</label>
@@ -63,137 +62,92 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Registrar</button>
+            
         </form>
     </div>
 
     <script>
-        document.getElementById('registerForm').addEventListener('submit', async function (event) {
-            event.preventDefault();
-
-            const formData = new FormData(this);
-            const userData = Object.fromEntries(formData.entries()); // Convierte FormData a JSON
-
-            try {
-                const API_URL = 'http://localhost:3000';
-                const response = await fetch(`${API_URL}/api/users`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json', // Configura encabezado JSON
-                    },
-                    body: JSON.stringify(userData), // Convierte datos a formato JSON
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    Swal.fire({
-                        title: '¡Registro Exitoso!',
-                        text: 'Serás redirigido al inicio de sesión.',
-                        icon: 'success',
-                        timer: 2000,
-                        showConfirmButton: false
-                    }).then(() => {
-                        window.location.href = 'login.html';
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: data.message || 'Ocurrió un error durante el registro.',
-                        icon: 'error',
-                        confirmButtonText: 'Intentar de nuevo'
-                    });
-                }
-            } catch (error) {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'No se pudo conectar con el servidor.',
-                    icon: 'error',
-                    confirmButtonText: 'Intentar de nuevo'
-                });
-            }
-        });
-        // Añade esto al script de Register.html
         document.addEventListener('DOMContentLoaded', function () {
-            // Verificar si venimos de Google Auth
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('source') === 'google') {
-                // Recuperar datos guardados de Google
-                const googleData = JSON.parse(localStorage.getItem('googleData'));
-                if (googleData) {
-                    // Prellenar el formulario con los datos de Google
-                    document.getElementById('email').value = googleData.email;
-                    document.getElementById('first_name').value = googleData.first_name;
-                    document.getElementById('last_name').value = googleData.last_name;
+            const registerForm = document.getElementById('registerForm');
+            const isGoogleAuth = new URLSearchParams(window.location.search).get('source') === 'google';
+      
 
-                    // Opcional: Deshabilitar campos que no deberían modificarse
+            // Manejar datos de Google si existen
+            if (isGoogleAuth) {
+                const googleData = JSON.parse(localStorage.getItem('googleData') || '{}');
+                if (googleData.email) {
+                    document.getElementById('email').value = googleData.email;
+                    document.getElementById('first_name').value = googleData.first_name || '';
+                    document.getElementById('last_name').value = googleData.last_name || '';
                     document.getElementById('email').readOnly = true;
 
-                    // Añadir campos ocultos para datos adicionales de Google
-                    const form = document.getElementById('registerForm');
+                    // Añadir campo oculto para google_id
                     const googleIdInput = document.createElement('input');
                     googleIdInput.type = 'hidden';
                     googleIdInput.name = 'google_id';
                     googleIdInput.value = googleData.google_id;
-                    form.appendChild(googleIdInput);
+                    registerForm.appendChild(googleIdInput);
                 }
             }
-        });
 
-        // Modificar la función de envío del formulario
-        async function handleRegister(event) {
-            event.preventDefault();
+            // Manejar envío del formulario
+            registerForm.addEventListener('submit', async function (event) {
+                event.preventDefault();
 
-            const formData = new FormData(event.target);
-            const userData = Object.fromEntries(formData.entries());
+                // Corregir el ID del campo cédula (cambiado de 'dni' a 'cedula')
+                const formData = new FormData(this);
+                const userData = Object.fromEntries(formData.entries());
 
-            // Agregar indicador si el registro viene de Google
-            const googleData = localStorage.getItem('googleData');
-            if (googleData) {
-                userData.isGoogleUser = true;
-                userData.googleData = JSON.parse(googleData);
-            }
-
-            try {
-                const API_URL = 'http://localhost:3000';
-                const response = await fetch(`${API_URL}/api/auth/register`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(userData)
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    // Limpiar datos temporales de Google si existen
-                    localStorage.removeItem('googleData');
-
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('userRole', data.user.role);
-                    localStorage.setItem('userId', data.user.id);
-
+                // Validaciones básicas
+                if (!userData.cedula || !userData.first_name || !userData.last_name ||
+                    !userData.email || !userData.password || !userData.gender) {
                     Swal.fire({
-                        title: '¡Registro exitoso!',
-                        text: 'Tu cuenta ha sido creada correctamente',
-                        icon: 'success',
-                        timer: 1500,
-                        showConfirmButton: false
-                    }).then(() => {
-                        window.location.href = '../index/index.html';
+                        title: 'Error',
+                        text: 'Por favor complete todos los campos requeridos',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
                     });
-                } else {
-                    throw new Error(data.message || 'Error en el registro');
+                    return;
                 }
-            } catch (error) {
-                Swal.fire({
-                    title: 'Error',
-                    text: error.message || 'Hubo un problema al registrar el usuario',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
-            }
-        }
+
+                try {
+                    const API_URL = 'http://localhost:3000';
+                    const response = await fetch(`${API_URL}/api/users`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(userData)
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Limpiar datos de Google si existen
+                        localStorage.removeItem('googleData');
+
+                        await Swal.fire({
+                            title: '¡Registro Exitoso!',
+                            text: 'Serás redirigido al inicio de sesión.',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+
+                        window.location.href = 'login.html';
+                    } else {
+                        throw new Error(data.message || 'Error en el registro');
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: error.message || 'Hubo un problema al registrar el usuario',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        });
 
     </script>
     <div id="footer"></div>

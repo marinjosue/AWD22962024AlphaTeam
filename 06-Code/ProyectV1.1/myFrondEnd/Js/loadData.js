@@ -72,7 +72,7 @@ async function cargarPerfilUsuario() {
         // Configurar el botón de editar perfil
         const editProfileBtn = document.querySelector('.edit-profile-btn');
         editProfileBtn.setAttribute('data-id', user.id);
-        editProfileBtn.addEventListener('click', handleEditProfile);
+       // editProfileBtn.addEventListener('click', handleEditProfile);
 }
 
 

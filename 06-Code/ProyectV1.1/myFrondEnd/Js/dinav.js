@@ -45,8 +45,8 @@ function setupHamburgerMenu() {
 window.addEventListener('load', () => {
     const role = localStorage.getItem('userRole') || 'default'; 
     loadMenu(role); 
-    redirectToIndexIfLoggedIn(role); 
 });
+
 
 loadHTML('footer', '../Partials/footer.html');
 
