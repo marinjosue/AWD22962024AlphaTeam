@@ -110,7 +110,7 @@ const authController = {
 
     async googleLogin(req, res) {
         const { email, google_id, google_token } = req.body;
-    
+
         try {
             // Buscar el usuario en la base de datos
             const [rows] = await pool.query(
@@ -121,22 +121,21 @@ const authController = {
                  WHERE users.email = ?`,
                 [email]
             );
-    
+
             if (rows.length === 0) {
-                // Usuario no encontrado, devolver información para el registro
-                const payload = JSON.parse(atob(google_token.split('.')[1]));
+                // Usuario no encontrado, devolver datos para el registro
                 return res.status(404).json({
                     success: false,
                     isNewUser: true,
                     email: payload.email,
-                    firstName: payload.given_name || '',
-                    lastName: payload.family_name || '',
+                    firstName: payload.given_name || '', // Nombre del payload de Google
+                    lastName: payload.family_name || '', // Apellido del payload de Google
                     message: 'Usuario no encontrado, necesita registrarse'
                 });
             }
-    
+
             const user = rows[0];
-    
+
             // Si el usuario no tiene google_id, actualízalo
             if (!user.google_id) {
                 await pool.query(
@@ -144,7 +143,7 @@ const authController = {
                     [google_id, google_token, user.id]
                 );
             }
-    
+
             // Generar token JWT
             const token = jwt.sign(
                 {
@@ -155,7 +154,8 @@ const authController = {
                 process.env.JWT_SECRET || 'tu_secreto_seguro',
                 { expiresIn: '24h' }
             );
-    
+
+
             // Respuesta exitosa
             return res.json({
                 success: true,
@@ -165,7 +165,7 @@ const authController = {
                 role: user.role,
                 message: 'Login con Google exitoso'
             });
-    
+
         } catch (error) {
             console.error('Error en login con Google:', error);
             return res.status(500).json({
@@ -175,7 +175,7 @@ const authController = {
             });
         }
     }
-    
+
 };
 
 
