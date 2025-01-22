@@ -75,8 +75,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // Función para manejar el inicio de sesión normal
-        document.getElementById('loginForm').addEventListener('submit', async function (event) {
+           document.getElementById('loginForm').addEventListener('submit', async function (event) {
             event.preventDefault();
 
             const username = document.getElementById('username').value;
@@ -95,9 +94,11 @@
                 const data = await response.json();
 
                 if (data.success) {
+                    // Store all necessary user data
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('userRole', data.role);
                     localStorage.setItem('userId', data.id);
+                    localStorage.setItem('roleId', data.role_id); // Add role_id storage
 
                     Swal.fire({
                         title: '¡Bienvenido!',
@@ -106,7 +107,8 @@
                         timer: 1500,
                         showConfirmButton: false
                     }).then(() => {
-                        window.location.href = '../index/index.html';
+                        // Redirect with role_id as query parameter
+                        window.location.href = `../index/index.html?role_id=${data.role_id}`;
                     });
                 } else {
                     Swal.fire({
@@ -126,83 +128,43 @@
             }
         });
 
-        // Función para manejar la respuesta de Google
         async function handleCredentialResponse(response) {
             try {
-                // Decode the JWT token from Google
                 const payload = JSON.parse(atob(response.credential.split('.')[1]));
                 const API_URL = 'http://localhost:3000';
 
-                // Consultar al backend si existe el usuario con este email
-                const checkUserResponse = await fetch(`${API_URL}/api/auth/check-google-user`, {
+                const loginResponse = await fetch(`${API_URL}/api/auth/google-login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        email: payload.email
+                        email: payload.email,
+                        google_id: payload.sub,
+                        google_token: response.credential
                     })
                 });
 
-                const userData = await checkUserResponse.json();
+                const loginData = await loginResponse.json();
 
-                if (userData.exists) {
-                    // Usuario existente - iniciar sesión
-                    const loginResponse = await fetch(`${API_URL}/api/auth/google-login`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            email: payload.email,
-                            google_id: payload.sub,
-                            google_token: response.credential
-                        })
-                    });
-
-                    const loginData = await loginResponse.json();
-
-                    if (loginData.success) {
-                        // Guardar datos de sesión
-                        localStorage.setItem('token', loginData.token);
-                        localStorage.setItem('userRole', loginData.role);
-                        localStorage.setItem('userId', loginData.id);
-                        localStorage.setItem('userEmail', loginData.email);
-
-                        await Swal.fire({
-                            title: '¡Bienvenido de nuevo!',
-                            text: 'Has iniciado sesión con Google',
-                            icon: 'success',
-                            timer: 1500,
-                            showConfirmButton: false
-                        });
-
-                        window.location.href = '../index/index.html';
-                    } else {
-                        throw new Error(loginData.message || 'Error al iniciar sesión');
-                    }
-                } else {
-                    // Nuevo usuario - redirigir a registro
-                    const googleData = {
-                        email: payload.email,
-                        first_name: payload.given_name || '',
-                        last_name: payload.family_name || '',
-                        picture: payload.picture || '',
-                        google_id: payload.sub || ''
-                    };
-
-                    // Guardar datos de Google temporalmente
-                    localStorage.setItem('googleData', JSON.stringify(googleData));
+                if (loginData.success) {
+                    localStorage.setItem('token', loginData.token);
+                    localStorage.setItem('userRole', loginData.role);
+                    localStorage.setItem('userId', loginData.id);
+                    localStorage.setItem('roleId', loginData.role_id); // Add role_id storage
 
                     await Swal.fire({
-                        title: 'Usuario Nuevo',
-                        text: 'Por favor, complete su registro para continuar',
-                        icon: 'info',
-                        timer: 2000,
+                        title: '¡Bienvenido!',
+                        text: 'Has iniciado sesión con Google',
+                        icon: 'success',
+                        timer: 1500,
                         showConfirmButton: false
                     });
 
-                    window.location.href = 'Register.html?source=google';
+                    // Redirect with role_id as query parameter
+                    window.location.href = `../index/index.html?role_id=${loginData.role_id}`;
+                } else {
+                    throw new Error(loginData.message || 'Error al iniciar sesión');
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -214,71 +176,6 @@
                 });
             }
         }
-        try {
-            // Decode the JWT token from Google
-            const payload = JSON.parse(atob(response.credential.split('.')[1]));
-
-            // Simulate checking if user exists in local storage
-            const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-            const existingUser = existingUsers.find(user => user.email === payload.email);
-
-            if (existingUser) {
-                // Existing user flow
-                const userData = {
-                    id: existingUser.id,
-                    email: payload.email,
-                    role: existingUser.role,
-                    token: response.credential // Using Google's credential as token
-                };
-
-                // Store user session data
-                localStorage.setItem('token', userData.token);
-                localStorage.setItem('userRole', userData.role);
-                localStorage.setItem('userId', userData.id);
-                localStorage.setItem('userEmail', userData.email);
-
-                await Swal.fire({
-                    title: '¡Bienvenido de nuevo!',
-                    text: 'Has iniciado sesión con Google',
-                    icon: 'success',
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-
-                window.location.href = '../index/index.html';
-            } else {
-                // New user flow
-                const googleData = {
-                    email: payload.email,
-                    first_name: payload.given_name || '',
-                    last_name: payload.family_name || '',
-                    picture: payload.picture || '',
-                    google_id: payload.sub || ''
-                };
-
-                // Store Google data temporarily
-                localStorage.setItem('googleData', JSON.stringify(googleData));
-
-                await Swal.fire({
-                    title: 'Usuario Nuevo',
-                    text: 'Por favor, complete su registro para continuar',
-                    icon: 'info',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-
-                window.location.href = 'Register.html?source=google';
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            await Swal.fire({
-                title: 'Error',
-                text: 'Hubo un problema al iniciar sesión con Google',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-        }
-
     </script>
 </body>
 
