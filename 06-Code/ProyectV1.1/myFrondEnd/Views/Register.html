@@ -62,7 +62,7 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Registrar</button>
-            
+
         </form>
     </div>
 
@@ -70,8 +70,6 @@
         document.addEventListener('DOMContentLoaded', function () {
             const registerForm = document.getElementById('registerForm');
             const isGoogleAuth = new URLSearchParams(window.location.search).get('source') === 'google';
-      
-
             // Manejar datos de Google si existen
             if (isGoogleAuth) {
                 const googleData = JSON.parse(localStorage.getItem('googleData') || '{}');
@@ -109,7 +107,6 @@
                     });
                     return;
                 }
-
                 try {
                     const API_URL = 'http://localhost:3000';
                     const response = await fetch(`${API_URL}/api/users`, {
@@ -122,33 +119,38 @@
 
                     const data = await response.json();
 
-                    if (data.success) {
-                        // Limpiar datos de Google si existen
-                        localStorage.removeItem('googleData');
-
-                        await Swal.fire({
-                            title: '¡Registro Exitoso!',
+                    if (response.ok) {
+                        Swal.fire({
+                            title: '¡Registro exitoso!',
                             text: 'Serás redirigido al inicio de sesión.',
                             icon: 'success',
                             timer: 2000,
                             showConfirmButton: false
                         });
 
-                        window.location.href = 'login.html';
-                    } else {
-                        throw new Error(data.message || 'Error en el registro');
+                        // Esperar 2 segundos antes de redirigir
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 2000);
+                    }
+                    else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: data.message || 'Verifica los datos e intenta nuevamente.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
                     }
                 } catch (error) {
                     Swal.fire({
                         title: 'Error',
-                        text: error.message || 'Hubo un problema al registrar el usuario',
+                        text: error.message || 'No se pudo conectar con el servidor.',
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
                 }
             });
         });
-
     </script>
     <div id="footer"></div>
 </body>
