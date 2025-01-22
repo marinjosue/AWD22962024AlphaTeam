@@ -68,7 +68,7 @@ const authController = {
             });
         }
     },
-    
+
     async checkGoogleUser(req, res) {
         const { email } = req.body;
 
@@ -81,10 +81,10 @@ const authController = {
 
         try {
             console.log('Verificando usuario con email:', email);
-            
+
             const query = 'SELECT * FROM users WHERE email = ?';
             console.log('Ejecutando query:', query);
-            
+
             const [rows] = await pool.query(query, [email]);
             console.log('Resultado de la consulta:', rows);
 
@@ -112,8 +112,15 @@ const authController = {
         const { email, google_id, google_token } = req.body;
 
         try {
-            // 1. Buscar el usuario
-            const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+            // 1. Buscar el usuario con la relación a la tabla roles
+            const [rows] = await pool.query(
+                `SELECT users.id, users.email, users.google_id, users.first_name, users.last_name, 
+                        users.id_rol, roles.roles AS role 
+                 FROM users 
+                 INNER JOIN roles ON users.id_rol = roles.id_rol 
+                 WHERE users.email = ?`,
+                [email]
+            );
 
             if (rows.length === 0) {
                 return res.status(404).json({
@@ -127,29 +134,30 @@ const authController = {
             // 2. Actualizar el google_id si no está establecido
             if (!user.google_id) {
                 await pool.query(
-                    'UPDATE users SET google_id = ? WHERE id = ?',
-                    [google_id, user.id]
+                    'UPDATE users SET google_id = ?, google_token = ? WHERE id = ?',
+                    [google_id, google_token, user.id]
                 );
             }
 
-            // 3. Generar token JWT
+            // 3. Generar token JWT con los datos del usuario
             const token = jwt.sign(
                 {
                     id: user.id,
                     email: user.email,
-                    role: user.role
+                    role: user.role // Incluyendo el rol en el token
                 },
                 process.env.JWT_SECRET || 'tu_secreto_seguro',
                 { expiresIn: '24h' }
             );
-
-            // 4. Devolver respuesta
+            
+            // Enviar la respuesta al cliente
             return res.json({
                 success: true,
                 token,
                 id: user.id,
                 email: user.email,
-                role: user.role,
+                id_rol: user.id_rol, // Incluye id_rol en la respuesta
+                role: user.role, // Incluye el nombre del rol en la respuesta
                 message: 'Login con Google exitoso'
             });
 
@@ -162,7 +170,6 @@ const authController = {
             });
         }
     }
-    
 };
 
 
