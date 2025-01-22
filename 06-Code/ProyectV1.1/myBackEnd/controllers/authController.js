@@ -110,57 +110,62 @@ const authController = {
 
     async googleLogin(req, res) {
         const { email, google_id, google_token } = req.body;
-
+    
         try {
-            // 1. Buscar el usuario con la relación a la tabla roles
+            // Buscar el usuario en la base de datos
             const [rows] = await pool.query(
                 `SELECT users.id, users.email, users.google_id, users.first_name, users.last_name, 
                         users.id_rol, roles.roles AS role 
                  FROM users 
-                 INNER JOIN roles ON users.id_rol = roles.id_rol 
+                 LEFT JOIN roles ON users.id_rol = roles.id_rol 
                  WHERE users.email = ?`,
                 [email]
             );
-
+    
             if (rows.length === 0) {
+                // Usuario no encontrado, devolver información para el registro
+                const payload = JSON.parse(atob(google_token.split('.')[1]));
                 return res.status(404).json({
                     success: false,
-                    message: 'Usuario no encontrado'
+                    isNewUser: true,
+                    email: payload.email,
+                    firstName: payload.given_name || '',
+                    lastName: payload.family_name || '',
+                    message: 'Usuario no encontrado, necesita registrarse'
                 });
             }
-
+    
             const user = rows[0];
-
-            // 2. Actualizar el google_id si no está establecido
+    
+            // Si el usuario no tiene google_id, actualízalo
             if (!user.google_id) {
                 await pool.query(
                     'UPDATE users SET google_id = ?, google_token = ? WHERE id = ?',
                     [google_id, google_token, user.id]
                 );
             }
-
-            // 3. Generar token JWT con los datos del usuario
+    
+            // Generar token JWT
             const token = jwt.sign(
                 {
                     id: user.id,
                     email: user.email,
-                    role: user.role // Incluyendo el rol en el token
+                    role: user.role
                 },
                 process.env.JWT_SECRET || 'tu_secreto_seguro',
                 { expiresIn: '24h' }
             );
-            
-            // Enviar la respuesta al cliente
+    
+            // Respuesta exitosa
             return res.json({
                 success: true,
                 token,
                 id: user.id,
                 email: user.email,
-                id_rol: user.id_rol, // Incluye id_rol en la respuesta
-                role: user.role, // Incluye el nombre del rol en la respuesta
+                role: user.role,
                 message: 'Login con Google exitoso'
             });
-
+    
         } catch (error) {
             console.error('Error en login con Google:', error);
             return res.status(500).json({
@@ -170,6 +175,7 @@ const authController = {
             });
         }
     }
+    
 };
 
 

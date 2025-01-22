@@ -2,13 +2,16 @@
 const pool = require('../config/db');
 const bcrypt = require('bcrypt');
 
-const userController = {
-       // Create new user
-       createUser: async (req, res) => {
-        try {
-            const { cedula, first_name, last_name, address, phone, email, password, gender } = req.body;
 
-            // Validate required fields
+const userController = {
+
+    // Create new user
+    createUser: async (req, res) => {
+        try {
+            const { cedula, first_name, last_name, address, phone, email, password, gender, google_id } = req.body;
+            const defaultRoleId = 3; // Define el ID de rol por defecto (por ejemplo, 2 para "usuario")
+
+            // Validar campos requeridos
             if (!cedula || !first_name || !last_name || !email || !password || !gender) {
                 return res.status(400).json({
                     success: false,
@@ -16,7 +19,7 @@ const userController = {
                 });
             }
 
-            // Check if email or cedula already exists
+            // Verificar si el email o la cédula ya existen
             const [existingUser] = await pool.query(
                 'SELECT id FROM users WHERE email = ? OR cedula = ?',
                 [email, cedula]
@@ -29,12 +32,25 @@ const userController = {
                 });
             }
 
-            // Set default role (user)
+            // Insertar el usuario en la base de datos
             const [result] = await pool.query(
-                'INSERT INTO users (cedula, first_name, last_name, address, phone, email, password, gender, id_rol) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [cedula, first_name, last_name, address || null, phone || null, email, hashedPassword, gender, id_rol]
+                `INSERT INTO users (cedula, first_name, last_name, address, phone, email, password, gender, id_rol, google_id) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    cedula,
+                    first_name,
+                    last_name,
+                    address || null, // Si no hay dirección, insertar como NULL
+                    phone || null,   // Si no hay teléfono, insertar como NULL
+                    email,
+                    password,
+                    gender,
+                    defaultRoleId,   // Rol por defecto
+                    google_id || null // Si el usuario viene de Google, almacenar su google_id
+                ]
             );
 
+            // Respuesta exitosa
             res.status(201).json({
                 success: true,
                 message: 'Usuario creado exitosamente',
@@ -44,7 +60,7 @@ const userController = {
                     first_name,
                     last_name,
                     email,
-                    role: id_rol
+                    role: defaultRoleId
                 }
             });
         } catch (error) {
@@ -56,6 +72,7 @@ const userController = {
             });
         }
     },
+
     // Get all users
     getAllUsers: async (req, res) => {
         try {
@@ -84,7 +101,7 @@ const userController = {
         }
     },
 
- 
+
 
     // Update user
     updateUser: async (req, res) => {
@@ -167,4 +184,69 @@ const userController = {
     }
 };
 
-module.exports = userController;
+module.exports = userController;createUser: async (req, res) => {
+    try {
+        const { cedula, first_name, last_name, address, phone, email, password, gender, google_id } = req.body;
+        const defaultRoleId = 2; // Define el ID de rol por defecto (por ejemplo, 2 para "usuario")
+
+        // Validar campos requeridos
+        if (!cedula || !first_name || !last_name || !email || !password || !gender) {
+            return res.status(400).json({
+                success: false,
+                message: 'Por favor complete todos los campos requeridos (cédula, nombre, apellido, email, contraseña, género)'
+            });
+        }
+
+        // Verificar si el email o la cédula ya existen
+        const [existingUser] = await pool.query(
+            'SELECT id FROM users WHERE email = ? OR cedula = ?',
+            [email, cedula]
+        );
+
+        if (existingUser.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Ya existe un usuario con este email o cédula'
+            });
+        }
+
+        // Insertar el usuario en la base de datos
+        const [result] = await pool.query(
+            `INSERT INTO users (cedula, first_name, last_name, address, phone, email, password, gender, id_rol, google_id) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                cedula,
+                first_name,
+                last_name,
+                address || null, // Si no hay dirección, insertar como NULL
+                phone || null,   // Si no hay teléfono, insertar como NULL
+                email,
+                password,
+                gender,
+                defaultRoleId,   // Rol por defecto
+                google_id || null // Si el usuario viene de Google, almacenar su google_id
+            ]
+        );
+
+        // Respuesta exitosa
+        res.status(201).json({
+            success: true,
+            message: 'Usuario creado exitosamente',
+            user: {
+                id: result.insertId,
+                cedula,
+                first_name,
+                last_name,
+                email,
+                role: defaultRoleId
+            }
+        });
+    } catch (error) {
+        console.error('Error en registro:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al crear el usuario',
+            error: error.message
+        });
+    }
+};

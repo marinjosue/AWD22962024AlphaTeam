@@ -148,21 +148,37 @@
                 const loginData = await loginResponse.json();
 
                 if (loginData.success) {
-                    localStorage.setItem('token', loginData.token); // Corregido
-                    localStorage.setItem('userRole', loginData.role); // Corregido
-                    localStorage.setItem('userId', loginData.id); // Corregido
-                    localStorage.setItem('roleId', loginData.role_id); // Corregido (si existe role_id)
+                    localStorage.setItem('token', loginData.token);
+                    localStorage.setItem('userRole', loginData.role);
+                    localStorage.setItem('userId', loginData.id);
+                    localStorage.setItem('roleId', loginData.role_id);
 
                     await Swal.fire({
                         title: '¡Bienvenido!',
-                        text: `Has iniciado sesión como ${loginData.role}`, 
+                        text: `Has iniciado sesión como ${loginData.role}`,
                         icon: 'success',
                         timer: 1500,
                         showConfirmButton: false
                     });
 
-                    // Redirigir con role_id como parámetro en la URL
                     window.location.href = `../index/index.html?role_id=${loginData.role_id}`;
+                } else if (loginData.isNewUser) {
+                    // Usuario nuevo
+                    await Swal.fire({
+                        title: 'Usuario Nuevo',
+                        text: loginData.message,
+                        icon: 'info',
+                        confirmButtonText: 'Completar Registro'
+                    });
+
+                    // Redirigir al formulario de registro con los datos obtenidos
+                    const queryParams = new URLSearchParams({
+                        email: loginData.email,
+                        firstName: loginData.firstName,
+                        lastName: loginData.lastName
+                    }).toString();
+
+                    window.location.href = `Register.html?${queryParams}`;
                 } else {
                     throw new Error(loginData.message || 'Error al iniciar sesión');
                 }
@@ -176,6 +192,7 @@
                 });
             }
         }
+
 
     </script>
 </body>

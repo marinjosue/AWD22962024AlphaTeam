@@ -79,14 +79,20 @@
                     document.getElementById('last_name').value = googleData.last_name || '';
                     document.getElementById('email').readOnly = true;
 
-                    // Añadir campo oculto para google_id
-                    const googleIdInput = document.createElement('input');
-                    googleIdInput.type = 'hidden';
-                    googleIdInput.name = 'google_id';
-                    googleIdInput.value = googleData.google_id;
-                    registerForm.appendChild(googleIdInput);
+                    // Campo oculto para google_id
+                    if (googleData.google_id) {
+                        const googleIdInput = document.createElement('input');
+                        googleIdInput.type = 'hidden';
+                        googleIdInput.name = 'google_id';
+                        googleIdInput.value = googleData.google_id;
+                        registerForm.appendChild(googleIdInput);
+                    }
+                } else {
+                    // Si no hay datos de Google, redirigir al flujo normal
+                    window.location.href = 'login.html';
                 }
             }
+
 
             // Manejar envío del formulario
             registerForm.addEventListener('submit', async function (event) {
@@ -114,7 +120,17 @@
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(userData)
+                        body: JSON.stringify({
+                            cedula: userData.cedula,
+                            first_name: userData.first_name,
+                            last_name: userData.last_name,
+                            address: userData.address,
+                            phone: userData.phone,
+                            email: userData.email,
+                            password: userData.password,
+                            gender: userData.gender,
+                            google_id: userData.google_id || null // Asegurarse de enviar google_id si está presente
+                        })
                     });
 
                     const data = await response.json();
