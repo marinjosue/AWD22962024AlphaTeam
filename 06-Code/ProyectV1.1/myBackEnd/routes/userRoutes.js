@@ -20,5 +20,6 @@ router.delete('/:id', userController.deleteUser);
 
 // Update password
 router.patch('/:id/password', userController.updatePassword);
+//
 
 module.exports = router;

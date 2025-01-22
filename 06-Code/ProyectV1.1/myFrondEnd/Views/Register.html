@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../css/register.css">
 </head>
+
 <body>
     <div id="header"></div>
     <script src="../js/dinav.js"></script>
@@ -69,16 +71,21 @@
             event.preventDefault();
 
             const formData = new FormData(this);
+            const userData = Object.fromEntries(formData.entries()); // Convierte FormData a JSON
 
             try {
-                const response = await fetch('../controller/register_user.php', {
+                const API_URL = 'http://localhost:3000';
+                const response = await fetch(`${API_URL}/api/users`, {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json', // Configura encabezado JSON
+                    },
+                    body: JSON.stringify(userData), // Convierte datos a formato JSON
                 });
 
                 const data = await response.json();
 
-                if (data.success) {
+                if (response.ok) {
                     Swal.fire({
                         title: '¡Registro Exitoso!',
                         text: 'Serás redirigido al inicio de sesión.',
@@ -91,7 +98,7 @@
                 } else {
                     Swal.fire({
                         title: 'Error',
-                        text: data.message,
+                        text: data.message || 'Ocurrió un error durante el registro.',
                         icon: 'error',
                         confirmButtonText: 'Intentar de nuevo'
                     });
@@ -105,7 +112,29 @@
                 });
             }
         });
+        document.addEventListener('DOMContentLoaded', () => {
+            // Obtener los parámetros de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const prefillData = {
+                cedula: urlParams.get('cedula') || '',
+                first_name: urlParams.get('first_name') || '',
+                last_name: urlParams.get('last_name') || '',
+                address: urlParams.get('address') || '',
+                phone: urlParams.get('phone') || '',
+                email: urlParams.get('email') || '',
+            };
+
+            // Prellenar el formulario
+            Object.keys(prefillData).forEach((key) => {
+                const input = document.getElementById(key);
+                if (input) {
+                    input.value = prefillData[key];
+                }
+            });
+        });
+
     </script>
     <div id="footer"></div>
 </body>
+
 </html>

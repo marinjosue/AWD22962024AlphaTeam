@@ -122,6 +122,8 @@ const authController = {
             next();
         };
     }
+    
+
 };
 
 module.exports = authController;

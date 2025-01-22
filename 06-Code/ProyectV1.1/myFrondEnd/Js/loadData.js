@@ -25,7 +25,7 @@ function handleLogout() {
     });
 }
 async function cargarPerfilUsuario() {
-    try {
+
         // Obtener el token del localStorage
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
@@ -73,16 +73,6 @@ async function cargarPerfilUsuario() {
         const editProfileBtn = document.querySelector('.edit-profile-btn');
         editProfileBtn.setAttribute('data-id', user.id);
         editProfileBtn.addEventListener('click', handleEditProfile);
-
-    } catch (error) {
-        console.error('Error cargando el perfil del usuario:', error);
-        Swal.fire({
-            title: 'Error',
-            text: 'No se pudo cargar el perfil del usuario.',
-            icon: 'error',
-            confirmButtonText: 'OK'
-        });
-    }
 }
 
 
