@@ -68,92 +68,101 @@ const authController = {
             });
         }
     },
+    
+    async checkGoogleUser(req, res) {
+        const { email } = req.body;
 
-    googleLogin: async (req, res) => {
-        const { credential } = req.body;
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                message: 'El email es requerido'
+            });
+        }
+
         try {
-            const ticket = await client.verifyIdToken({
-                idToken: credential,
-                audience: GOOGLE_CLIENT_ID,
+            console.log('Verificando usuario con email:', email);
+            
+            const query = 'SELECT * FROM users WHERE email = ?';
+            console.log('Ejecutando query:', query);
+            
+            const [rows] = await pool.query(query, [email]);
+            console.log('Resultado de la consulta:', rows);
+
+            return res.json({
+                success: true,
+                exists: rows.length > 0,
+                message: rows.length > 0 ? 'Usuario encontrado' : 'Usuario no encontrado'
+            });
+        } catch (error) {
+            console.error('Error detallado al verificar usuario:', {
+                message: error.message,
+                stack: error.stack,
+                code: error.code
             });
 
-            const payload = ticket.getPayload();
-            const email = payload.email;
-            const firstName = payload.given_name;
-            const lastName = payload.family_name;
+            return res.status(500).json({
+                success: false,
+                message: 'Error al verificar el usuario',
+                error: error.message
+            });
+        }
+    },
 
-            // Buscar al usuario en la base de datos
-            const [user] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+    async googleLogin(req, res) {
+        const { email, google_id, google_token } = req.body;
 
-            if (user.length === 0) {
-                // Si no existe el usuario, devolver datos para registro
-                return res.status(200).json({
+        try {
+            // 1. Buscar el usuario
+            const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+
+            if (rows.length === 0) {
+                return res.status(404).json({
                     success: false,
-                    register: true,
-                    data: { firstName, lastName, email },
+                    message: 'Usuario no encontrado'
                 });
             }
 
-            // Generar token JWT
+            const user = rows[0];
+
+            // 2. Actualizar el google_id si no está establecido
+            if (!user.google_id) {
+                await pool.query(
+                    'UPDATE users SET google_id = ? WHERE id = ?',
+                    [google_id, user.id]
+                );
+            }
+
+            // 3. Generar token JWT
             const token = jwt.sign(
-                { userId: user[0].id, role: user[0].id_rol },
-                JWT_SECRET,
+                {
+                    id: user.id,
+                    email: user.email,
+                    role: user.role
+                },
+                process.env.JWT_SECRET || 'tu_secreto_seguro',
                 { expiresIn: '24h' }
             );
 
-            res.status(200).json({
+            // 4. Devolver respuesta
+            return res.json({
                 success: true,
                 token,
-                user: {
-                    id: user[0].id,
-                    role: user[0].id_rol,
-                    email: user[0].email,
-                },
+                id: user.id,
+                email: user.email,
+                role: user.role,
+                message: 'Login con Google exitoso'
             });
+
         } catch (error) {
-            console.error('Error al validar el token de Google:', error.message);
-            res.status(400).json({
+            console.error('Error en login con Google:', error);
+            return res.status(500).json({
                 success: false,
-                message: 'Error al validar el token de Google',
+                message: 'Error en el proceso de login con Google',
+                error: error.message
             });
         }
-    },
-
-    verifyToken: (req, res, next) => {
-        const authHeader = req.headers.authorization;
-
-        if (!authHeader) {
-            return res.status(401).json({
-                success: false,
-                message: 'No token provided',
-            });
-        }
-
-        const token = authHeader.split(' ')[1];
-
-        try {
-            const decoded = jwt.verify(token, JWT_SECRET);
-            req.user = decoded;
-            next();
-        } catch (error) {
-            res.status(401).json({
-                success: false,
-                message: 'Invalid token',
-            });
-        }
-    },
-
-    checkRole: (roles) => {
-        return (req, res, next) => {
-            if (!roles.includes(req.user.role)) {
-                return res.status(403).json({
-                    success: false,
-                    message: 'No tienes permisos para realizar esta acción',
-                });
-            }
-            next();
-        };
-    },
+    }
+    
 };
 
 
