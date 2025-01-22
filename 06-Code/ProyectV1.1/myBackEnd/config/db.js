@@ -1,12 +1,14 @@
-const mysql = require('mysql2');  // Cambia 'mysql' a 'mysql2'
+require('dotenv').config();
+const mysql = require('mysql2');
 
 const pool = mysql.createPool({
-    host: 'autorack.proxy.rlwy.net',
-    user: 'root',
-    password: 'GdmUDNqCjqbuDPBCYwdipQHNdOgLMRim',
-    database: 'railway',
-    port: 59374,
-    connectionLimit: 10, // Número máximo de conexiones en el pool
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT,
+    connectionLimit: 10,
+    waitForConnections: true,
 });
 
-module.exports = pool.promise();  // Esto ahora funcionará con mysql2
+module.exports = pool.promise();

@@ -53,9 +53,11 @@
 
                     <!-- Google Sign-In Button -->
                     <div id="g_id_onload"
-                        data-client_id="273833412389-akcr05jeal097enbjia7jgroio5hkkc0.apps.googleusercontent.com"
-                        data-context="signin" data-ux_mode="popup" data-callback="handleCredentialResponse"
-                        data-auto_prompt="false">
+                    data-client_id="273833412389-akcr05jeal097enbjia7jgroio5hkkc0.apps.googleusercontent.com"
+                    data-context="signin" 
+                    data-ux_mode="popup" 
+                    data-callback="handleCredentialResponse"
+                    data-auto_prompt="false">
                     </div>
 
                     <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
@@ -189,7 +191,7 @@
                     title: 'Error',
                     text: error.message || 'Hubo un problema al iniciar sesión con Google',
                     icon: 'error',
-                    confirmButtonText: 'OK'
+        confirmButtonText: 'OK'
                 });
             }
         }
