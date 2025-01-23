@@ -10,7 +10,7 @@ const app = express();
 
 // Configuración específica de CORS
 app.use(cors({
-    origin: 'http://127.0.0.1:5501', 
+    origin: 'https://awd-22962024-alpha-team.vercel.app', 
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
