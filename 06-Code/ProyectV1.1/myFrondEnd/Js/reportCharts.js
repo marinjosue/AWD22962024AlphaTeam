@@ -61,3 +61,37 @@ document.addEventListener("DOMContentLoaded", () => {
     const completedCoursesCtx = document.getElementById("completedCoursesChart").getContext("2d");
     createPieChart(completedCoursesCtx, courses, completedCourses, "Cursos Completados");
 });
+document.getElementById("downloadPdf").addEventListener("click", async () => {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+
+    const charts = [
+        { id: "mostSoldChart", title: "Cursos Más Vendidos" },
+        { id: "leastSoldChart", title: "Cursos Menos Vendidos" },
+        { id: "abandonedCoursesChart", title: "Cursos Abandonados" },
+        { id: "completedCoursesChart", title: "Cursos Completados" }
+    ];
+
+    let yPosition = 10;
+
+    for (const chart of charts) {
+        const canvas = document.getElementById(chart.id);
+        const imgData = await html2canvas(canvas).then(canvas => canvas.toDataURL("image/png"));
+
+        pdf.text(chart.title, 10, yPosition);
+        pdf.addImage(imgData, "PNG", 10, yPosition + 10, 180, 100);
+        yPosition += 120;
+
+        if (yPosition > 250) { // Add a new page if needed
+            pdf.addPage();
+            yPosition = 10;
+        }
+    }
+
+    pdf.text("Reporte General y Ganancias", 10, yPosition + 10);
+    pdf.text("Ganancia Total: $12,750", 10, yPosition + 20);
+    pdf.text("Ganancia Promedio por Curso: $2,550", 10, yPosition + 30);
+    pdf.text("Curso con Más Ganancia: Meditación ($4,500)", 10, yPosition + 40);
+
+    pdf.save("Reportes_Cursos.pdf");
+});
