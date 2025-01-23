@@ -30,6 +30,8 @@
     </div>
     <div id="footer"></div>
     <script>
+        const API_URL = 'http://localhost:3000/api/courses';
+
         async function fetchCourseDetails() {
             const params = new URLSearchParams(window.location.search);
             const courseId = params.get('id');
@@ -40,35 +42,40 @@
                 return;
             }
 
-            const response = await fetch(`../controller/read_courses.php?id=${courseId}`);
-            const course = await response.json();
+            try {
+                const response = await fetch(`${API_URL}/${courseId}`);
 
-            if (course.error) {
-                alert(course.error);
+                if (!response.ok) {
+                    throw new Error('Error al obtener los detalles del curso');
+                }
+
+                const course = await response.json();
+
+                document.getElementById('courseTitle').textContent = course.course_name;
+                document.getElementById('courseDescription').textContent = course.course_description;
+                document.getElementById('courseVideo').src = course.course_youtube;
+
+                const unitsContainer = document.getElementById('courseUnits');
+                unitsContainer.innerHTML = '';
+
+                if (course.units && course.units.length > 0) {
+                    course.units.forEach(unit => {
+                        const unitElement = document.createElement('div');
+                        unitElement.innerHTML = `
+                            <h4>${unit.unit_title}</h4>
+                            <p>${unit.unit_content}</p>
+                        `;
+                        unitsContainer.appendChild(unitElement);
+                    });
+                } else {
+                    unitsContainer.innerHTML = '<p>No hay unidades asociadas a este curso.</p>';
+                }
+            } catch (error) {
+                console.error('Error al obtener los detalles del curso:', error);
+                alert('Hubo un error al cargar los detalles del curso.');
                 window.location.href = 'course.html';
-                return;
-            }
-
-            document.getElementById('courseTitle').textContent = course.course_name;
-            document.getElementById('courseDescription').textContent = course.course_description;
-            document.getElementById('courseVideo').src = course.course_youtube;
-
-            const unitsContainer = document.getElementById('courseUnits');
-            unitsContainer.innerHTML = '';
-            if (course.units.length > 0) {
-                course.units.forEach(unit => {
-                    const unitElement = document.createElement('div');
-                    unitElement.innerHTML = `
-                        <h4>${unit.unit_title}</h4>
-                        <p>${unit.unit_content}</p>
-                    `;
-                    unitsContainer.appendChild(unitElement);
-                });
-            } else {
-                unitsContainer.innerHTML = '<p>No hay unidades asociadas a este curso.</p>';
             }
         }
-
         fetchCourseDetails();
     </script>
 </body>
