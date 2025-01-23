@@ -76,7 +76,11 @@ const userController = {
     // Get all users
     getAllUsers: async (req, res) => {
         try {
-            const [users] = await pool.query('SELECT id, cedula, first_name, last_name, address, phone, email, gender, id_rol FROM users');
+            const [users] = await pool.query(`
+                SELECT u.id, u.cedula, u.first_name, u.last_name, u.address, u.phone, u.email, u.gender, r.roles as role
+                FROM users u
+                JOIN roles r ON u.id_rol = r.id_rol
+            `);
             res.json(users);
         } catch (error) {
             res.status(500).json({ message: 'Error fetching users', error: error.message });

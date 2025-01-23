@@ -40,18 +40,41 @@
         </ul>
 
         <div class="tab-content" id="gestionUsuariosContent">
-
+            
             <!-- Managent users -->
             <div class="tab-pane fade mt-4" id="usuarios" role="tabpanel" aria-labelledby="usuarios-tab">
+                
                 <h3>Usuarios</h3>
                 <div class="table-responsive">
+                    <div class="row mt-3"></div>
+                    <div class="col-md-6">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Buscar por ID Usuario o Nombre">
+                    </div>
+                </div>
+
+                <script>
+                    document.getElementById('searchInput').addEventListener('input', function () {
+                        const filter = this.value.toLowerCase();
+                        const rows = document.querySelectorAll('#usersTable tbody tr');
+
+                        rows.forEach(row => {
+                            const id = row.cells[0].textContent.toLowerCase();
+                            const name = row.cells[1].textContent.toLowerCase();
+                            if (id.includes(filter) || name.includes(filter)) {
+                                row.style.display = '';
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        });
+                    });
+                </script>
+                <br>
                     <table class="table table-bordered table-hover" id="usersTable">
                         <thead class="table-dark">
                             <tr>
                                 <th>ID Usuario</th>
                                 <th>Nombre</th>
                                 <th>Email</th>
-                                <th>Cursos Inscritos</th>
                                 <th>phone</th>
                                 <th>Rol</th>
                                 <th>Acciones</th>
@@ -267,9 +290,6 @@
                         console.error(`Error al ${userId ? 'editar' : 'agregar'} usuario:`, error);
                     }
                 });
-
-
-
                 // load role
                 async function cargarRolesEnFormulario() {
                     try {
@@ -290,9 +310,6 @@
                     cargarRolesEnFormulario();
                 });
             </script>
-
-
-
             <!-- managent Role -->
             <div class="tab-pane fade show active" id="roles" role="tabpanel" aria-labelledby="roles-tab">
                 <h3>Roles</h3>
@@ -303,8 +320,6 @@
                                 <th>ID Rol</th>
                                 <th>Nombre del Rol</th>
                                 <th>Acciones</th>
-
-
                             </tr>
                         </thead>
                         <tbody id="rolesBody">
@@ -387,7 +402,7 @@
                     <td>${user.email}</td>
                     <td>${user.cedula}</td>
                     <td>${user.phone}</td>
-                    <td>${getRole(user.id_rol)}</td>
+                    <td>${getRole(roles.roles)}</td>
                     <td>
                         <button class="btn btn-primary" onclick="editUser(${user.id})">Editar</button>
                         <button class="btn btn-danger" onclick="deleteUser(${user.id})">Eliminar</button>
@@ -400,14 +415,6 @@
                     console.error('Error al obtener los usuarios:', error);
                 }
             }
-
-
-
-
-
-
-
-
             //ADD ROLE 
             // Función para manejar el envío del formulario de actualización de rol
             document.getElementById('editRoleForm').addEventListener('submit', async (event) => {
@@ -464,9 +471,8 @@
                         <td>${user.id}</td>
                         <td>${user.first_name} ${user.last_name}</td>
                         <td>${user.email}</td>
-                        <td></td>
                         <td>${user.phone}</td>
-                        <td>${user.id_rol}</td>
+                        <td>${user.role}</td>
                         <td>
                             <button class="btn btn-warning btn-sm editUserBtn" data-id="${user.id}">
                                 <i class="fas fa-edit"></i> Editar
@@ -557,8 +563,6 @@
                     alert('Error al intentar actualizar el rol');
                 }
             }
-
-
 
             document.addEventListener('DOMContentLoaded', () => {
                 cargarRoles();
