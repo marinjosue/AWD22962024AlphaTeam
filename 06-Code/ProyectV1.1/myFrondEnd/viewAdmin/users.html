@@ -141,11 +141,6 @@
                                             <option value="M">Masculino</option>
                                             <option value="F">Femenino</option>
                                         </select>
-                                        <div class="mb-3">
-                                            <label for="userRole" class="form-label">Rol</label>
-                                            <select class="form-select" id="userRole" name="id_rol" required>
-                                            </select>
-                                        </div>
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Cerrar</button>
                                         <button type="submit" class="btn btn-primary">Guardar Usuario</button>
@@ -206,11 +201,6 @@
                                         <option value="F">Femenino</option>
                                     </select>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="userRole" class="form-label">Rol</label>
-                                    <select class="form-select" id="userRole" name="id_rol">
-                                    </select>
-                                </div>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                             </form>
@@ -229,7 +219,7 @@
                     const data = Object.fromEntries(formData.entries());
 
                     try {
-                        const response = await fetch('http://localhost:3000/api/users2/', {
+                        const response = await fetch('http://ec2-3-15-222-198.us-east-2.compute.amazonaws.com:3000/api/users2/', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -264,8 +254,8 @@
                         // Definir método y URL según si se agrega o edita un usuario
                         const method = userId ? 'PUT' : 'POST';
                         const url = userId
-                            ? `http://localhost:3000/api/users2/${userId}`
-                            : 'http://localhost:3000/api/users2/';
+                            ? `http://ec2-3-15-222-198.us-east-2.compute.amazonaws.com:3000/api/users2/${userId}`
+                            : 'http://ec2-3-15-222-198.us-east-2.compute.amazonaws.com:3000/api/users2/';
 
                         const response = await fetch(url, {
                             method: method,
@@ -293,7 +283,7 @@
                 // load role
                 async function cargarRolesEnFormulario() {
                     try {
-                        const response = await fetch('http://localhost:3000/api/roles2');
+                        const response = await fetch('http://ec2-3-15-222-198.us-east-2.compute.amazonaws.com:3000/api/roles2');
                         const roles = await response.json();
 
                         const roleSelect = document.getElementById('userRole');
@@ -387,7 +377,7 @@
             // Función para obtener los usuarios desde la API y llenar la tabla
             async function fetchUsers() {
                 try {
-                    const response = await fetch('http://localhost:3000/api/users2');
+                    const response = await fetch('http://ec2-3-15-222-198.us-east-2.compute.amazonaws.com:3000/api/users2');
                     const users = await response.json();
                     console.log(response)
                     const usersBody = document.getElementById('usersBody');
@@ -432,7 +422,7 @@
 
                 try {
                     // Hacer la solicitud PUT con los datos como JSON
-                    const response = await fetch(`http://localhost:3000/api/roles/${roleId}`, {
+                    const response = await fetch(`http://ec2-3-15-222-198.us-east-2.compute.amazonaws.com:3000/api/roles/${roleId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -458,7 +448,7 @@
 
             async function cargarUsuarios() {
                 try {
-                    const response = await fetch('http://localhost:3000/api/users2');
+                    const response = await fetch('http://ec2-3-15-222-198.us-east-2.compute.amazonaws.com:3000/api/users2');
                     const data = await response.json();
 
                     const usersTableBody = document.getElementById('usersBody');
@@ -497,7 +487,7 @@
             });
             async function cargarRoles() {
                 try {
-                    const response = await fetch('http://localhost:3000/api/roles');
+                    const response = await fetch('http://ec2-3-15-222-198.us-east-2.compute.amazonaws.com:3000/api/roles');
                     const data = await response.json();
 
                     const rolesTableBody = document.getElementById('rolesBody');
@@ -540,7 +530,7 @@
                 });
 
                 try {
-                    const response = await fetch(`http://localhost:3000/api/roles/${roleId}`, {
+                    const response = await fetch(`http://ec2-3-15-222-198.us-east-2.compute.amazonaws.com:3000/api/roles/${roleId}`, {
                         method: 'PUT', // Asegúrate de usar el método correcto
                         headers: {
                             'Content-Type': 'application/json',
@@ -587,7 +577,7 @@
 
                 if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
                     try {
-                        const response = await fetch(`http://localhost:3000/api/users2/${userId}`, {
+                        const response = await fetch(`http://ec2-3-15-222-198.us-east-2.compute.amazonaws.com:3000/api/users2/${userId}`, {
                             method: 'DELETE', // Cambia a DELETE
                             headers: {
                                 'Content-Type': 'application/json'
@@ -623,7 +613,7 @@
                 if (confirm('¿Estás seguro de que deseas eliminar este rol?')) {
                     try {
                         // Pasamos el roleId directamente en la URL
-                        const response = await fetch(`http://localhost:3000/api/roles/${roleId}`, {
+                        const response = await fetch(`http://ec2-3-15-222-198.us-east-2.compute.amazonaws.com:3000/api/roles/${roleId}`, {
                             method: 'DELETE',
                             headers: {
                                 'Content-Type': 'application/json' // Aunque no se necesita si no envías un body
@@ -664,7 +654,7 @@
                 event.preventDefault();
 
                 const userId = event.target.getAttribute('data-id'); // Obtener ID del usuario
-                const url = `http://localhost:3000/api/users2/${userId}`; // URL para obtener datos
+                const url = `http://ec2-3-15-222-198.us-east-2.compute.amazonaws.com:3000/api/users2/${userId}`; // URL para obtener datos
 
                 try {
                     const response = await fetch(url);
@@ -681,7 +671,7 @@
                         document.getElementById('email').value = user.email || '';
                         document.getElementById('password').value = ''; // Contraseñas no se rellenan
                         document.getElementById('gender').value = user.gender || '';
-                        document.getElementById('userRole').value = user.id_rol || '';
+                        document.getElementById('userRole').value = user.id_rol || '3';
 
                         // Abrir el modal
                         const modal = new bootstrap.Modal(document.getElementById('userModal'));

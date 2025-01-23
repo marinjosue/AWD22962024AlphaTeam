@@ -64,8 +64,6 @@ const userController2 = {
             ).then(() => console.log("Correo enviado correctamente"))
                 .catch((error) => console.error("Error al enviar correo:", error));
 
-
-
         } catch (error) {
             console.error('Error en registro:', error);
             res.status(500).json({

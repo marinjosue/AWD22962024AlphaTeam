@@ -37,7 +37,7 @@ async function cargarPerfilUsuario() {
         return;
     }
 
-    const API_URL = 'http://localhost:3000';
+    const API_URL = 'http://ec2-3-15-222-198.us-east-2.compute.amazonaws.com:3000';
     const response = await fetch(`${API_URL}/api/users/${userId}`, {
         method: 'GET',
         headers: {
