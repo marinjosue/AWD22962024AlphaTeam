@@ -31,6 +31,11 @@
     <div id="footer"></div>
     <script>
         const API_URL = 'http://localhost:3000/api/courses';
+        function transformYoutubeUrl(url) {
+            const urlObj = new URL(url);
+            const videoId = urlObj.searchParams.get('v'); // Obtiene el ID del video (parámetro 'v')
+            return `https://www.youtube.com/embed/${videoId}`;
+        }
 
         async function fetchCourseDetails() {
             const params = new URLSearchParams(window.location.search);
@@ -53,7 +58,10 @@
 
                 document.getElementById('courseTitle').textContent = course.course_name;
                 document.getElementById('courseDescription').textContent = course.course_description;
-                document.getElementById('courseVideo').src = course.course_youtube;
+
+                // Transformar la URL de YouTube antes de asignarla al iframe
+                const transformedUrl = transformYoutubeUrl(course.course_youtube);
+                document.getElementById('courseVideo').src = transformedUrl;
 
                 const unitsContainer = document.getElementById('courseUnits');
                 unitsContainer.innerHTML = '';
@@ -62,9 +70,9 @@
                     course.units.forEach(unit => {
                         const unitElement = document.createElement('div');
                         unitElement.innerHTML = `
-                            <h4>${unit.unit_title}</h4>
-                            <p>${unit.unit_content}</p>
-                        `;
+                    <h4>${unit.unit_title}</h4>
+                    <p>${unit.unit_content}</p>
+                `;
                         unitsContainer.appendChild(unitElement);
                     });
                 } else {
