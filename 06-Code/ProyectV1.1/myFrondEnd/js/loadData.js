@@ -84,7 +84,7 @@ async function cargarPerfilUsuario() {
         }).toString();
 
         // Redirigir a la página de edición de perfil con los parámetros
-        window.location.href = `../views/updateUser.htm?${queryParams}`;
+        window.location.href = `../views/updateUser.html`;
     });
 
 }
