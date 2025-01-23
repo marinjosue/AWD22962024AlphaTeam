@@ -5,7 +5,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
     const password = document.getElementById('password').value;
 
     try {
-        const API_URL = 'http://ec2-3-15-222-198.us-east-2.compute.amazonaws.com:3000';
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const response = await fetch(`${API_URL}/api/auth/login`, {
             method: 'POST',
             headers: {
@@ -54,7 +54,7 @@ async function handleCredentialResponse(response) {
     try {
         // Decodificar el payload del token de Google
         const payload = JSON.parse(atob(response.credential.split('.')[1]));
-        const API_URL = 'http://ec2-3-15-222-198.us-east-2.compute.amazonaws.com:3000';
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
         // Enviar los datos de Google al backend
         const loginResponse = await fetch(`${API_URL}/api/auth/google-login`, {
