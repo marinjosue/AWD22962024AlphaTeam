@@ -59,7 +59,7 @@ document.getElementById('save-button').addEventListener('click', async () => {
         if (response.ok) {
             showModal('Éxito', 'Usuario actualizado correctamente.');
             setTimeout(() => {
-                window.location.href = '../viewadmin/profile.html';
+                window.location.href = '../viewAdmin/profile.html';
             }, 2000);
         } else {
             const error = await response.json();
