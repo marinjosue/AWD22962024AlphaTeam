@@ -101,17 +101,11 @@ const userController = {
         }
     },
 
-
-
     // Update user
     updateUser: async (req, res) => {
         try {
             const { cedula, first_name, last_name, address, phone, email, gender, id_rol, profile_image } = req.body;
-            const userId = req.params.id;
-    
-            console.log('Datos recibidos para actualización:', req.body);
-    
-            // Verificar si el usuario existe
+            const userId = req.params.id; // Verificar si el usuario existe
             const [existingUser] = await pool.query('SELECT * FROM users WHERE id = ?', [userId]);
             if (existingUser.length === 0) {
                 return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
@@ -137,7 +131,7 @@ const userController = {
                 [cedula, first_name, last_name, address, phone, email, updatedGender, id_rol || currentUser.id_rol, profile_image || currentUser.profile_image, userId]
             );
     
-            res.json({ success: true, message: 'Usuario actualizado correctamente' });
+            res.json({ success: true });
         } catch (error) {
             console.error('Error al actualizar usuario:', {
                 message: error.message,
@@ -147,6 +141,7 @@ const userController = {
             res.status(500).json({ success: false, message: 'Error updating user', error: error.message });
         }
     },
+
     // Delete user
     deleteUser: async (req, res) => {
         try {

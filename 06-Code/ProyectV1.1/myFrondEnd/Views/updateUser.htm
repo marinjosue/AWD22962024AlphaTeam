@@ -71,106 +71,105 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold" id="feedbackModalLabel">Mensaje</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body text-center p-4" id="feedbackModalBody">
+                    <!-- El mensaje se actualiza dinámicamente -->
+                </div>
+                <div class="modal-footer justify-content-center border-0">
+                    <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const API_URL = 'http://localhost:3000';
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    const showModal = (title, message) => {
+        const modalTitle = document.getElementById('feedbackModalLabel');
+        const modalBody = document.getElementById('feedbackModalBody');
+        modalTitle.textContent = title;
+        modalBody.textContent = message;
+        const feedbackModal = new bootstrap.Modal(document.getElementById('feedbackModal'));
+        feedbackModal.show();
+    };
 
-    <script>
-        const API_URL = 'http://localhost:3000';
-
-        // Cargar datos del usuario en el formulario
-        const loadUserData = async (id) => {
-            try {
-                const response = await fetch(`${API_URL}/api/users/${id}`);
-                if (response.ok) {
-                    const user = await response.json();
-                    document.getElementById('id').value = user.id;
-                    document.getElementById('cedula').value = user.cedula;
-                    document.getElementById('first_name').value = user.first_name;
-                    document.getElementById('last_name').value = user.last_name;
-                    document.getElementById('email').value = user.email;
-                    document.getElementById('address').value = user.address || '';
-                    document.getElementById('phone').value = user.phone || '';
-                    document.getElementById('password').value = user.password || '';
-                } else {
-                    showAlert('Usuario no encontrado.', 'danger');
-                }
-            } catch (error) {
-                console.error('Error al cargar los datos del usuario:', error);
-                showAlert('Error al cargar los datos del usuario.', 'danger');
+    const loadUserData = async (id) => {
+        try {
+            const response = await fetch(`${API_URL}/api/users/${id}`);
+            if (response.ok) {
+                const user = await response.json();
+                document.getElementById('id').value = user.id;
+                document.getElementById('cedula').value = user.cedula;
+                document.getElementById('first_name').value = user.first_name;
+                document.getElementById('last_name').value = user.last_name;
+                document.getElementById('email').value = user.email;
+                document.getElementById('address').value = user.address || '';
+                document.getElementById('phone').value = user.phone || '';
+                document.getElementById('password').value = user.password || '';
+            } else {
+                showModal('Error', 'Usuario no encontrado.');
             }
-        };
+        } catch (error) {
+            console.error('Error al cargar los datos del usuario:', error);
+            showModal('Error', 'Error al cargar los datos del usuario.');
+        }
+    };
 
-        // Guardar cambios del usuario
-        document.getElementById('save-button').addEventListener('click', async () => {
-            const form = document.getElementById('edit-user-form');
-            const formData = new FormData(form);
+    document.getElementById('save-button').addEventListener('click', async () => {
+        const form = document.getElementById('edit-user-form');
+        const formData = new FormData(form);
+        const fileInput = document.getElementById('profile_image');
+        const file = fileInput.files[0];
+        let profileImageName = 'default.png';
 
-            const fileInput = document.getElementById('profile_image');
-            const file = fileInput.files[0];
-            let profileImageName = 'default.png'; // Imagen por defecto
+        if (file) {
+            const cedula = document.getElementById('cedula').value;
+            const renamedFile = new File([file], `${cedula}.png`, { type: file.type });
+            const uploadPath = `../imgProfile/${renamedFile.name}`;
+            profileImageName = renamedFile.name;
+        }
 
-            if (file) {
-                const cedula = document.getElementById('cedula').value;
-                const renamedFile = new File([file], `${cedula}.png`, { type: file.type });
-                profileImageName = `${cedula}.png`;
-            }
+        formData.set('profile_image', profileImageName);
+        const userId = formData.get('id');
+        const userData = Object.fromEntries(formData.entries());
 
-            formData.set('profile_image', profileImageName);
-
-            const userId = formData.get('id');
-            const userData = Object.fromEntries(formData.entries());
-
-            // Log para verificar los datos enviados
-            console.log('Datos enviados al backend:', userData);
-
-            const response = await fetch(`http://localhost:3000/api/users/${userId}`, {
+        try {
+            const response = await fetch(`${API_URL}/api/users/${userId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userData)
+                body: JSON.stringify(userData),
             });
 
             if (response.ok) {
-                alert('Usuario actualizado correctamente');
-                window.location.href = '../viewadmin/Profile.html';
+                showModal('Éxito', 'Usuario actualizado correctamente.');
+                setTimeout(() => {
+                    window.location.href = '../viewadmin/Profile.html';
+                }, 2000);
             } else {
                 const error = await response.json();
-                alert(`Error al actualizar: ${error.message}`);
+                showModal('Error', error.message || 'Error al actualizar el usuario.');
             }
-        });
-
-
-        // Mostrar alertas
-        const showAlert = (message, type) => {
-            const alertContainer = document.getElementById('alert-container');
-            alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
-            setTimeout(() => alertContainer.innerHTML = '', 5000);
-        };
-
-        // Vista previa de la imagen
-        document.getElementById('profile_image').addEventListener('change', function (event) {
-            const fileInput = event.target;
-            const file = fileInput.files[0];
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const previewContainer = document.getElementById('image-preview');
-                    previewContainer.innerHTML = `<img src="${e.target.result}" alt="Imagen de Perfil" class="img-thumbnail" style="max-width: 200px;">`;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Cargar los datos iniciales
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('id');
-        if (userId) {
-            loadUserData(userId);
-        } else {
-            showAlert('ID de usuario no proporcionado.', 'danger');
+        } catch (error) {
+            showModal('Error', 'Error al guardar los cambios.');
         }
-    </script>
+    });
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('id');
+    if (userId) {
+        loadUserData(userId);
+    } else {
+        showModal('Error', 'ID de usuario no proporcionado.');
+    }
+</script>
+
 </body>
 
 </html>
