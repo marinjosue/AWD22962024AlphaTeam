@@ -101,7 +101,7 @@ function handleLogout() {
         text: 'Has cerrado sesión exitosamente.',
         icon: 'success'
     }).then(() => {
-        window.location.href = '../Views/login.html';
+        window.location.href = '../views/login.html';
     });
 }
 
@@ -109,7 +109,7 @@ function handleLogout() {
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
     if (!token) {
-        window.location.href = '../Views/login.html';
+        window.location.href = '../views/login.html';
         return;
     }
     cargarPerfilUsuario();
