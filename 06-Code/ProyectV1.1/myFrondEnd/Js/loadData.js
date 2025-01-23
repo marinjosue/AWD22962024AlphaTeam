@@ -24,6 +24,7 @@ function handleLogout() {
         }
     });
 }
+
 async function cargarPerfilUsuario() {
 
         // Obtener el token del localStorage

@@ -106,37 +106,47 @@ const userController = {
     // Update user
     updateUser: async (req, res) => {
         try {
-            const { cedula, first_name, last_name, address, phone, email, gender, id_rol } = req.body;
+            const { cedula, first_name, last_name, address, phone, email, gender, id_rol, profile_image } = req.body;
             const userId = req.params.id;
-
-            // Check if user exists
-            const [existingUser] = await pool.query('SELECT id FROM users WHERE id = ?', [userId]);
-
+    
+            console.log('Datos recibidos para actualización:', req.body);
+    
+            // Verificar si el usuario existe
+            const [existingUser] = await pool.query('SELECT * FROM users WHERE id = ?', [userId]);
             if (existingUser.length === 0) {
-                return res.status(404).json({ message: 'User not found' });
+                return res.status(404).json({ success: false, message: 'Usuario no encontrado' });
             }
-
-            // Check if email or cedula is already used by another user
+    
+            const currentUser = existingUser[0];
+    
+            // Usar el valor actual de 'gender' si no se envía desde el frontend
+            const updatedGender = gender || currentUser.gender;
+    
+            // Verificar duplicados de email o cédula
             const [duplicateCheck] = await pool.query(
                 'SELECT id FROM users WHERE (email = ? OR cedula = ?) AND id != ?',
                 [email, cedula, userId]
             );
-
             if (duplicateCheck.length > 0) {
-                return res.status(400).json({ message: 'Email or cedula already in use by another user' });
+                return res.status(400).json({ success: false, message: 'Email o cédula ya están en uso por otro usuario' });
             }
-
+    
+            // Ejecutar la consulta de actualización
             await pool.query(
-                'UPDATE users SET cedula = ?, first_name = ?, last_name = ?, address = ?, phone = ?, email = ?, gender = ?, id_rol = ? WHERE id = ?',
-                [cedula, first_name, last_name, address, phone, email, gender, id_rol, userId]
+                'UPDATE users SET cedula = ?, first_name = ?, last_name = ?, address = ?, phone = ?, email = ?, gender = ?, id_rol = ?, profile_image = ? WHERE id = ?',
+                [cedula, first_name, last_name, address, phone, email, updatedGender, id_rol || currentUser.id_rol, profile_image || currentUser.profile_image, userId]
             );
-
-            res.json({ message: 'User updated successfully' });
+    
+            res.json({ success: true, message: 'Usuario actualizado correctamente' });
         } catch (error) {
-            res.status(500).json({ message: 'Error updating user', error: error.message });
+            console.error('Error al actualizar usuario:', {
+                message: error.message,
+                stack: error.stack,
+                sqlMessage: error.sqlMessage || null
+            });
+            res.status(500).json({ success: false, message: 'Error updating user', error: error.message });
         }
     },
-
     // Delete user
     deleteUser: async (req, res) => {
         try {
