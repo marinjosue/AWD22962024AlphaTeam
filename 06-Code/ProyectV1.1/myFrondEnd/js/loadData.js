@@ -33,7 +33,7 @@ async function cargarPerfilUsuario() {
     const userId = localStorage.getItem('userId');
 
     if (!token || !userId) {
-        window.location.href = '../Views/login.html';
+        window.location.href = '../views/login.html';
         return;
     }
 
@@ -84,7 +84,7 @@ async function cargarPerfilUsuario() {
         }).toString();
 
         // Redirigir a la página de edición de perfil con los parámetros
-        window.location.href = `../Views/updateUser.htm?${queryParams}`;
+        window.location.href = `../views/updateUser.htm?${queryParams}`;
     });
 
 }
