@@ -111,7 +111,7 @@ if (loginData.success) {
         source: 'google'
     }).toString();
 
-    window.location.href = `Register.html?${queryParams}`;
+    window.location.href = `register.html?${queryParams}`;
 } else {
     // Otro error no especificado
     throw new Error(loginData.message || 'Error al iniciar sesión');

@@ -48,7 +48,7 @@ window.addEventListener('load', () => {
 });
 
 
-loadHTML('footer', '../Partials/footer.html');
+loadHTML('footer', '../partials/footer.html');
 
 window.addEventListener('load', () => {
     const footer = document.getElementById('footer');
