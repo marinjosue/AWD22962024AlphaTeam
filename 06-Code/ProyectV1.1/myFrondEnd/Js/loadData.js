@@ -25,55 +25,68 @@ function handleLogout() {
     });
 }
 
+
 async function cargarPerfilUsuario() {
 
-        // Obtener el token del localStorage
-        const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId');
+    // Obtener el token del localStorage
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
 
-        if (!token || !userId) {
-            window.location.href = '../Views/login.html';
-            return;
+    if (!token || !userId) {
+        window.location.href = '../Views/login.html';
+        return;
+    }
+
+    const API_URL = 'http://localhost:3000';
+    const response = await fetch(`${API_URL}/api/users/${userId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
         }
+    });
 
-        const API_URL = 'http://localhost:3000';
-        const response = await fetch(`${API_URL}/api/users/${userId}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
 
-        if (!response.ok) {
-            throw new Error('Error en la respuesta del servidor');
-        }
+    if (!response.ok) {
+        throw new Error('Error en la respuesta del servidor');
+    }
 
-        const user = await response.json();
+    const user = await response.json();
 
-        // Actualizar la información en el DOM
-        document.getElementById('fullName').textContent = `${user.first_name} ${user.last_name}`;
-        document.getElementById('id').value = user.cedula;
-        document.getElementById('email').value = user.email;
-        document.getElementById('phone').value = user.phone || 'No disponible';
-        document.getElementById('role').textContent = `Rol: ${user.id_rol}`;
+    // Actualizar la información en el DOM
+    document.getElementById('fullName').textContent = `${user.first_name} ${user.last_name}`;
+    document.getElementById('id').value = user.cedula;
+    document.getElementById('email').value = user.email;
+    document.getElementById('phone').value = user.phone || 'No disponible';
+    document.getElementById('role').textContent = `Rol: ${user.id_rol}`;
 
-        // Configurar la imagen del perfil
-        const photo = document.getElementById('photo');
-        const photoUrl = `../imgProfile/${user.cedula}.png?timestamp=${new Date().getTime()}`;
-        photo.src = photoUrl;
+    // Configurar la imagen del perfil
+    const photo = document.getElementById('photo');
+    const photoUrl = `../imgProfile/${user.cedula}.png?timestamp=${new Date().getTime()}`;
+    photo.src = photoUrl;
 
-        // Manejar errores de carga de imágenes
-        photo.onerror = function () {
-            console.warn('Error al cargar la imagen del usuario, cargando imagen por defecto.');
-            this.src = '../imgProfile/default.png';
-            this.onerror = null; // Evitar bucles
-        };
+    // Manejar errores de carga de imágenes
+    photo.onerror = function () {
+        console.warn('Error al cargar la imagen del usuario, cargando imagen por defecto.');
+        this.src = '../imgProfile/default.png';
+        this.onerror = null; // Evitar bucles
+    };
+    // Configurar el botón de editar perfil
+    const editProfileBtn = document.querySelector('.edit-profile-btn');
+    editProfileBtn.addEventListener('click', () => {
+        const queryParams = new URLSearchParams({
+            id: user.id,
+            cedula: user.cedula,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            phone: user.phone || ''
+        }).toString();
 
-        // Configurar el botón de editar perfil
-        const editProfileBtn = document.querySelector('.edit-profile-btn');
-        editProfileBtn.setAttribute('data-id', user.id);
-       // editProfileBtn.addEventListener('click', handleEditProfile);
+        // Redirigir a la página de edición de perfil con los parámetros
+        window.location.href = `../Views/updateUser.htm?${queryParams}`;
+    });
+
 }
 
 
