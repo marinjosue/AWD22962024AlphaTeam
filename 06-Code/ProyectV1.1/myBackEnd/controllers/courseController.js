@@ -1,4 +1,3 @@
-// courseController.js
 const pool = require('../config/db');
 
 const courseController = {
@@ -172,7 +171,257 @@ const courseController = {
                 connection.release();
             }
         }
+    },
+
+    // Additional controllers for new services
+
+    getCoursesByCategory: async (req, res) => {
+        try {
+            const [courses] = await pool.query(
+                'SELECT * FROM courses WHERE id_category = ?',
+                [req.params.id]
+            );
+            res.json(courses);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching courses by category', error: error.message });
+        }
+    },
+
+    getCoursesByInstructor: async (req, res) => {
+        try {
+            const [courses] = await pool.query(
+                'SELECT * FROM courses WHERE cedula = ?',
+                [req.params.cedula]
+            );
+            res.json(courses);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching courses by instructor', error: error.message });
+        }
+    },
+
+    getActiveCourses: async (req, res) => {
+        try {
+            const [courses] = await pool.query(
+                'SELECT * FROM courses WHERE status = "active"'
+            );
+            res.json(courses);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching active courses', error: error.message });
+        }
+    },
+
+    getCoursesByDateRange: async (req, res) => {
+        const { start_date, end_date } = req.query;
+        try {
+            const [courses] = await pool.query(
+                'SELECT * FROM courses WHERE start_date >= ? AND end_date <= ?',
+                [start_date, end_date]
+            );
+            res.json(courses);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching courses by date range', error: error.message });
+        }
+    },
+
+    getCoursesAbovePrice: async (req, res) => {
+        try {
+            const [courses] = await pool.query(
+                'SELECT * FROM courses WHERE price > ?',
+                [req.params.value]
+            );
+            res.json(courses);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching courses above price', error: error.message });
+        }
+    },
+
+    getCoursesBelowPrice: async (req, res) => {
+        try {
+            const [courses] = await pool.query(
+                'SELECT * FROM courses WHERE price < ?',
+                [req.params.value]
+            );
+            res.json(courses);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching courses below price', error: error.message });
+        }
+    },
+
+    searchCourses: async (req, res) => {
+        const keyword = `%${req.params.keyword}%`;
+        try {
+            const [courses] = await pool.query(
+                'SELECT * FROM courses WHERE course_name LIKE ? OR course_description LIKE ?',
+                [keyword, keyword]
+            );
+            res.json(courses);
+        } catch (error) {
+            res.status(500).json({ message: 'Error searching courses', error: error.message });
+        }
+    },
+
+    getTotalCourses: async (req, res) => {
+        try {
+            const [result] = await pool.query(
+                'SELECT COUNT(*) as total FROM courses'
+            );
+            res.json(result[0]);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching total courses', error: error.message });
+        }
+    },
+
+    getAverageCoursePrice: async (req, res) => {
+        try {
+            const [result] = await pool.query(
+                'SELECT AVG(price) as average_price FROM courses'
+            );
+            res.json(result[0]);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching average price', error: error.message });
+        }
+    },
+
+    getCoursesGroupedByCategory: async (req, res) => {
+        try {
+            const [result] = await pool.query(
+                'SELECT id_category, COUNT(*) as course_count FROM courses GROUP BY id_category'
+            );
+            res.json(result);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching grouped courses', error: error.message });
+        }
+    },
+
+    getCoursesGroupedByInstructor: async (req, res) => {
+        try {
+            const [result] = await pool.query(
+                'SELECT cedula, COUNT(*) as course_count FROM courses GROUP BY cedula'
+            );
+            res.json(result);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching grouped courses', error: error.message });
+        }
+    },
+
+    getMostPopularCourses: async (req, res) => {
+        try {
+            const [courses] = await pool.query(
+                'SELECT * FROM courses ORDER BY enrollment DESC LIMIT 5'
+            );
+            res.json(courses);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching popular courses', error: error.message });
+        }
+    },
+
+    getCoursesByDurationRange: async (req, res) => {
+        const { min, max } = req.params;
+        try {
+            const [courses] = await pool.query(
+                'SELECT *, DATEDIFF(end_date, start_date) as duration FROM courses HAVING duration BETWEEN ? AND ?',
+                [min, max]
+            );
+            res.json(courses);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching courses by duration', error: error.message });
+        }
+    },
+
+    getCoursesWithYouTubeLinks: async (req, res) => {
+        try {
+            const [courses] = await pool.query(
+                'SELECT * FROM courses WHERE course_youtube IS NOT NULL AND course_youtube != ""'
+            );
+            res.json(courses);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching courses with YouTube links', error: error.message });
+        }
+    },
+
+    getCoursesWithoutYouTubeLinks: async (req, res) => {
+        try {
+            const [courses] = await pool.query(
+                'SELECT * FROM courses WHERE course_youtube IS NULL OR course_youtube = ""'
+            );
+            res.json(courses);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching courses without YouTube links', error: error.message });
+        }
+    },
+
+    getCoursesByCreator: async (req, res) => {
+        try {
+            const [courses] = await pool.query(
+                'SELECT * FROM courses WHERE user_id = ?',
+                [req.params.userId]
+            );
+            res.json(courses);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching courses by creator', error: error.message });
+        }
+    },
+
+    getInactiveCourses: async (req, res) => {
+        try {
+            const [courses] = await pool.query(
+                'SELECT * FROM courses WHERE status = "inactive"'
+            );
+            res.json(courses);
+        } catch (error) {
+            res.status(500).json({ message: 'Error fetching inactive courses', error: error.message });
+        }
+    },
+
+    getRecentlyCreatedCourses: async (req, res) => {
+        try {
+            const [courses] = await pool.query(
+                'SELECT * FROM courses ORDER BY created_at DESC LIMIT 5'
+            );
+            res.json(courses);
+        } catch (error) {
+            res.status(500).json({ 
+                message: 'Error fetching recently created courses', 
+                error: error.message 
+            });
+        }
+    },
+
+    // Service to get the latest courses for the dashboard
+    getLatestCourses: async (req, res) => {
+        try {
+            const [courses] = await pool.query(
+                'SELECT * FROM courses ORDER BY id_course DESC LIMIT 10'
+            );
+            res.json(courses);
+        } catch (error) {
+            res.status(500).json({
+                message: 'Error fetching latest courses',
+                error: error.message
+            });
+        }
+    },
+
+    // Fetch statistics related to courses
+    getCourseStatistics: async (req, res) => {
+        try {
+            const [statistics] = await pool.query(
+                `SELECT 
+                    (SELECT COUNT(*) FROM courses) as totalCourses,
+                    (SELECT COUNT(*) FROM course_units) as totalUnits,
+                    (SELECT COUNT(*) FROM courses WHERE status = 'active') as activeCourses,
+                    (SELECT COUNT(*) FROM courses WHERE status = 'inactive') as inactiveCourses
+                `
+            );
+            res.json(statistics[0]);
+        } catch (error) {
+            res.status(500).json({
+                message: 'Error fetching course statistics',
+                error: error.message
+            });
+        }
     }
+
 };
 
 module.exports = courseController;
