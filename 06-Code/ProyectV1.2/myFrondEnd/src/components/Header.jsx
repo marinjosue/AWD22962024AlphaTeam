@@ -1,7 +1,46 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "../styles/header.css"; // Asegúrate de que el CSS esté en la carpeta correcta
+import "../styles/header.css";
 
 const Header = () => {
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    const role = localStorage.getItem("userRole");
+    setUserRole(role);
+  }, []);
+
+  const renderMenu = () => {
+    if (userRole === "admin") {
+      return (
+        <ul>
+          <li className="menu"><Link to="/">Home</Link></li>
+          <li className="menu"><Link to="/manage-courses">Gestionar Cursos</Link></li>
+          <li className="menu"><Link to="/contact">Contacto</Link></li>
+          <li className="menu"><Link to="/manage-users">Gestionar Usuarios</Link></li>
+          <li className="menu"><Link to="/report">Reporte</Link></li>
+        </ul>
+      );
+    } else if (userRole === "user") {
+      return (
+        <ul>
+          <li className="menu"><Link to="/">Home</Link></li>
+          <li className="menu"><Link to="/courses">Cursos</Link></li>
+          <li className="menu"><Link to="/contact">Contacto</Link></li>
+          <li className="menu"><Link to="/my-courses">Cursos Inscritos</Link></li>
+        </ul>
+      );
+    } else {
+      return (
+        <ul>
+          <li className="menu"><Link to="/">Home</Link></li>
+          <li className="menu"><Link to="/courses">Cursos</Link></li>
+          <li className="menu"><Link to="/contact">Contacto</Link></li>
+        </ul>
+      );
+    }
+  };
+
   return (
     <header className="header">
       <div className="navbar">
@@ -11,24 +50,20 @@ const Header = () => {
           </Link>
         </div>
 
-        <div className="hamburger" id="hamburger">
-          <span className="bar"></span>
-          <span className="bar"></span>
-          <span className="bar"></span>
-        </div>
-
-        <nav className="main-menu" id="navbar">
-          <ul>
-            <li className="menu"><Link to="/">Home</Link></li>
-            <li className="menu"><Link to="/courses">Cursos</Link></li>
-            <li className="menu"><Link to="/contact">Contacto</Link></li>
-          </ul>
+        <nav className="main-menu">
+          {renderMenu()}
         </nav>
 
         <div className="user-options">
-          <span id="user-links">
-            <Link to="/login" className="login-btn">Entrar</Link>
-          </span>
+          {userRole ? (
+            <Link to={userRole === "admin" ? "/admin-profile" : "/user-profile"} className="login-btn">
+              Perfil
+            </Link>
+          ) : (
+            <button className="login-btn" onClick={() => window.open("/login", "_blank", "width=500,height=600")}>
+              Entrar
+            </button>
+          )}
         </div>
       </div>
     </header>
