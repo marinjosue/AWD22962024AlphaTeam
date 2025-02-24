@@ -1,47 +1,45 @@
-// src/App.jsx
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// Importa tus vistas
+// Vistas públicas (views)
 import Login from './pages/views/Login';
 import Register from './pages/views/Register';
 import UpdateUser from './pages/views/UpdateUser';
 import ViewCourses from './pages/views/ViewCourses';
 import Contact from './pages/views/Contact';
 
-// Área Admin
-import AdminProfile from './pages/admin/Profile';
+// Área de administración
+import Profile from './pages/admin/Profile';
 import Courses from './pages/admin/Courses';
 import CourseForm from './pages/admin/CourseForm';
 import CourseData from './pages/admin/CourseData';
 import Report from './pages/admin/Report';
 import Users from './pages/admin/Users';
 
-// Área Usuario
+// Área de usuario
 import ProfileUser from './pages/user/ProfileUser';
 import CoursesEnrolled from './pages/user/CoursesEnrolled';
 
 function App() {
   return (
     <BrowserRouter>
-      {/* Opcional: Puedes definir un layout general con Header y Footer aquí */}
       <Routes>
-        {/* Rutas públicas / vistas generales */}
+        {/* Vistas públicas */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/updateUser" element={<UpdateUser />} />
         <Route path="/viewCourses" element={<ViewCourses />} />
         <Route path="/contact" element={<Contact />} />
 
-        {/* Rutas del área de administración */}
-        <Route path="/admin/profile" element={<AdminProfile />} />
+        {/* Área de administración */}
+        <Route path="/admin/profile" element={<Profile />} />
         <Route path="/admin/courses" element={<Courses />} />
         <Route path="/admin/course/new" element={<CourseForm />} />
         <Route path="/admin/course/:id" element={<CourseData />} />
         <Route path="/admin/report" element={<Report />} />
         <Route path="/admin/users" element={<Users />} />
 
-        {/* Rutas del área de usuario */}
+        {/* Área de usuario */}
         <Route path="/user/profile" element={<ProfileUser />} />
         <Route path="/user/coursesEnrolled" element={<CoursesEnrolled />} />
 
