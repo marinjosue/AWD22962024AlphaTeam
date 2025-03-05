@@ -1,6 +1,7 @@
+// src/pages/views/Login.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/login.css'; // Importa solo aquí los estilos del login
+import styles from '../../styles/Login.module.css'; // Importa el CSS Module
 
 const Login = () => {
   const navigate = useNavigate();
@@ -39,55 +40,55 @@ const Login = () => {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-container">
-        <div className="card">
-          <div className="card-header">
-            <h3 className="card-title mb-0">Iniciar Sesión</h3>
+    <div className={styles.loginPage}>
+      <div className={styles.loginContainer}>
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <h3 className={styles.cardTitle}>Iniciar Sesión</h3>
           </div>
-          <div className="card-body">
-            <form id="loginForm" onSubmit={handleSubmit}>
-              <div className="mb-3 input-group">
-                <span className="input-group-text bg-primary text-white">
+          <div className={styles.cardBody}>
+            <form id={styles.loginForm} onSubmit={handleSubmit}>
+              <div className={`${styles.inputGroup} ${styles.mb3}`}>
+                <span className={`${styles.inputGroupText} ${styles.bgPrimary} ${styles.textWhite}`}>
                   <i className="fas fa-user"></i>
                 </span>
                 <input
                   type="text"
-                  className="form-control"
+                  className={styles.formControl}
                   id="username"
                   placeholder="Ingresa tu cédula"
                   required
                 />
               </div>
-              <div className="mb-1 input-group">
-                <span className="input-group-text bg-primary text-white">
+              <div className={`${styles.inputGroup} ${styles.mb1}`}>
+                <span className={`${styles.inputGroupText} ${styles.bgPrimary} ${styles.textWhite}`}>
                   <i className="fas fa-lock"></i>
                 </span>
                 <input
                   type="password"
-                  className="form-control"
+                  className={styles.formControl}
                   id="password"
                   placeholder="Ingresa tu contraseña"
                   required
                 />
               </div>
-              <div className="forgot-password">
+              <div className={styles.forgotPassword}>
                 <a href="#">¿Olvidaste tu contraseña?</a>
               </div>
-              <button type="submit" className="btn btn-primary w-100 mb-3">
+              <button type="submit" className={`${styles.btn} ${styles.btnPrimary} ${styles.w100} ${styles.mb3}`}>
                 Iniciar Sesión
               </button>
-              <div className="d-flex align-items-center mb-3">
-                <div className="flex-grow-1 border-bottom"></div>
-                <div className="px-3">O</div>
-                <div className="flex-grow-1 border-bottom"></div>
+              <div className={styles.separator}>
+                <div className={styles.flexGrow1 + ' ' + styles.borderBottom}></div>
+                <div className={styles.px3}>O</div>
+                <div className={styles.flexGrow1 + ' ' + styles.borderBottom}></div>
               </div>
               {/* Aquí puedes integrar el botón de Google Sign-In si lo deseas */}
             </form>
           </div>
-          <div className="card-footer text-center">
+          <div className={styles.cardFooter + " " + styles.textCenter}>
             <small>
-              ¿No tienes cuenta? <a href="/register" className="text-primary">Regístrate</a>
+              ¿No tienes cuenta? <a href="/register" className={styles.textPrimary}>Regístrate</a>
             </small>
           </div>
         </div>

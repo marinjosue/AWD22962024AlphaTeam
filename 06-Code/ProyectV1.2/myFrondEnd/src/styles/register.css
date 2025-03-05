@@ -1,76 +1,78 @@
-body {
+/* register.css modificado */
+.register-page {
     background-color: #f7f9fc;
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
     padding-top: 80px;
-}
-
-.register-container {
+  }
+  
+  .register-page .register-container {
     max-width: 600px;
     margin: 50px auto;
     background-color: #fff;
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.register-container h2 {
+  }
+  
+  .register-page .register-container h2 {
     text-align: center;
     margin-bottom: 25px;
     font-size: 24px;
     color: #007bff;
-}
-
-.form-label {
+  }
+  
+  .register-page .form-label {
     font-weight: bold;
-}
-
-.form-control {
+  }
+  
+  .register-page .form-control {
     border-radius: 0.5rem;
     margin-bottom: 20px;
-}
-
-.form-control:focus {
+  }
+  
+  .register-page .form-control:focus {
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-.btn-primary {
+  }
+  
+  .register-page .btn-primary {
     border-radius: 0.5rem;
     width: 100%;
     background-color: #007bff;
     border-color: #007bff;
-}
-
-.btn-primary:hover {
+  }
+  
+  .register-page .btn-primary:hover {
     background-color: #0056b3;
     border-color: #0056b3;
-}
-
-.footer-links {
+  }
+  
+  .register-page .footer-links {
     text-align: center;
     margin-top: 20px;
     font-size: 14px;
-}
-
-.footer-links a {
+  }
+  
+  .register-page .footer-links a {
     color: #007bff;
     text-decoration: none;
-}
-
-.footer-links a:hover {
+  }
+  
+  .register-page .footer-links a:hover {
     text-decoration: underline;
-}
-
-.input-group-text {
+  }
+  
+  .register-page .input-group-text {
     background-color: #f1f1f1;
-}
-
-.input-group {
+  }
+  
+  .register-page .input-group {
     margin-bottom: 20px;
-}
-
-.terms-checkbox {
+  }
+  
+  .register-page .terms-checkbox {
     display: flex;
     align-items: center;
     margin-top: 10px;
-}
+  }
+  

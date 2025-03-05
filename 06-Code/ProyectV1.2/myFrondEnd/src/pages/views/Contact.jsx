@@ -1,31 +1,42 @@
+// src/pages/views/Contact.jsx
 import React, { useEffect } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+//import '../../styles/contact.css'; // Crea o ajusta este archivo según necesites
 
 const Contact = () => {
   useEffect(() => {
-    window.initMap = function() {
-      const location = { lat: -0.187087, lng: -78.491267 };
-      const map = new google.maps.Map(document.getElementById("map"), {
+    // Definimos la función initMap global para que la API de Google Maps la invoque
+    window.initMap = function () {
+      const location = { lat: -0.187087, lng: -78.491267 }; // Ajusta las coordenadas según necesites
+      const map = new google.maps.Map(document.getElementById('map'), {
         zoom: 15,
         center: location,
       });
       new google.maps.Marker({
         position: location,
         map: map,
-        title: "Sede Principal",
+        title: 'Sede Principal',
       });
     };
-    // Google Maps API se carga en index.html o mediante script dinámico
   }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Aquí puedes agregar la lógica para enviar la consulta a tu API
+    alert('Consulta enviada');
+  };
 
   return (
     <div>
       <Header />
       <main className="container mt-5">
         <h1 className="text-center mb-4">Información de Contacto</h1>
+
+        {/* Sección de información del administrador y mapa */}
         <section className="mb-5">
           <div className="row">
+            {/* Detalles del administrador */}
             <div className="col-md-6">
               <h2>Detalles de Contacto</h2>
               <p><i className="fa-solid fa-user"></i> <strong>Nombre:</strong> Juan Pérez</p>
@@ -37,6 +48,7 @@ const Contact = () => {
                 <li>Sábado: 09:00 AM - 12:00 PM</li>
               </ul>
             </div>
+            {/* Mapa */}
             <div className="col-md-6">
               <h2>Ubicación</h2>
               <p>Las clases presenciales se dictan en:</p>
@@ -45,9 +57,11 @@ const Contact = () => {
             </div>
           </div>
         </section>
+
+        {/* Sección de consulta */}
         <section>
           <h2 className="text-center mb-4">Envíanos tu Consulta</h2>
-          <form id="contact-form">
+          <form id="contact-form" onSubmit={handleSubmit}>
             <div className="row g-3">
               <div className="col-md-6">
                 <label htmlFor="name" className="form-label">Nombre</label>
@@ -68,6 +82,7 @@ const Contact = () => {
           </form>
         </section>
       </main>
+      <br />
       <Footer />
     </div>
   );

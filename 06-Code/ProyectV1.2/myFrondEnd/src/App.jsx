@@ -1,7 +1,9 @@
+// src/App.jsx
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // Vistas públicas (views)
+import Home from './pages/views/Home';
 import Login from './pages/views/Login';
 import Register from './pages/views/Register';
 import UpdateUser from './pages/views/UpdateUser';
@@ -24,7 +26,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Vistas públicas */}
+        {/* Ruta de inicio: Home con header y footer */}
+        <Route path="/" element={<Home />} />
+
+        {/* Vistas públicas adicionales */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/updateUser" element={<UpdateUser />} />
@@ -44,7 +49,7 @@ function App() {
         <Route path="/user/coursesEnrolled" element={<CoursesEnrolled />} />
 
         {/* Ruta por defecto */}
-        <Route path="*" element={<Login />} />
+        <Route path="*" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );

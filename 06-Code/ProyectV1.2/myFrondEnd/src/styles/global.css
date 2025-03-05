@@ -1,0 +1,49 @@
+/* RESET y Variables Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #8bcece;
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --font-base: 'Arial', sans-serif;
+  --header-height: 80px;
+  --footer-height: 100px;
+}
+
+/* Estilos Base */
+.global-body {
+  font-family: var(--font-base);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.global-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Utilidades */
+.flex-grow-1 { flex-grow: 1; }
+.border-bottom { border-bottom: 1px solid #ccc; }
+.px3 { padding: 0 1rem; }
+
+/* Botones Globales (puedes usarlos en conjunto con Bootstrap) */
+.btn-global {
+  background-color: var(--primary-color);
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.btn-global:hover {
+  background-color: #0056b3;
+}
